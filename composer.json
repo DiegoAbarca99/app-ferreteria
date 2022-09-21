@@ -1,0 +1,19 @@
+{
+    "name": "diego/app_ferreteria",
+    "description": "App diseñada para coadyuvar la gestión del proceso de ventas de una ferreteria",
+    "authors": [
+        {
+            "name": "DiegoAbarcaRodriguez",
+            "email": "abarcarodriguezdiego@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MVC\\":"./",
+            "Controllers\\" : "./controllers",
+            "Model\\" : "./models"
+        }
+    }
+
+}

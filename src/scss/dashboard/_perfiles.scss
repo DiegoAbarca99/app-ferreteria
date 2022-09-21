@@ -1,0 +1,95 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+
+.crear-perfil {
+    @include m.boton(v.$cyan, v.$blanco);
+}
+
+
+
+.regresar {
+    @include m.boton(v.$cyan, v.$blanco);
+}
+
+.formulario-crear-cuenta {
+   
+    .fieldset-grid {
+        @include m.desktop {
+            @include m.grid(2, 2rem);
+        }
+    }
+
+    select {
+        border: none;
+        padding: 1rem
+    }
+
+}
+
+.listado-perfiles {
+    margin-top: 5rem;
+    list-style: none;
+    padding: 0;
+
+    @include m.telefono {
+        @include m.grid(2,2rem);
+    }
+    @include m.desktop {
+        @include m.grid(3,2rem);
+    }
+
+    
+    .no-perfiles{
+        text-align: center;
+ 
+    }
+
+
+    .perfil {
+        margin-bottom: 1rem;
+        padding: 2rem 3rem;
+        background-color: lighten($color: v.$indigo, $amount: 2%);
+        border-radius: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &:last-of-type {
+            border: none;
+        }
+
+        p {
+            color:v.$negro;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin:0;
+        }
+
+        span{
+            color:v.$blanco;
+            font-weight: bold;
+        }
+
+
+        .boton-ver-perfil{
+            border: none;
+            font-size: .9rem;
+            padding: 1rem 1rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            border-radius: 1rem;
+            color: v.$blanco;
+            background-color: v.$naranja;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+
+
+
+    }
+
+}

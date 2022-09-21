@@ -1,0 +1,57 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+.formulario{
+    margin-top: 5rem;
+
+    
+    fieldset{
+        margin-top: 5rem;
+        border:none;
+        border-top:solid .1rem v.$gris ;
+        legend{
+            text-align: center; 
+            margin-bottom: 2rem;
+            font-weight:bold;
+            font-size: 2rem;
+            text-transform: uppercase;
+         
+        }
+    }
+
+    .campo{
+        display:flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        
+        label{
+            flex:0 0 10rem;
+        }
+
+        
+
+        input{
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background-color: lighten($color: v.$gris, $amount: 40%);
+        }
+
+        input:disabled,
+        select:disabled,
+        p{
+            background-color: darken($color: v.$gris, $amount: 0%) !important;
+            color:v.$blanco;
+        }
+
+        p{
+            width: 100%;
+            padding:.2rem;
+            font-size: 2rem;
+        }
+
+
+      
+    }
+
+}

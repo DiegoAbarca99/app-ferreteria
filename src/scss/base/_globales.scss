@@ -1,0 +1,77 @@
+@use 'variables' as v;
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    height: 100%;
+}
+body {
+    font-family: v.$fuente_textos;
+    font-size: 1.6rem;
+    min-height: 100%;
+
+}
+.contenedor {
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.contenedor-sm {
+    max-width: 70rem;
+    margin: 0 auto;
+}
+
+.contenedor-formulario{
+    width: min(100%,50rem);
+    margin: 0 auto;
+}
+a {
+    text-decoration: none;
+}
+img {
+    max-width: 100%;
+}
+
+.flex-derecha{
+    display: flex;
+    justify-content: end;
+}
+
+.flex-izquierda{
+    display: flex;
+    justify-content:start;
+}
+.flex-centro{
+    display: flex;
+    justify-content:center;
+    gap:2rem;
+}
+
+.btn{
+    border: none;
+    font-size: 1.5rem;
+    padding: 1rem 1.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 1rem;
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+
+.btn-editar{
+    color:v.$blanco;
+    background-color: v.$naranja;
+}
+
+.btn-eliminar{
+    color:v.$blanco;
+    background-color: v.$rojo;
+}
+
+
+
