@@ -2,7 +2,7 @@
 namespace Controllers;
 use Model\Usuario;
 use MVC\Router;
-class LoginController {
+class AuthController {
 
     //Método que logea a los usuarios
     public static function login(Router $router){

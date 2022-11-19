@@ -48,4 +48,18 @@ function isAllowed() : void {
     }
 }
 
+//Verifica que exista cierto string en la ruta actual
+function pagina_actual($path): bool
+{
+    return str_contains($_SERVER['PATH_INFO']??'/', $path) ? true : false;
+}
 
+
+//Función que determina si un elemento de un arreglo asociativo  es el último o no
+function esUltimo(string $actual,string $proximo):bool{
+    if($actual !== $proximo){
+        return true;
+    }
+
+    return false;
+}

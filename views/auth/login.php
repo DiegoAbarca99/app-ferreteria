@@ -1,39 +1,38 @@
+<div class="login contenedor">
 
-<div class=" login">
+    <?php include_once __DIR__ . '/../templates/alertas.php' ?>
 
-   
-    <div class="imagen-login">
-        <picture>
-            <source  srcset="build/img/login.webp" type="image/webp">
-            <img  src="build/img/login.jpg" alt="Imagen del Login">
-        </picture>
-    </div>
+    <h1 class="login__titulo">FerreTinoco</h1>
+    <p class="login__tagline">Comienza a Gestionar tu Negocio</p>
+    <p class="login__descripcion">Iniciar Sesión</p>
 
-    
-    <h1 class="empresa">FerreTinoco</h1>
-    <p class="tagline">Panel Administrativo</p>
 
-    <div class="contenedor-formulario">
 
-        <p class="descripcion-pagina">Iniciar Sesión</p>
+    <div class="login__contenedor">
 
-        <?php include_once __DIR__.'/../templates/alertas.php' ?>
+
 
         <form action="/" method="POST" class="formulario" novalidate>
-            <div class="campo">
-                <label for="usuario">Usuario</label>
-                <input type="text" name="usuario" id="usuario" placeholder="Tu Usuario">
+            <div class="formulario__campo">
+                <label class="formulario__label" for="usuario">Usuario</label>
+                <input class="formulario__input" type="text" name="usuario" id="usuario" placeholder="Tu Usuario">
             </div>
 
-            <div class="campo">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Tu Password">
+            <div class="formulario__campo">
+                <label class="formulario__label" for="password">Password</label>
+                <input class="formulario__input" type="password" name="password" id="password" placeholder="Tu Password">
             </div>
 
-            <input type="submit" class="boton" value="Iniciar Sesión">
+            <div class="flex-centro">
+                <input type="submit" class="btn-submit" value="Iniciar Sesión">
+            </div>
+
         </form>
 
     </div>
 
-</div>
+    <footer class="login__footer flex-centro">
+        <p class="footer"> Ferretinoco - <span class="footer--regular">Todos los derechos reservados <?php echo date('Y') ?></span> </p>
+    </footer>
 
+</div>

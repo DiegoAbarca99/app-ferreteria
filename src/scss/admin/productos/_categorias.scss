@@ -1,0 +1,166 @@
+@use '../../base/mixins' as m;
+@use '../../base/variables' as v;
+
+.categorias {
+
+    margin-top: 4rem;
+    @include m.grid(1, 3rem);
+
+    @include m.tablet {
+        @include m.grid(2, 6rem);
+    }
+
+    @include m.desktop {
+        @include m.grid(3, 7rem);
+    }
+
+    &__grid {
+        @include m.desktop {
+            @include m.grid(2, 1rem);
+        }
+    }
+
+    &__flex-derecha{
+        display: flex;
+        justify-content: right;
+    }
+
+    &__boton {
+        background-color: transparent;
+        color: v.$blanco;
+        font-weight: bold;
+        font-size: 2rem;
+        border: none;
+
+        &:hover {
+            cursor: pointer;
+            border-radius: .5rem;
+            background-color: lighten($color: v.$azul, $amount: 15%);
+        }
+    }
+
+    &__bloque {
+        @include m.bg-gradient(#17769E);
+
+        @include m.tablet {
+            width: 100%;
+        }
+
+        width: 70%;
+        margin: 0 auto;
+        border-radius: 1rem;
+        transition: transform 500ms ease-in-out;
+
+        &:hover,
+        &--seleccionado {
+            transform: scale(1.3);
+        }
+    }
+
+    &__heading {
+        text-align: center;
+        font-size: 2.5rem;
+        color: v.$blanco;
+        font-weight: bold;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+
+}
+
+
+
+.categoria {
+
+    margin-top: 4rem;
+    padding: 1rem;
+
+    &__heading {
+        font-size: 3rem;
+        text-align: center;
+
+        &--bloque {
+            margin: 0;
+            font-size: 1.6rem;
+
+        }
+    }
+
+    &__grid {
+        padding: 3rem 5rem 5rem 5rem;
+        border-radius: 1rem;
+        @include m.shadow;
+
+        @include m.telefono {
+            @include m.grid(2, 3rem);
+        }
+
+        @include m.grid(1, 1rem);
+
+        &--impuestos {
+            padding: 3rem 5rem 5rem 5rem;
+            border-radius: 1rem;
+            @include m.shadow;
+
+            @include m.telefono {
+                @include m.grid(2, 3rem);
+            }
+
+
+
+
+        }
+
+    }
+
+    &__bloque {
+        text-align: center;
+
+        &--ganancias {
+            border-bottom: v.$verde .5rem solid;
+        }
+
+        &--impuestos {
+            border-bottom: v.$rojo .5rem solid;
+        }
+    }
+
+    &__logo {
+        font-size: 2.5rem;
+        margin: 0;
+
+        &--ganancias {
+            color: v.$verde;
+        }
+
+        &--impuestos {
+            color: v.$rojo;
+        }
+
+
+    }
+
+    &__cantidad {
+        font-weight: bold;
+        font-size: 2rem;
+        color: v.$verde;
+        margin: 0;
+
+        &--impuestos {
+            @extend .categoria__cantidad;
+            color: v.$rojo;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+}

@@ -6,13 +6,13 @@
     font-weight: 900;
     margin: 1rem 0;
     font-size: 1.2rem;
-    max-width: 80rem;
-    &.error{
+    width: 100%;
+    &--error{
         background-color: lighten($color: v.$rojo, $amount: 60%);
         border-left: .5rem solid v.$rojo;
         color:v.$rojo;
     }
-    &.exito{
+    &--exito{
         background-color: lighten($color: v.$verde, $amount: 60%);
         border-left: .5rem solid v.$verde;
         color:v.$verde;

@@ -1,4 +1,5 @@
 @use 'variables' as v;
+@use 'mixins' as m;
 
 *, *:before, *:after {
     box-sizing: inherit;
@@ -13,6 +14,10 @@ body {
     font-size: 1.6rem;
     min-height: 100%;
 
+    &.pausar{
+        overflow-y: hidden;
+    }
+
 }
 .contenedor {
     width: 95%;
@@ -24,10 +29,7 @@ body {
     margin: 0 auto;
 }
 
-.contenedor-formulario{
-    width: min(100%,50rem);
-    margin: 0 auto;
-}
+
 a {
     text-decoration: none;
 }
@@ -73,5 +75,39 @@ img {
     background-color: v.$rojo;
 }
 
+.btn-submit{
+    @extend .btn;
+    width: 100%;
+    @include m.tablet {
+        width:auto;
+    }
+   
+    color:v.$blanco;
+    background-color: v.$azul;
+    transition: background-color 500ms ease-in-out;
+
+    &:hover{
+       background-color: darken($color: v.$azul, $amount: 10%);
+    }
+
+}
+
+.btn-agregar,.btn-regresar {
+    @include m.boton(v.$azul, v.$blanco);
+    border-radius: .5rem;
+}
 
 
+
+.contenedor-sombra{
+    margin-top: 3rem;
+    @include m.shadow;
+    background-color: v.$blanco;
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+
+.w-100{
+    width: 100%;
+}

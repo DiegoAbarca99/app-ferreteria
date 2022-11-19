@@ -2,14 +2,13 @@
 @use '../base/mixins' as m;
 
 .formulario{
-    margin-top: 5rem;
-
+    $modificador:&;
     
-    fieldset{
+    &__fieldset{
         margin-top: 5rem;
         border:none;
         border-top:solid .1rem v.$gris ;
-        legend{
+        #{$modificador}__legend{
             text-align: center; 
             margin-bottom: 2rem;
             font-weight:bold;
@@ -19,36 +18,81 @@
         }
     }
 
-    .campo{
-        display:flex;
-        align-items: center;
+    &__enlace{
+        display: block;
+        color:v.$azul;
+        margin-top: .2rem;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        @include m.telefono {
+            display: inline-block;
+            margin-right:1rem ;
+        }
+
+        &--eliminar{
+            color: lighten($color: v.$rojo, $amount: 15%);
+            &:hover{
+                cursor: pointer;
+                color: v.$rojo;
+            }
+        }
+        
+        &:hover{
+            cursor: pointer;
+            color: darken($color: v.$azul, $amount: 25%);
+        }
+    }
+
+    &__contenedor-campos{
+        @include m.desktop {
+            @include m.grid(3,2rem);
+        }
+        
+        @include m.grid(2,2rem);
+        
+
+    }
+
+    &__campo{
         margin-bottom: 2rem;
         
-        label{
-            flex:0 0 10rem;
+        #{$modificador}__label{
+            display: block;
+            margin-bottom: 1rem;
+            color: v.$blanco;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        #{$modificador}__input{
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: .5rem;
+           &--select{
+                width: 50%;
+                
+           }
+        }
+
+        #{$modificador}__input:disabled,
+        #{$modificador}__input--select:disabled,
+        p{
+            background-color: lighten($color: v.$grisOscuro, $amount: 10) !important;
+            color:v.$blanco;
+            font-weight: bold;
+            cursor:not-allowed ;
         }
 
         
 
-        input{
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            background-color: lighten($color: v.$gris, $amount: 40%);
+        p{
+            border-radius: .5rem;
+            padding: .2rem .5rem;
+            font-size: 1.8rem;
         }
 
-        input:disabled,
-        select:disabled,
-        p{
-            background-color: darken($color: v.$gris, $amount: 0%) !important;
-            color:v.$blanco;
-        }
 
-        p{
-            width: 100%;
-            padding:.2rem;
-            font-size: 2rem;
-        }
 
 
       

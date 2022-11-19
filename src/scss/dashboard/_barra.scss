@@ -3,66 +3,68 @@
 
 
 
-.barra-mobile{
-    background-color: v.$indigo;
+.barra--mobile {
+    background-color: lighten($color: v.$grisOscuro, $amount: 10);
     padding: 2rem 4rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+
     @include m.tablet {
-        display:none;
+        display: none;
     }
 
-    h1{
-        color:v.$blanco;
+    h1 {
+        color: v.$blanco;
         margin: 0;
         font-size: 4.5rem;
     }
 
-    .menu{
+    &__menu {
         margin-top: 2rem;
-        img{
-            width: .8rem;
-            &:hover{
+
+        img {
+            width: 4rem;
+
+            &:hover {
                 cursor: pointer;
             }
         }
     }
 }
 
-.barra{
+.barra {
 
     display: none;
 
-  
+
 
     @include m.tablet {
 
         background-color: v.$blanco;
-        padding:1rem 2rem;
-        box-shadow: 1px 12px 9px -13px rgba(0,0,0, 0.4);
+        padding: 1rem 2rem;
+        box-shadow: 1px 12px 9px -13px rgba(0, 0, 0, 0.4);
 
-
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    p{
+    p {
         margin: 0;
         font-size: 1.4rem;
-        span{
+
+        span {
             font-weight: 700;
-            color:v.$indigo;
+            color: v.$indigo;
         }
     }
 
-    .cerrar-sesion{
-        @include m.boton(darken(v.$indigo,20%),v.$blanco);
-        font-size:1.2rem;
-        padding:1rem;
+    .cerrar-sesion {
+        @include m.boton(darken(v.$azul, 25%), v.$blanco);
+        font-size: 1.2rem;
+        padding: 1rem;
         border-radius: 0.5rem;
 
     }

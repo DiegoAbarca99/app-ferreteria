@@ -1,75 +1,90 @@
 @use '../base/variables' as v;
 @use '../base/mixins' as m;
 
-.sidebar{
+.sidebar {
     opacity: 0;
     height: 0;
-    overflow:hidden;
+    overflow: hidden;
     transition-property: opacity;
     transition-duration: 500ms;
-    background-color: v.$indigo;
-  
+    background-color: lighten($color: v.$grisOscuro, $amount: 10);
+    $modificador: &;
 
-    &.mostrar{
+    &--mostrar {
         opacity: 1;
         height: auto;
         padding: 2rem;
         position: absolute;
+        z-index: 100;
         top: 0;
         bottom: 0;
         left: 0;
         right: 0;
         background-color: rgb(0 0 0 / .90);
+
         @include m.tablet {
             display: none;
         }
     }
 
-    &.ocultar{
+    &--ocultar {
         opacity: 0;
     }
 
     @include m.tablet {
-      opacity: 1;
-      height: auto;
-      background-color: v.$indigo;
-      padding: 2rem;
+        opacity: 1;
+        height: auto;
+        background-color: lighten($color: v.$grisOscuro, $amount: 10);
+        padding: 2rem;
     }
 
-    .contenedor-sidebar{
+    &__contenedor {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
+        gap:2rem;
 
-        h2{
-            margin:0;
-            color:v.$blanco;
-            text-align: center;
+        @include m.telefono {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap:0;
         }
 
-        .cerrar-menu{
+        #{$modificador}__cerrar-menu {
             display: flex;
             justify-content: center;
             height: 2rem;
             width: 2rem;
-            img:hover{
+
+            img:hover {
                 cursor: pointer;
             }
 
             @include m.tablet {
-                display:none
+                display: none
             }
         }
-    
-    }
-   
-   
 
-    .sidebar-nav{
+        h2 {
+            margin: 0;
+            color: v.$blanco;
+            text-align: center;
+        }
+
+    }
+
+
+
+
+
+    &__nav {
         margin-top: 5rem;
-        a{
-            color:v.$blanco;
-            display:block;
+
+        #{$modificador}__enlace {
+            color: v.$blanco;
+            display: block;
             margin-bottom: 2rem;
             padding: 0.7rem;
             transition-property: background-color;
@@ -79,9 +94,8 @@
             font-size: 2.4rem;
             text-align: center;
 
-            &:hover,
-            &.activo{
-                background-color:darken($color: v.$indigo, $amount: 20%);
+            &:hover {
+                background-color: lighten($color: v.$grisOscuro, $amount: 20);
                 border-radius: 0.5rem;
 
             }
@@ -92,17 +106,22 @@
                 text-align: left;
             }
         }
+
+        #{$modificador}__enlace--activo {
+            background-color: lighten($color: v.$grisOscuro, $amount: 20);
+            border-radius: 0.5rem;
+        }
     }
 
-    .cerrar-sesion-mobile{
+    &__cerrar-sesion-mobile {
         margin-top: 10rem;
 
-        .cerrar-sesion{
-            @include m.boton(v.$indigo,v.$blanco);
+        .cerrar-sesion {
+            @include m.boton(v.$indigo, v.$blanco);
         }
 
         @include m.tablet {
-            display:none;
+            display: none;
         }
     }
 }

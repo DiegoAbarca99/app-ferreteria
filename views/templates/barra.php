@@ -1,8 +1,8 @@
-<div class="barra-mobile">
+<div class="barra--mobile">
     <h1>FerreTinoco</h1>
 
-    <div class="menu">
-        <img id="mobile-menu" src="build/img/menu.svg" alt="imagen menu">
+    <div class="barra--mobile__menu">
+        <img id="mobile-menu" src="/build/img/menu.svg" alt="imagen menu">
     </div>
 </div>
 

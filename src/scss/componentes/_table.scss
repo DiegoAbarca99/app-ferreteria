@@ -1,0 +1,111 @@
+@use '../base/mixins' as m;
+@use '../base/variables' as v;
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+
+
+
+    &__head {
+        background-color: v.$grisOscuro;
+        color: v.$blanco;
+
+    }
+
+    &__caption {
+        width: 85%;
+        background-color: lighten(v.$grisOscuro, 20%);
+        color: v.$blanco;
+        text-align: start;
+        padding: 1rem;
+
+        &--resaltar {
+            background-color: v.$gris;
+        }
+
+        span {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+    }
+
+    &__th {
+        padding: 1rem;
+        text-align: left;
+
+        &--ocultar {
+            display: none;
+
+            @include m.desktop {
+                display: inline-block;
+            }
+        }
+
+    }
+
+    &__tr {
+        &:nth-child(even) {
+            background-color: v.$grisClaro;
+        }
+
+    }
+
+
+    &__td {
+        padding: 1.5rem 1rem;
+
+        &--slp{
+            &-naranja{
+                background-color: v.$naranja;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+
+        &--prolamsa,&--arcoMetal{
+
+            &:hover{
+                cursor: pointer;
+            }
+        }
+
+        &--acciones {
+            @extend .table__td;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        &--ocultar {
+            display: none;
+
+            @include m.desktop {
+                display: inline-block;
+
+            }
+        }
+
+    }
+
+    &__accion {
+        all: unset;
+        font-weight: bold;
+        font-size: 1.4rem;
+        text-transform: uppercase;
+
+        &--editar {
+            color: v.$azul;
+        }
+
+        &--eliminar {
+            color: v.$rojo;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
