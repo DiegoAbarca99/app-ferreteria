@@ -27,7 +27,7 @@ class TiposAceroController
 
 
 
-        $aceros = TiposAceros::belongsToAndOrden('categoriaacero_id', $categoriaFiltrada, 'ASC');
+        $aceros = TiposAceros::belongsToAndOrden('categoriaacero_id', $categoriaFiltrada, 'descripcionacero_id', 'ASC');
         $categorias = CategoriaAcero::ordenar('id', 'ASC');
 
         $acerosFormateados = [];
@@ -65,27 +65,86 @@ class TiposAceroController
             $acero->sincronizar($_POST);
             $alertas = $acero->validar();
 
-
-
             if (empty($alertas)) {
-                $aceroBase = TiposAceros::find('1');
 
-                if ($acero->prolamsa >= $acero->arcoMetal) {
-                    $acero->slp = $aceroBase->slp + $acero->prolamsa;
-                } else if ($acero->prolamsa < $acero->arcoMetal) {
-                    $acero->slp = $aceroBase->slp + $acero->arcoMetal;
+
+                $nombre = TiposAceros::where('nombre', $acero->nombre);
+
+                if ($nombre) {
+                    TiposAceros::setAlerta('error', 'Ya Hay Un Producto Con Ese Nombre');
+                } else {
+                    $aceroBase = TiposAceros::find('1');
+
+                    if ($acero->prolamsa >= $acero->arcoMetal) {
+                        $acero->slp = $aceroBase->slp + $acero->prolamsa;
+                    } else if ($acero->prolamsa < $acero->arcoMetal) {
+                        $acero->slp = $aceroBase->slp + $acero->arcoMetal;
+                    }
+
+                    $resultado = $acero->guardar();
+                    if ($resultado) {
+                        header('Location:/admin/acero');
+                    }
                 }
-
-                $acero->guardar();
-                header('Location:/admin/acero');
             }
         }
 
-
+        $alertas = TiposAceros::getAlertas();
         $router->render('admin/aceros/crear', [
             'titulo' => 'Tipos de Acero',
             'alertas' => $alertas,
             'acero' => $acero,
+            'categorias' => $categorias,
+            'descripciones' => $descripciones
+        ]);
+    }
+
+    public static function actualizar(Router $router)
+    {
+
+        session_start();
+        isAuth();
+        isAdmin();
+
+        if (filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+            $id = $_GET['id'];
+        }
+
+        $acero = TiposAceros::find($id);
+
+        if (!$acero) {
+            header('Location:/admin/acero');
+        }
+
+        $categorias = CategoriaAcero::all();
+        $descripciones = DescripcionAcero::all();
+        $alertas = [];
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $acero->sincronizar($_POST);
+
+            $alertas = $acero->validar();
+            if (empty($alertas)) {
+
+                $nombre = TiposAceros::where('nombre', $acero->nombre);
+
+                if ($nombre) {
+                    TiposAceros::setAlerta('error', 'Ya Hay Un Producto Con Ese Nombre');
+                } else {
+                    $resultado = $acero->guardar();
+                    if ($resultado) {
+                        header('Location:/admin/acero');
+                    }
+                }
+            }
+        }
+
+        $alertas = TiposAceros::getAlertas();
+        $router->render('admin/aceros/actualizar', [
+            'titulo' => 'Actualizar Registro',
+            'acero' => $acero,
+            'alertas' => $alertas,
             'categorias' => $categorias,
             'descripciones' => $descripciones
         ]);

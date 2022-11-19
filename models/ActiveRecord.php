@@ -167,16 +167,16 @@ class ActiveRecord
         return  $resultado;
     }
 
-    //Busca todos los registros que pertenecen a un ID y los ordena según cierta columna y patro´n
-    public static function belongsToAndOrden($columna, $valor, $orden)
+    //Busca todos los registros que satisface una condición y los ordena en base al patrón de otra columna
+    public static function belongsToAndOrden($columna, $valor, $columna2, $orden)
     {
+
         if (empty($valor)) {
-            $query = "SELECT * FROM " . static::$tabla . " ORDER BY ${columna} ${orden} ";
+            $query = "SELECT * FROM " . static::$tabla . " ORDER BY ${columna2} ${orden} ";
         } else {
-            $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}' ORDER BY ${columna} ${orden} ";
+            $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}' ORDER BY ${columna2} ${orden} ";
         }
 
-      
         $resultado = self::consultarSQL($query);
         return  $resultado;
     }
@@ -262,6 +262,7 @@ class ActiveRecord
     public static function consultarSQL($query)
     {
         // Consultar la base de datos
+       
         $resultado = self::$db->query($query);
 
         // Iterar los resultados

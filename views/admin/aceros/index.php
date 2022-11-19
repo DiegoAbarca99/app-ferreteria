@@ -22,29 +22,39 @@
     <?php if (empty($aceros)) { ?>
         <p class="text-center">No Hay Ningún Producto Que Pueda Gestionar Aún</p>
     <?php } else { ?>
+        <!--Variables de inicio que permiten diferenciar un cambio de categoria o descripción lo que supone la creación de una Tabla-->
         <?php $categoriaId = 0 ?>
         <?php $descripcionId = 0 ?>
         <?php foreach ($categorias as $categoria) { ?>
             <?php if (isset($aceros[$categoria->id])) { ?>
                 <?php $contador = 0; ?>
+                <!--Contador se emple como auxiliar para saber cuando el arreglo de aceros formateados está en su ultimo elemento por categoria cafificada-->
                 <?php foreach ($aceros[$categoria->id] as $acero) { ?>
-                    <?php if ($categoriaId != $acero->categoriaacero_id) { ?>
+                    <?php if ($categoriaId != $acero->categoriaacero_id || $descripcionId != $acero->descripcionacero_id) { ?>
                         <table class="table contenedor-sombra">
 
-                            <caption class="table__caption table__caption--resaltar"><span> Categoria <i class="fa-solid fa-arrow-right"></i> </span><?php echo $acero->categoria->categoria; ?></caption>
-                            <caption class="table__caption"><span> Descripción <i class="fa-solid fa-arrow-right"></i> </span><?php echo $acero->descripcion->descripcion; ?></caption>
+                            <?php if ($categoriaId == $acero->categoriaacero_id) { ?>
 
-                            <thead class="table__head">
+                                <caption class="table__caption"><span> Descripción <i class="fa-solid fa-arrow-right"></i> </span><?php echo $acero->descripcion->descripcion; ?></caption>
 
-                                <tr>
-                                    <th class="table__th ">Nombre</th>
-                                    <th class="table__th">Prolamsa</th>
-                                    <th class="table__th ">SLP</th>
-                                    <th class="table__th">ArcoMetal</th>
-                                    <th class="table__th"></th>
-                                </tr>
-                            </thead>
-                        <?php } ?>
+                            <?php } else { //Escenario por diferencia de categorias
+                            ?>
+                                <caption class="table__caption table__caption--resaltar"><span> Categoria <i class="fa-solid fa-arrow-right"></i> </span><?php echo $acero->categoria->categoria; ?></caption>
+                                <caption class="table__caption"><span> Descripción <i class="fa-solid fa-arrow-right"></i> </span><?php echo $acero->descripcion->descripcion; ?></caption>
+
+                                <thead class="table__head">
+
+                                    <tr>
+                                        <th class="table__th ">Nombre</th>
+                                        <th class="table__th">Prolamsa</th>
+                                        <th class="table__th ">SLP</th>
+                                        <th class="table__th">ArcoMetal</th>
+                                        <th class="table__th"></th>
+                                    </tr>
+                                </thead>
+                            <?php } ?>
+                        <?php } //Reasignación de valores para comparar el valor actual con el previo, y así continuar apilando registros o crear una nueva tabla
+                        ?>
                         <?php $categoriaId = $acero->categoriaacero_id; ?>
                         <?php $descripcionId = $acero->descripcionacero_id; ?>
                         <tbody class="table__body">
@@ -56,9 +66,9 @@
                                 <td class="table__td table__td--arcoMetal"> <?php echo $acero->arcoMetal ?></td>
 
                                 <td class="table__td--acciones">
-                                    <a class="table__accion table__accion--editar" href="/admin/acero/actualizar?id=<?php echo $acero->id ?>">
-                                        <i class="fa-solid fa-eye"></i>
-                                        Ver
+                                    <a class="table__accion table__accion--editar editar-acero" href="/admin/acero/actualizar?id=<?php echo $acero->id ?>">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        Editar
                                     </a>
 
                                     <form action="/admin/acero/eliminar" method="POST" class="table__formulario">
@@ -71,6 +81,7 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <!--Cierre de la tabla actual-->
                         <?php if (!isset($aceros[$categoria->id][$contador + 1])) { ?>
                         </table>
                     <?php } ?>

@@ -72,6 +72,8 @@ import Swal from 'sweetalert2';
             }
         }
 
+
+
         //Modificar los precios SLP, prolamsa y arcaMetal al dar click a la celda
 
         let registroActualizar;
@@ -327,6 +329,8 @@ import Swal from 'sweetalert2';
 
             window.location=`?categoria=${categoria}`;
         });
+
+
 
     }
 })();

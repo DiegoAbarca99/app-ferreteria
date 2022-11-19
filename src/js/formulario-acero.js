@@ -262,7 +262,7 @@ import Swal from 'sweetalert2';
 
             } catch (error) {
                 console.error(error);
-                Swal.fire('Error', 'Ha ocurrido un error!', 'error');
+                Swal.fire('Error', 'Hay Registros Asociados a Está Categoria', 'error');
             }
 
 
@@ -301,7 +301,7 @@ import Swal from 'sweetalert2';
 
             } catch (error) {
                 console.error(error);
-                Swal.fire('Error', 'Ha ocurrido un error!', 'error');
+                Swal.fire('Error', 'Hay Registros Asociados a Está Descripción', 'error');
             }
 
 
