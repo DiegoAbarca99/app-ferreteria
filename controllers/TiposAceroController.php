@@ -29,7 +29,26 @@ class TiposAceroController
 
         $aceros = TiposAceros::belongsToAndOrden('categoriaacero_id', $categoriaFiltrada, 'descripcionacero_id', 'ASC');
         $categorias = CategoriaAcero::ordenar('id', 'ASC');
+        $acerosAll=TiposAceros::all();
 
+
+//Se eliminan aquellas categorias de acero que no están asociadas a ningún tipo de Acero
+        $categoriasMostrar=[];
+        foreach($acerosAll as $acero){
+            $categoriasMostrar[]=$acero->categoriaacero_id;
+        }
+
+
+        foreach($categorias as $key => $categoria){
+            if( !in_array($categoria->id,$categoriasMostrar)){
+                unset($categorias[$key]);
+            }
+            
+        }
+
+           
+        
+//Se agrupan los tipos de acero por categoria de acero en un arreglo asociativo.
         $acerosFormateados = [];
         foreach ($aceros as $acero) {
             $acero->categoria = CategoriaAcero::find($acero->categoriaacero_id);
@@ -37,7 +56,6 @@ class TiposAceroController
 
             $acerosFormateados[$acero->categoriaacero_id][] = $acero;
         }
-
 
 
 
@@ -111,6 +129,7 @@ class TiposAceroController
         }
 
         $acero = TiposAceros::find($id);
+        $nombreActual = $acero->nombre;
 
         if (!$acero) {
             header('Location:/admin/acero');
@@ -119,7 +138,7 @@ class TiposAceroController
         $categorias = CategoriaAcero::all();
         $descripciones = DescripcionAcero::all();
         $alertas = [];
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $acero->sincronizar($_POST);
@@ -129,7 +148,7 @@ class TiposAceroController
 
                 $nombre = TiposAceros::where('nombre', $acero->nombre);
 
-                if ($nombre) {
+                if ($nombre && $nombre->nombre != $nombreActual) {
                     TiposAceros::setAlerta('error', 'Ya Hay Un Producto Con Ese Nombre');
                 } else {
                     $resultado = $acero->guardar();

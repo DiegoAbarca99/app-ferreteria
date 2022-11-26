@@ -18,11 +18,16 @@
         }
     }
 
+    &__descripcion{
+        font-size: 1.8rem;
+        
+    }
+
     &__enlace{
         display: block;
         color:v.$azul;
         margin-top: .2rem;
-        font-size: 1.5rem;
+        font-size: 1.7rem;
         margin-bottom: 1rem;
         @include m.telefono {
             display: inline-block;
@@ -43,6 +48,25 @@
         }
     }
 
+    &__contenedor{
+        margin-bottom: 2rem;
+        &--radios{
+            display: flex;
+            justify-content: start;
+            gap: 1rem;
+            #{$modificador}__label{
+                font-size: 1.5rem;
+            }
+        }
+       
+        #{$modificador}__descripcion{
+            font-size: 2rem;
+            margin: 1rem 0;
+            display: block
+        }
+
+    }
+
     &__contenedor-campos{
         @include m.desktop {
             @include m.grid(3,2rem);
@@ -55,7 +79,8 @@
 
     &__campo{
         margin-bottom: 2rem;
-        
+
+    
         #{$modificador}__label{
             display: block;
             margin-bottom: 1rem;

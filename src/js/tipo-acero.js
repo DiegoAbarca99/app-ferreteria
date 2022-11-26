@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
 
             //Modal Interrogativo
             Swal.fire({
-                title: '¿Eliminar Perfil?',
+                title: '¿Eliminar Registro Seleccionado?',
                 showCancelButton: true,
                 confirmButtonText: 'Si',
                 cancelButtonText: 'No',
@@ -57,12 +57,11 @@ import Swal from 'sweetalert2';
 
                 if (resultado.resultado) {
                     //Modal Confirmativo
-                    Swal.fire('Eliminado!', resultado.mensaje, 'success');
+                    Swal.fire('Eliminado!', resultado.mensaje, 'success').then(() => {
+                        window.location.reload();
+                    });
 
-                    //Se redirreciona
-                    setTimeout(() => {
-                        window.location.replace("http://localhost:3000/admin/acero");
-                    }, 1000);
+
 
                 }
 
@@ -322,12 +321,12 @@ import Swal from 'sweetalert2';
 
 
         // Filtra el contenido por categoria seleccionada en el select
-        const filtro=document.querySelector('#select-acero');
-        
-        filtro.addEventListener('input',function (e) {
-            const categoria=e.target.value;
+        const filtro = document.querySelector('#select-acero');
 
-            window.location=`?categoria=${categoria}`;
+        filtro.addEventListener('input', function (e) {
+            const categoria = e.target.value;
+
+            window.location = `?categoria=${categoria}`;
         });
 
 

@@ -12,7 +12,7 @@
             <legend class="formulario__legend">Nombre de la Categoría</legend>
             <div class="formulario__campo">
                 <label for="nombre" class="formulario__label">Nombre</label>
-                <input type="text" id="nombre" name="nombre" class="formulario__input" placeholder="Ej. Metales" value="<?php echo s($categoria->nombre); ?>">
+                <input type="text" id="nombre" name="nombre" class="formulario__input" placeholder="Ej. TUBULAR, PTR" value="<?php echo s($categoria->nombre); ?>">
             </div>
         </fieldset>
 

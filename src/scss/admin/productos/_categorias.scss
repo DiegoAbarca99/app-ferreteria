@@ -1,130 +1,77 @@
 @use '../../base/mixins' as m;
 @use '../../base/variables' as v;
 
+
 .categorias {
-
-    margin-top: 4rem;
-    @include m.grid(1, 3rem);
-
-    @include m.tablet {
-        @include m.grid(2, 6rem);
-    }
-
-    @include m.desktop {
-        @include m.grid(3, 7rem);
-    }
-
     &__grid {
+        margin-top: 6rem;
+
         @include m.desktop {
-            @include m.grid(2, 1rem);
-        }
-    }
-
-    &__flex-derecha{
-        display: flex;
-        justify-content: right;
-    }
-
-    &__boton {
-        background-color: transparent;
-        color: v.$blanco;
-        font-weight: bold;
-        font-size: 2rem;
-        border: none;
-
-        &:hover {
-            cursor: pointer;
-            border-radius: .5rem;
-            background-color: lighten($color: v.$azul, $amount: 15%);
-        }
-    }
-
-    &__bloque {
-        @include m.bg-gradient(#17769E);
-
-        @include m.tablet {
-            width: 100%;
+            @include m.grid(2, 2rem);
         }
 
-        width: 70%;
-        margin: 0 auto;
-        border-radius: 1rem;
-        transition: transform 500ms ease-in-out;
-
-        &:hover,
-        &--seleccionado {
-            transform: scale(1.3);
-        }
+        @include m.grid(1, 2rem);
     }
-
-    &__heading {
-        text-align: center;
-        font-size: 2.5rem;
-        color: v.$blanco;
-        font-weight: bold;
-
-        &:hover {
-            cursor: pointer;
-        }
-    }
-
 
 }
 
-
-
 .categoria {
 
-    margin-top: 4rem;
-    padding: 1rem;
-
     &__heading {
-        font-size: 3rem;
-        text-align: center;
-
-        &--bloque {
+        &--ganancias {
             margin: 0;
-            font-size: 1.6rem;
+            color: v.$verde;
+        }
 
+        &--impuestos {
+            margin: 0;
+            color: v.$rojo;
         }
     }
 
     &__grid {
-        padding: 3rem 5rem 5rem 5rem;
+        padding: 0rem;
         border-radius: 1rem;
-        @include m.shadow;
 
         @include m.telefono {
-            @include m.grid(2, 3rem);
+            @include m.grid(2, 0rem);
         }
 
-        @include m.grid(1, 1rem);
+        @include m.grid(1, 0rem);
 
-        &--impuestos {
-            padding: 3rem 5rem 5rem 5rem;
-            border-radius: 1rem;
-            @include m.shadow;
-
-            @include m.telefono {
-                @include m.grid(2, 3rem);
-            }
-
-
-
-
-        }
 
     }
 
     &__bloque {
         text-align: center;
+        margin: 0;
+
+        &:hover {
+
+            .categoria__logo,
+            .categoria__cantidad,
+            .categoria__heading--ganancias,
+            .categoria__heading--impuestos {
+                color: v.$blanco;
+            }
+
+        }
 
         &--ganancias {
-            border-bottom: v.$verde .5rem solid;
+
+            border: v.$verde .1rem solid;
+
+            &:hover {
+                background-color: lighten(v.$verde, 5%);
+            }
         }
 
         &--impuestos {
-            border-bottom: v.$rojo .5rem solid;
+            border: v.$rojo .1rem solid;
+
+            &:hover {
+                background-color: lighten(v.$rojo, 5%);
+            }
         }
     }
 
@@ -148,6 +95,7 @@
         font-size: 2rem;
         color: v.$verde;
         margin: 0;
+
 
         &--impuestos {
             @extend .categoria__cantidad;

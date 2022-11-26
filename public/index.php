@@ -5,10 +5,12 @@ use MVC\Router;
 use Controllers\AuthController;
 use Controllers\AdminController;
 use Controllers\ApiCategoriasProducto;
+use Controllers\ApiProductosComerciales;
 use Controllers\ApiTiposAcero;
 use Controllers\CategoriasProductoController;
 use Controllers\OficinaController;
 use Controllers\PerfilesController;
+use Controllers\ProductosComercialesController;
 use Controllers\ProveedorController;
 use Controllers\TiposAceroController;
 
@@ -41,6 +43,22 @@ $router->get('/admin/acero/actualizar',[TiposAceroController::class,'actualizar'
 $router->post('/admin/acero/actualizar',[TiposAceroController::class,'actualizar']);
 $router->post('/admin/acero/eliminar',[TiposAceroController::class,'eliminar']);
 
+//Gestión Productos Comerciales o producción (Admin)
+$router->get('/admin/producto-comercial',[ProductosComercialesController::class,'index']);
+$router->get('/admin/producto-comercial/crear',[ProductosComercialesController::class,'crear']);
+$router->get('/admin/producto-comercial/ver',[ProductosComercialesController::class,'ver']);
+$router->get('/admin/producto-comercial/actualizar',[ProductosComercialesController::class,'actualizar']);
+$router->get('/admin/producto-comercial/precios-kilos',[ProductosComercialesController::class,'preciosKilos']);
+$router->get('/admin/producto-comercial/precios-kilos/crear',[ProductosComercialesController::class,'preciosKilosCrear']);
+$router->post('/admin/producto-comercial/precios-kilos/crear',[ProductosComercialesController::class,'preciosKilosCrear']);
+$router->get('/admin/producto-comercial/precios-kilos/actualizar',[ProductosComercialesController::class,'preciosKilosActualizar']);
+$router->post('/admin/producto-comercial/precios-kilos/actualizar',[ProductosComercialesController::class,'preciosKilosActualizar']);
+
+$router->post('/api/producto-comercial/precios-kilos/eliminar',[ApiProductosComerciales::class,'preciosKilosEliminar']);
+$router->post('/api/producto-comercial/crear',[ApiProductosComerciales::class,'crear']);
+$router->post('/api/producto-comercial/actualizar',[ApiProductosComerciales::class,'actualizar']);
+$router->post('/api/producto-comercial/eliminar',[ApiProductosComerciales::class,'eliminar']);
+
 
 //Dashboard(Oficina)
 $router->get('/oficina/index',[OficinaController::class,'index']);
@@ -55,13 +73,16 @@ $router->post('/perfiles/editar',[PerfilesController::class,'editar']);
 $router->post('/perfiles/eliminar',[PerfilesController::class,'eliminar']);
 
 //--------------Apis----------------------------------------
-//(Actualizar impuestos y ganancias de las categorias de producto)
+//(Actualizar impuestos, ganancias y nombre de las categorias de producto)
 $router->get('/api/categorias',[ApiCategoriasProducto::class,'index']);
+$router->get('/api/categorias/filtrar',[ApiCategoriasProducto::class,'filtrar']);
 $router->post('/api/categorias/eliminar',[ApiCategoriasProducto::class,'eliminar']);
 $router->post('/api/categorias/actualizar/ganancias',[ApiCategoriasProducto::class,'ganancias']);
 $router->post('/api/categorias/actualizar/impuestos',[ApiCategoriasProducto::class,'impuestos']);
+$router->post('/api/categorias/actualizar/nombre',[ApiCategoriasProducto::class,'nombre']);
 
 //(Agregar, eliminar descripciones y categorias de tipos de acero)
+$router->get('/api/tipos-acero',[ApiTiposAcero::class,'index']);
 $router->post('/api/tipos-acero/agregar/categoria',[ApiTiposAcero::class,'crearCategoria']);
 $router->post('/api/tipos-acero/eliminar/categoria',[ApiTiposAcero::class,'eliminarCategoria']);
 $router->post('/api/tipos-acero/agregar/descripcion',[ApiTiposAcero::class,'crearDescripcion']);

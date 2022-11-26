@@ -66,7 +66,7 @@ import Swal from 'sweetalert2';
                 id = id.value;
 
                 Swal.fire({
-                    title: '¿Eliminar Perfil?',
+                    title: '¿Eliminar Perfil Seleccionado?',
                     showCancelButton: true,
                     confirmButtonText: 'Si',
                     cancelButtonText: 'No',
@@ -89,7 +89,7 @@ import Swal from 'sweetalert2';
                 id = id.value;
 
                 Swal.fire({
-                    title: '¿Eliminar Perfil?',
+                    title: '¿Eliminar Perfil Seleccionado?',
                     showCancelButton: true,
                     confirmButtonText: 'Si',
                     cancelButtonText: 'No',
@@ -123,11 +123,9 @@ import Swal from 'sweetalert2';
 
 
                 if (resultado.resultado) {
-                    Swal.fire('Eliminado!', resultado.mensaje, 'success');
-
-                    setTimeout(() => {
-                        window.location.replace("http://localhost:3000/perfiles/index");
-                    }, 1000);
+                    Swal.fire(resultado.mensaje, 'Eliminado', 'success').then(() => {
+                        window.location.reload();
+                    });
 
                 }
 

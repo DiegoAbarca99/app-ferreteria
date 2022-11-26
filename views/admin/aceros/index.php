@@ -31,7 +31,7 @@
                 <!--Contador se emple como auxiliar para saber cuando el arreglo de aceros formateados está en su ultimo elemento por categoria cafificada-->
                 <?php foreach ($aceros[$categoria->id] as $acero) { ?>
                     <?php if ($categoriaId != $acero->categoriaacero_id || $descripcionId != $acero->descripcionacero_id) { ?>
-                        <table class="table contenedor-sombra">
+                        <table class="table contenedor-sombra mt-4">
 
                             <?php if ($categoriaId == $acero->categoriaacero_id) { ?>
 

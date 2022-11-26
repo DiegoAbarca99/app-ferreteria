@@ -7,7 +7,7 @@
         </a>
     </div>
 
-    <div class="contenedor-sombra">
+    <div class="contenedor-sombra mt-4">
         <?php if (empty($usuarios)) { ?>
             <p class="text-center">No Hay Usuarios Que Pueda Gestionar Aún</p>
         <?php } else { ?>

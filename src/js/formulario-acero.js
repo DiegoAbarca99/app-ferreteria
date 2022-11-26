@@ -158,7 +158,11 @@ import Swal from 'sweetalert2';
                         window.location.reload();
                     });
 
+                } else if (resultado.tipo === 'error') {
+                    Swal.fire(resultado.mensaje, 'Ha ocurrido un error', 'error');
                 }
+
+
 
 
             } catch (error) {
@@ -189,6 +193,8 @@ import Swal from 'sweetalert2';
                         window.location.reload();
                     });
 
+                } else if (resultado.tipo === 'error') {
+                    Swal.fire(resultado.mensaje, 'Ha ocurrido un error', 'error');
                 }
 
 
@@ -235,7 +241,7 @@ import Swal from 'sweetalert2';
             const id = inputCategoria.value;
 
             if (!id) {
-                Swal.fire('Error', 'No Hay Ninguna Categoria Seleccionada', 'error');
+                Swal.fire( 'No Hay Ninguna Categoria Seleccionada','Ha Ocurrido Un Error', 'error');
                 return;
             }
 
@@ -262,7 +268,7 @@ import Swal from 'sweetalert2';
 
             } catch (error) {
                 console.error(error);
-                Swal.fire('Error', 'Hay Registros Asociados a Está Categoria', 'error');
+                Swal.fire('Hay Registros Asociados a Está Categoria','Ha Ocurrido Un Error','error');
             }
 
 
@@ -274,7 +280,7 @@ import Swal from 'sweetalert2';
             const id = inputDescripcion.value;
 
             if (!id) {
-                Swal.fire('Error', 'No Hay Ninguna Descripcion Seleccionada', 'error');
+                Swal.fire('No Hay Ninguna Descripcion Seleccionada','Ha Ocurrido Un Error', 'error');
                 return;
             }
 
@@ -301,7 +307,7 @@ import Swal from 'sweetalert2';
 
             } catch (error) {
                 console.error(error);
-                Swal.fire('Error', 'Hay Registros Asociados a Está Descripción', 'error');
+                Swal.fire('Hay Registros Asociados a Está Descripción','Ha Ocurrido Un Error', 'error');
             }
 
 

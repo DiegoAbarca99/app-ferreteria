@@ -15,9 +15,12 @@ class CategoriasProductoController
         isAuth();
         isAdmin();
 
+        $categoriasProducto=CategoriaProducto::all();
+
 
         $router->render('admin/categorias/index', [
             'titulo' => 'Categorias Productos',
+            'categorias'=>$categoriasProducto
         ]);
     }
 

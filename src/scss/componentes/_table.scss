@@ -20,6 +20,12 @@
         text-align: start;
         padding: 1rem;
 
+        &--categoria{
+            border-radius: .5rem;
+            padding:1rem .5rem .5rem .5rem;
+        }
+
+
         &--resaltar {
             background-color: v.$gris;
         }
@@ -45,6 +51,8 @@
     }
 
     &__tr {
+    
+
         &:nth-child(even) {
             background-color: v.$grisClaro;
         }

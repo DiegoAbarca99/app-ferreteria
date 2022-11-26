@@ -14,6 +14,9 @@ class ApiTiposAcero
         session_start();
         isAuth();
         isAdmin();
+
+        $aceros=TiposAceros::all();
+        echo json_encode($aceros);
     }
 
     public static function crearCategoria(Router $router)
@@ -31,14 +34,25 @@ class ApiTiposAcero
             }
 
             $categoria = new CategoriaAcero($_POST);
-            $resultado = $categoria->guardar();
+            $categoriaExistente = CategoriaAcero::where('categoria',$categoria->categoria);
+           
+
+            if ($categoriaExistente) {
+                echo json_encode(([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ya Hay Una Categoria Con Ese Nombre'
+                ]));
+            } else {
+
+                $resultado = $categoria->guardar();
 
 
-            if ($resultado) {
-                echo json_encode([
-                    'tipo' => 'exito',
-                    'mensaje' => 'Se Ha Agregado Correctamente la Categoria'
-                ]);
+                if ($resultado) {
+                    echo json_encode([
+                        'tipo' => 'exito',
+                        'mensaje' => 'Se Ha Agregado Correctamente la Categoria'
+                    ]);
+                }
             }
         }
     }
@@ -58,13 +72,23 @@ class ApiTiposAcero
             }
 
             $descripcion = new DescripcionAcero($_POST);
-            $resultado = $descripcion->guardar();
-
-            if ($resultado) {
+            $descripcionExistente = DescripcionAcero::where('descripcion',$descripcion->descripcion);
+            
+            if ($descripcionExistente) {
                 echo json_encode([
-                    'tipo' => 'exito',
-                    'mensaje' => 'Se Ha Agregado Correctamente la Descripción'
+                    'tipo' => 'error',
+                    'mensaje' => 'Ya Hay Una Descripción Con Ese Nombre'
                 ]);
+            } else {
+
+                $resultado = $descripcion->guardar();
+
+                if ($resultado) {
+                    echo json_encode([
+                        'tipo' => 'exito',
+                        'mensaje' => 'Se Ha Agregado Correctamente la Descripción'
+                    ]);
+                }
             }
         }
     }
@@ -172,8 +196,6 @@ class ApiTiposAcero
                         'tipo' => 'exito',
                         'mensaje' => 'Se Ha Actualizado Correctamente el Registro'
                     ]);
-
-
                 } else if (isset($_POST['prolamsa']) || isset($_POST['arcoMetal'])) {
 
 
@@ -196,12 +218,9 @@ class ApiTiposAcero
                     } else {
                         echo json_encode([]);
                     }
-
-
                 } else {
 
                     echo json_encode([]);
-
                 }
             } else {
                 echo json_encode([]);

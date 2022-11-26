@@ -1,89 +1,57 @@
 
 import Swal from 'sweetalert2';
 (function () {
-    const contenedorCategorias = document.querySelector('#categorias');
-    if (contenedorCategorias) {
-
-        let categorias = [];
+    const selectCategorias = document.querySelector('#select-categoria');
+    if (selectCategorias) {
 
 
-        obtenerCategorias();
+        let categoriaFiltrada = {};
+        let value = '';
+        let nombre = '';
 
+        selectCategorias.addEventListener('input', function (e) {
+            value = e.target.value;
+            nombre = document.querySelector(`option[value='${value}']`).textContent;
 
-        async function obtenerCategorias() {
-            const url = '/api/categorias';
+            filtarCategorias(value);
 
+        });
 
-            try {
-                const respuesta = await fetch(url);
-                const resultado = await respuesta.json();
+        const enlaceEliminar = document.querySelector('#categoria-eliminar');
 
+        enlaceEliminar.addEventListener('click', confirmarEliminarCategoria);
 
-                categorias = resultado;
+        const enlaceEditar = document.querySelector('#categoria-editar');
 
-                mostrarCategorias();
+        enlaceEditar.addEventListener('click', function () {
+            if (value == '') {
+                Swal.fire('No Hay Ninguna Categoria Seleccionada', 'Ha Ocurrido Un Error', 'error').then(() => {
+                    window.location.reload();
+                });
 
-            } catch (error) {
-                console.log(error);
+            } else {
+                mostrarFormularioNombre();
             }
 
 
+        });
+
+
+
+        async function filtarCategorias(valor) {
+            const url = `/api/categorias/filtrar?id=${valor}`;
+
+            const respuesta = await fetch(url);
+            const resultado = await respuesta.json();
+            categoriaFiltrada = resultado[0];
+            mostrarCategoria();
 
         }
 
 
 
-        function mostrarCategorias() {
 
-            const contenedorGanancias = document.querySelector('#ganancias');
-            const contenedorImpuestos = document.querySelector('#impuestos');
-
-            limpiarHtml(contenedorGanancias);
-            limpiarHtml(contenedorImpuestos);
-
-            limpiarHtml(contenedorCategorias);
-
-            categorias.forEach(categoria => {
-
-                const { id, nombre } = categoria;
-
-
-
-                const bloqueCategoria = document.createElement('DIV');
-                bloqueCategoria.classList.add('categorias__bloque');
-                bloqueCategoria.dataset.id = id;
-
-                const heading = document.createElement('H3');
-                heading.classList.add('categorias__heading');
-                heading.textContent = nombre;
-
-                heading.onclick = function () {
-                    seleccionarCategoria(categoria);
-                }
-
-                const contenedorBoton=document.createElement('DIV');
-                contenedorBoton.classList.add('categorias__flex-derecha');
-
-                const botonEliminar = document.createElement('BUTTON');
-                botonEliminar.classList.add('categorias__boton');
-                botonEliminar.textContent = 'X';
-                botonEliminar.onclick = function () {
-                    confirmarEliminarCategoria(categoria);
-                }
-
-                contenedorBoton.appendChild(botonEliminar);
-                bloqueCategoria.appendChild(contenedorBoton);
-                bloqueCategoria.appendChild(heading);
-                contenedorCategorias.appendChild(bloqueCategoria);
-            });
-
-
-
-
-
-        }
-
-        function seleccionarCategoria(categoria, actualizar = false) {
+        function mostrarCategoria() {
 
             const contenedorGanancias = document.querySelector('#ganancias');
             const contenedorImpuestos = document.querySelector('#impuestos');
@@ -93,38 +61,20 @@ import Swal from 'sweetalert2';
 
 
 
-            const categoriaPrevia = document.querySelector('.categorias__bloque--seleccionado');
-            const categoriaSeleccionada = document.querySelector(`[data-id='${categoria.id}']`);
-
-            if (actualizar) {
-                categoriaSeleccionada.classList.add('categorias__bloque--seleccionado');
-
-            } else if (categoriaPrevia && categoriaSeleccionada.classList.contains('categorias__bloque--seleccionado')) {
-                categoriaPrevia.classList.remove('categorias__bloque--seleccionado');
-                return;
-            } else if (categoriaPrevia) {
-                categoriaPrevia.classList.remove('categorias__bloque--seleccionado');
-            }
-
-            categoriaSeleccionada.classList.add('categorias__bloque--seleccionado');
+            const { impuestos, ganancias } = categoriaFiltrada;
 
 
-
-
-            const { impuestos, ganancias } = categoria;
-
-
-            const headingGanancias = document.createElement('H2');
-            headingGanancias.textContent = 'Ganancias';
-            headingGanancias.classList.add('categoria__heading');
+            const headingGanancias = document.createElement('CAPTION');
+            headingGanancias.innerHTML = '<span>Ganancias</span>';
+            headingGanancias.classList.add('table__caption', 'table__caption--categoria');
 
             contenedorGanancias.appendChild(headingGanancias);
 
             mostrarGanancias(ganancias);
 
-            const headingImpuestos = document.createElement('H2');
-            headingImpuestos.textContent = 'Impuestos';
-            headingImpuestos.classList.add('categoria__heading');
+            const headingImpuestos = document.createElement('CAPTION');
+            headingImpuestos.innerHTML = '<span>Impuestos</span>';
+            headingImpuestos.classList.add('table__caption', 'table__caption--categoria');
 
             contenedorImpuestos.appendChild(headingImpuestos);
 
@@ -137,20 +87,20 @@ import Swal from 'sweetalert2';
 
         function mostrarGanancias(ganancias) {
 
-            const contenedor = document.createElement('DIV');
-            contenedor.classList.add('categoria__grid');
+            const contenedor = document.createElement('TR');
+            contenedor.classList.add('categoria__grid', 'contenedor-sombra');
 
 
 
 
 
             //----------Publico 1--------------------------------------------
-            const contenedorPublico1 = document.createElement('DIV');
+            const contenedorPublico1 = document.createElement('TD');
             contenedorPublico1.classList.add('categoria__bloque--ganancias', 'categoria__bloque');
 
             const headingPublico1 = document.createElement('H4');
             headingPublico1.textContent = 'Publico 1';
-            headingPublico1.classList.add('categoria__heading--bloque');
+            headingPublico1.classList.add('categoria__heading--ganancias');
 
             const cantidadPublico1 = document.createElement('P');
             cantidadPublico1.textContent = `% ${ganancias.gananciapublico1}`;
@@ -168,12 +118,12 @@ import Swal from 'sweetalert2';
             contenedorPublico1.appendChild(cantidadPublico1);
 
             //----------Herrero 2--------------------------------------------
-            const contenedorHerrero2 = document.createElement('DIV');
+            const contenedorHerrero2 = document.createElement('TD');
             contenedorHerrero2.classList.add('categoria__bloque--ganancias', 'categoria__bloque');
 
             const headingHerrero2 = document.createElement('H4');
             headingHerrero2.textContent = 'Herrero 2';
-            headingHerrero2.classList.add('categoria__heading--bloque');
+            headingHerrero2.classList.add('categoria__heading--ganancias');
 
             const cantidadHerrero2 = document.createElement('P');
             cantidadHerrero2.textContent = `% ${ganancias.gananciaherrero2}`;
@@ -191,12 +141,12 @@ import Swal from 'sweetalert2';
             contenedorHerrero2.appendChild(cantidadHerrero2);
 
             //----------Herrero 3--------------------------------------------
-            const contenedorHerrero3 = document.createElement('DIV');
+            const contenedorHerrero3 = document.createElement('TD');
             contenedorHerrero3.classList.add('categoria__bloque--ganancias', 'categoria__bloque');
 
             const headingHerrero3 = document.createElement('H4');
             headingHerrero3.textContent = 'Herrero 3';
-            headingHerrero3.classList.add('categoria__heading--bloque');
+            headingHerrero3.classList.add('categoria__heading--ganancias');
 
             const cantidadHerrero3 = document.createElement('P');
             cantidadHerrero3.textContent = `% ${ganancias.gananciaherrero3}`;
@@ -214,12 +164,12 @@ import Swal from 'sweetalert2';
             contenedorHerrero3.appendChild(cantidadHerrero3);
 
             //----------Herrero 4--------------------------------------------
-            const contenedorHerrero4 = document.createElement('DIV');
+            const contenedorHerrero4 = document.createElement('TD');
             contenedorHerrero4.classList.add('categoria__bloque--ganancias', 'categoria__bloque');
 
             const headingHerrero4 = document.createElement('H4');
             headingHerrero4.textContent = 'Herrero 4';
-            headingHerrero4.classList.add('categoria__heading--bloque');
+            headingHerrero4.classList.add('categoria__heading--ganancias');
 
             const cantidadHerrero4 = document.createElement('P');
             cantidadHerrero4.textContent = `% ${ganancias.gananciaherrero4}`;
@@ -237,12 +187,12 @@ import Swal from 'sweetalert2';
             contenedorHerrero4.appendChild(cantidadHerrero4);
 
             //----------Mayoreo 1--------------------------------------------
-            const contenedorMayoreo1 = document.createElement('DIV');
+            const contenedorMayoreo1 = document.createElement('TD');
             contenedorMayoreo1.classList.add('categoria__bloque--ganancias', 'categoria__bloque');
 
             const headingMayoreo1 = document.createElement('H4');
             headingMayoreo1.textContent = 'Mayoreo 1';
-            headingMayoreo1.classList.add('categoria__heading--bloque');
+            headingMayoreo1.classList.add('categoria__heading--ganancias');
 
             const cantidadMayoreo1 = document.createElement('P');
             cantidadMayoreo1.textContent = `% ${ganancias.gananciamayoreo1}`;
@@ -260,12 +210,12 @@ import Swal from 'sweetalert2';
             contenedorMayoreo1.appendChild(cantidadMayoreo1);
 
             //----------Mayoreo 2--------------------------------------------
-            const contenedorMayoreo2 = document.createElement('DIV');
+            const contenedorMayoreo2 = document.createElement('TD');
             contenedorMayoreo2.classList.add('categoria__bloque--ganancias', 'categoria__bloque');
 
             const headingMayoreo2 = document.createElement('H4');
             headingMayoreo2.textContent = 'Mayoreo 2';
-            headingMayoreo2.classList.add('categoria__heading--bloque');
+            headingMayoreo2.classList.add('categoria__heading--ganancias');
 
             const cantidadMayoreo2 = document.createElement('P');
             cantidadMayoreo2.textContent = `% ${ganancias.gananciamayoreo2}`;
@@ -304,18 +254,18 @@ import Swal from 'sweetalert2';
 
 
         function mostrarImpuestos(impuestos) {
-            const contenedor = document.createElement('DIV');
-            contenedor.classList.add('categoria__grid--impuestos');
+            const contenedor = document.createElement('TR');
+            contenedor.classList.add('categoria__grid', 'contenedor-sombra');
 
 
 
             //----------IVA--------------------------------------------
-            const contenedorIva = document.createElement('DIV');
+            const contenedorIva = document.createElement('TD');
             contenedorIva.classList.add('categoria__bloque--impuestos', 'categoria__bloque');
 
             const headingIva = document.createElement('H4');
             headingIva.textContent = 'IVA';
-            headingIva.classList.add('categoria__heading--bloque');
+            headingIva.classList.add('categoria__heading--impuestos');
 
             const cantidadIva = document.createElement('P');
             cantidadIva.textContent = `${impuestos.iva}`;
@@ -333,12 +283,12 @@ import Swal from 'sweetalert2';
             contenedorIva.appendChild(cantidadIva);
 
             //----------Flete--------------------------------------------
-            const contenedorFlete = document.createElement('DIV');
+            const contenedorFlete = document.createElement('TD');
             contenedorFlete.classList.add('categoria__bloque--impuestos', 'categoria__bloque');
 
             const headingFlete = document.createElement('H4');
             headingFlete.textContent = 'Flete';
-            headingFlete.classList.add('categoria__heading--bloque');
+            headingFlete.classList.add('categoria__heading--impuestos');
 
             const cantidadFlete = document.createElement('P');
             cantidadFlete.textContent = `${impuestos.flete}`;
@@ -356,12 +306,12 @@ import Swal from 'sweetalert2';
             contenedorFlete.appendChild(cantidadFlete);
 
             //----------Descarga--------------------------------------------
-            const contenedorDescarga = document.createElement('DIV');
+            const contenedorDescarga = document.createElement('TD');
             contenedorDescarga.classList.add('categoria__bloque--impuestos', 'categoria__bloque');
 
             const headingDescarga = document.createElement('H4');
             headingDescarga.textContent = 'Descarga';
-            headingDescarga.classList.add('categoria__heading--bloque');
+            headingDescarga.classList.add('categoria__heading--impuestos');
 
             const cantidadDescarga = document.createElement('P');
             cantidadDescarga.textContent = `${impuestos.descarga}`;
@@ -379,12 +329,12 @@ import Swal from 'sweetalert2';
             contenedorDescarga.appendChild(cantidadDescarga);
 
             //----------Seguro--------------------------------------------
-            const contenedorSeguro = document.createElement('DIV');
+            const contenedorSeguro = document.createElement('TD');
             contenedorSeguro.classList.add('categoria__bloque--impuestos', 'categoria__bloque');
 
             const headingSeguro = document.createElement('H4');
             headingSeguro.textContent = 'Seguro';
-            headingSeguro.classList.add('categoria__heading--bloque');
+            headingSeguro.classList.add('categoria__heading--impuestos');
 
             const cantidadSeguro = document.createElement('P');
             cantidadSeguro.textContent = `${impuestos.seguro}`;
@@ -648,24 +598,17 @@ import Swal from 'sweetalert2';
                     }
 
 
-
-                    categorias = categorias.map(categoria => {
-                        if (categoria.porcentajeGanancias_id == id) {
-                            categoria.ganancias.gananciapublico1 = gananciapublico1;
-                            categoria.ganancias.gananciaherrero2 = gananciaherrero2;
-                            categoria.ganancias.gananciaherrero3 = gananciaherrero3;
-                            categoria.ganancias.gananciaherrero4 = gananciaherrero4;
-                            categoria.ganancias.gananciamayoreo1 = gananciamayoreo1;
-                            categoria.ganancias.gananciamayoreo2 = gananciamayoreo2;
-                        }
-                        return categoria;
-
-                    });
+                    if (categoriaFiltrada.porcentajeGanancias_id == id) {
+                        categoriaFiltrada.ganancias.gananciapublico1 = gananciapublico1;
+                        categoriaFiltrada.ganancias.gananciaherrero2 = gananciaherrero2;
+                        categoriaFiltrada.ganancias.gananciaherrero3 = gananciaherrero3;
+                        categoriaFiltrada.ganancias.gananciaherrero4 = gananciaherrero4;
+                        categoriaFiltrada.ganancias.gananciamayoreo1 = gananciamayoreo1;
+                        categoriaFiltrada.ganancias.gananciamayoreo2 = gananciamayoreo2;
+                    }
 
 
-                    const categoriaSeleccionada = categorias.filter(categoria => categoria.porcentajeGanancias_id == id);
-                    seleccionarCategoria(categoriaSeleccionada[0], true);
-
+                    mostrarCategoria();
 
 
 
@@ -721,21 +664,18 @@ import Swal from 'sweetalert2';
 
 
 
-                    categorias = categorias.map(categoria => {
-                        if (categoria.impuestos_id == id) {
-                            categoria.impuestos.iva = iva;
-                            categoria.impuestos.flete = flete;
-                            categoria.impuestos.descarga = descarga;
-                            categoria.impuestos.seguro = seguro;
-                            
-                        }
-                        return categoria;
+                    if (categoriaFiltrada.impuestos_id == id) {
+                        categoriaFiltrada.impuestos.iva = iva;
+                        categoriaFiltrada.impuestos.flete = flete;
+                        categoriaFiltrada.impuestos.descarga = descarga;
+                        categoriaFiltrada.impuestos.seguro = seguro;
 
-                    });
+                    }
 
 
-                    const categoriaSeleccionada = categorias.filter(categoria => categoria.impuestos_id == id);
-                    seleccionarCategoria(categoriaSeleccionada[0], true);
+                    mostrarCategoria();
+
+
 
 
 
@@ -757,35 +697,157 @@ import Swal from 'sweetalert2';
             }
         }
 
+        function mostrarFormularioNombre() {
+            let formulario;
+
+            const body = document.querySelector('body');
+            body.classList.add('pausar');
+
+            const modal = document.createElement('DIV');
+            modal.classList.add('modal');
+
+            formulario =
+                `<form class="formulario">
+
+                    <legend> Editar Nombre </legend>
+
+                    <div class="formulario__campo"
+                        <label class="formulario__label" for="valor">Nombre</label>
+                        <input class="formulario__input" type="text" name="valor" id="valor" value="${nombre}">
+                     </div>
+
+                    <div class="opciones">
+                        <input type="submit" class="submit-nuevo-valor" value="Agregar">
+                        <button class="cerrar-modal" type="button">Cancelar </button>
+                    </div>
+
+                </form>`;
 
 
-        function confirmarEliminarCategoria(categoria) {
+            modal.innerHTML = formulario;
+
+
+            setTimeout(() => {
+                const formulario = document.querySelector('.formulario');
+                formulario.classList.add('animar');
+            }, 0);
+
+            modal.addEventListener('click', function (e) {
+                e.preventDefault();
+
+
+                //--------------Aplicando delegation para determinar cuando se dió click en cerrar
+                if (e.target.classList.contains('cerrar-modal')) {
+
+                    body.classList.remove('pausar');
+                    const formulario = document.querySelector('.formulario');
+                    formulario.classList.add('cerrar');
+
+
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 500);
+                }
+
+
+                //--------------Aplicando delegation para determinar cuando se dió click en el input de tipo submit
+                if (e.target.classList.contains('submit-nuevo-valor')) {
+
+                    body.classList.remove('pausar');
+
+                    const valor = document.querySelector('#valor').value.trim();
+
+                    if (valor === '') {
+                        //Mostrar alerta de error
+                        mostrarAlerta('El Valor es obligatorio', 'alerta--error',
+                            document.querySelector('.formulario legend'));
+                        return;
+                    } else {
+                        actualizarNombre(valor);
+
+                    }
+
+
+
+                }
+
+
+
+            });
+
+
+
+            document.querySelector('.dashboard').appendChild(modal);
+
+        }
+
+
+        async function actualizarNombre(valor) {
+
+            try {
+                const url = "/api/categorias/actualizar/nombre";
+
+                const datos = new FormData();
+                datos.append('id', value);
+                datos.append('nombre', valor);
+
+                const respuesta = await fetch(url, {
+                    body: datos,
+                    method: 'POST'
+                });
+
+                const resultado = await respuesta.json();
+
+                if (resultado.tipo == 'exito') {
+                    Swal.fire(resultado.mensaje, 'Exito', 'success').then(() => {
+                        window.location.reload();
+                    });
+                } else if (resultado.tipo == 'error') {
+                    Swal.fire(resultado.mensaje, 'Error', 'error').then(() => {
+                        window.location.reload();
+                    });
+                }
+
+            } catch (error) {
+                console.log(error);
+                Swal.fire('Ha ocurrido un error', 'Error', 'error').then(() => {
+                    window.location.reload();
+                });
+            }
+
+        }
+
+
+        function confirmarEliminarCategoria() {
 
             Swal.fire({
-                title: '¿Desea Eliminar la Categoría?',
+                title: '¿Eliminar la Categoría Seleccionada?',
                 showCancelButton: true,
                 confirmButtonText: 'Si',
                 cancelButtonText: 'No',
                 icon: 'question'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    eliminarCategoria(categoria);
+                    eliminarCategoria();
                 }
             })
         }
 
 
-        async function eliminarCategoria(categoria) {
-            const { nombre, id, impuestos_id, porcentajeGanancias_id } = categoria;
+        async function eliminarCategoria() {
 
-            const datos = new FormData();
-            datos.append('impuestos_id', impuestos_id);
-            datos.append('nombre', nombre);
-            datos.append('id', id);
-            datos.append('porcentajeGanancias_id', porcentajeGanancias_id);
+
+            if (!value) {
+                Swal.fire('No Hay Ninguna Categoria Seleccionada', 'Ha Ocurrido Un Error', 'error');
+                return;
+            }
+
 
             try {
+
                 const url = "/api/categorias/eliminar";
+                const datos = new FormData();
+                datos.append('id', value);
 
                 const respuesta = await fetch(url, {
                     method: 'POST',
@@ -798,17 +860,15 @@ import Swal from 'sweetalert2';
                 if (resultado.tipo == 'exito') {
 
 
-                    Swal.fire('Eliminado!', resultado.mensaje, 'success');
-
-                    categorias = categorias.filter(categoria => {
-                        return categoria.id !== id;
+                    Swal.fire('Eliminado!', resultado.mensaje, 'success').then(() => {
+                        window.location.reload();
                     });
 
-                    mostrarCategorias();
+
                 }
             } catch (error) {
                 console.error(error);
-                Swal.fire('Error', 'Ha ocurrido un error!', 'error');
+                Swal.fire('Hay Registros Asociados a Está Categoria', 'Ha ocurrido un error', 'error');
             }
         }
 

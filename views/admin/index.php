@@ -8,9 +8,9 @@
             </div>
         </a>
 
-        <a class="bloque" href="#">
+        <a class="bloque" href="/admin/producto-comercial">
             <div class="bloque__contenido">
-                <h3 class="bloque__heading">Productos Comerciales </h3>
+                <h3 class="bloque__heading">Productos Producción </h3>
             </div>
         </a>
 

@@ -1,29 +1,35 @@
 @use 'variables' as v;
 @use 'mixins' as m;
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
     box-sizing: inherit;
 }
+
 html {
     font-size: 62.5%;
     box-sizing: border-box;
     height: 100%;
 }
+
 body {
     font-family: v.$fuente_textos;
     font-size: 1.6rem;
     min-height: 100%;
 
-    &.pausar{
+    &.pausar {
         overflow-y: hidden;
     }
 
 }
+
 .contenedor {
     width: 95%;
     max-width: 1200px;
     margin: 0 auto;
 }
+
 .contenedor-sm {
     max-width: 70rem;
     margin: 0 auto;
@@ -33,74 +39,109 @@ body {
 a {
     text-decoration: none;
 }
+
 img {
     max-width: 100%;
 }
 
-.flex-derecha{
+
+.d-block {
+    display: block;
+}
+
+.flex-derecha {
     display: flex;
     justify-content: end;
 }
 
-.flex-izquierda{
+.flex-izquierda {
     display: flex;
-    justify-content:start;
-}
-.flex-centro{
-    display: flex;
-    justify-content:center;
-    gap:2rem;
+    justify-content: start;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-top: 2rem;
+
+    @include m.tablet {
+        margin-top: 0;
+    }
 }
 
-.btn{
+.mt-3 {
+    margin-top: 3rem;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.mt-4 {
+    margin-top: 4rem;
+}
+
+
+
+.flex-centro {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.btn {
     border: none;
     font-size: 1.5rem;
     padding: 1rem 1.5rem;
     text-transform: uppercase;
     font-weight: 700;
     border-radius: 1rem;
-    &:hover{
+
+    &:hover {
         cursor: pointer;
     }
 }
 
 
-.btn-editar{
-    color:v.$blanco;
+.btn-editar {
+    color: v.$blanco;
     background-color: v.$naranja;
 }
 
-.btn-eliminar{
-    color:v.$blanco;
+.btn-eliminar {
+    color: v.$blanco;
     background-color: v.$rojo;
 }
 
-.btn-submit{
+.btn-submit {
     @extend .btn;
     width: 100%;
+
     @include m.tablet {
-        width:auto;
+        width: auto;
     }
-   
+
     color:v.$blanco;
     background-color: v.$azul;
     transition: background-color 500ms ease-in-out;
 
-    &:hover{
-       background-color: darken($color: v.$azul, $amount: 10%);
+    &:hover {
+        background-color: darken($color: v.$azul, $amount: 10%);
     }
 
 }
 
-.btn-agregar,.btn-regresar {
+.btn-agregar,
+.btn-regresar {
     @include m.boton(v.$azul, v.$blanco);
+    border-radius: .5rem;
+}
+
+.btn-verde {
+    @include m.boton(v.$verde, v.$blanco);
     border-radius: .5rem;
 }
 
 
 
-.contenedor-sombra{
-    margin-top: 3rem;
+.contenedor-sombra {
     @include m.shadow;
     background-color: v.$blanco;
     border-radius: 1rem;
@@ -108,6 +149,11 @@ img {
 }
 
 
-.w-100{
+.w-100 {
     width: 100%;
+}
+
+.resaltar-texto {
+    font-weight: bold;
+    font-size: 2rem;
 }
