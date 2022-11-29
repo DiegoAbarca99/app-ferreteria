@@ -329,6 +329,15 @@ import Swal from 'sweetalert2';
             window.location = `?categoria=${categoria}`;
         });
 
+        //Filtra el contenido en función del nombre ingresado
+        const buscador = document.querySelector('#buscador');
+
+
+        buscador.addEventListener('click', function (e) {
+            e.preventDefault();
+            const nombre = e.target.parentElement.querySelector('input').value;
+            window.location = `?nombre=${nombre}`;
+        });
 
 
     }

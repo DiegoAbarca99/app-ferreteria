@@ -10,6 +10,12 @@
             <?php } ?>
         </select>
 
+        <form class="filtro__buscador">
+            <input type="text" class="filtro__input" placeholder="Buscar por Nombre">
+            <input type="submit" class="filtro__submit" value="Buscar" id="buscador">
+
+        </form>
+
         <a class="btn-agregar" href="/admin/producto-comercial/precios-kilos/crear">
             <i class="fa-solid fa-circle-plus"></i>
             Agregar Producto
@@ -46,10 +52,11 @@
                                     <th class="table__th"></th>
                                 </tr>
                             </thead>
-                        <?php } //Reasignación de valores para comparar el valor actual con el previo, y así continuar apilando registros o crear una nueva tabla 
-                        ?>
-                        <?php $categoriaId = $producto->producto->categoriaProducto_id; ?>
-                        <tbody class="table__body">
+                            <tbody class="table__body">
+
+                            <?php } //Reasignación de valores para comparar el valor actual con el previo, y así continuar apilando registros o crear una nueva tabla 
+                            ?>
+                            <?php $categoriaId = $producto->producto->categoriaProducto_id; ?>
 
                             <tr class="table__tr">
                                 <td class="table__td "> <?php echo $producto->codigo ?></td>
@@ -76,9 +83,10 @@
                                     </form>
                                 </td>
                             </tr>
-                        </tbody>
-                        <!--Cierre de la tabla actual-->
-                        <?php if (!isset($productos[$categoria->id][$contador + 1])) { ?>
+
+                            <!--Cierre de la tabla actual-->
+                            <?php if (!isset($productos[$categoria->id][$contador + 1])) { ?>
+                            </tbody>
                         </table>
                     <?php } ?>
                     <?php $contador++; ?>

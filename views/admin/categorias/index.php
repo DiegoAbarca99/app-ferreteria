@@ -2,7 +2,7 @@
 
 <div class="contenedor">
 
-    <div class="filtro">
+    <div class="filtro--categorias">
 
 
         <div>

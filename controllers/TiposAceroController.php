@@ -15,40 +15,49 @@ class TiposAceroController
         isAuth();
         isAdmin();
 
+        $nombre = $_GET['nombre'] ?? '';
+        $aceros = [];
 
-        $categoriaFiltrada = $_GET['categoria'] ?? '';
+        if ($nombre) {
 
-        if ($categoriaFiltrada) {
-            $respuesta = CategoriaAcero::find($categoriaFiltrada);
-            if (!$respuesta || !filter_var($categoriaFiltrada, FILTER_VALIDATE_INT)) {
-                header('Location:/admin/index');
+            $aceros = TiposAceros::filtrar('nombre', $nombre);
+        } else {
+
+            $categoriaFiltrada = $_GET['categoria'] ?? '';
+
+            if ($categoriaFiltrada) {
+                $respuesta = CategoriaAcero::find($categoriaFiltrada);
+                if (!$respuesta || !filter_var($categoriaFiltrada, FILTER_VALIDATE_INT)) {
+                    header('Location:/admin/index');
+                }
             }
+
+
+
+            $aceros = TiposAceros::belongsToAndOrden('categoriaacero_id', $categoriaFiltrada, 'descripcionacero_id', 'ASC');
         }
 
 
-
-        $aceros = TiposAceros::belongsToAndOrden('categoriaacero_id', $categoriaFiltrada, 'descripcionacero_id', 'ASC');
         $categorias = CategoriaAcero::ordenar('id', 'ASC');
-        $acerosAll=TiposAceros::all();
+        $acerosAll = TiposAceros::all();
 
 
-//Se eliminan aquellas categorias de acero que no están asociadas a ningún tipo de Acero
-        $categoriasMostrar=[];
-        foreach($acerosAll as $acero){
-            $categoriasMostrar[]=$acero->categoriaacero_id;
+        //Se eliminan aquellas categorias de acero que no están asociadas a ningún tipo de Acero
+        $categoriasMostrar = [];
+        foreach ($acerosAll as $acero) {
+            $categoriasMostrar[] = $acero->categoriaacero_id;
         }
 
 
-        foreach($categorias as $key => $categoria){
-            if( !in_array($categoria->id,$categoriasMostrar)){
+        foreach ($categorias as $key => $categoria) {
+            if (!in_array($categoria->id, $categoriasMostrar)) {
                 unset($categorias[$key]);
             }
-            
         }
 
-           
-        
-//Se agrupan los tipos de acero por categoria de acero en un arreglo asociativo.
+
+
+        //Se agrupan los tipos de acero por categoria de acero en un arreglo asociativo.
         $acerosFormateados = [];
         foreach ($aceros as $acero) {
             $acero->categoria = CategoriaAcero::find($acero->categoriaacero_id);

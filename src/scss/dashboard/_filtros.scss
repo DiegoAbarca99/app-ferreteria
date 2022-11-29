@@ -4,6 +4,7 @@
 .filtro {
     margin-top: 3rem;
     @include m.grid(1, 2rem);
+    $modificador:&;
 
 
     &__select {
@@ -13,14 +14,34 @@
     }
 
 
-    @include m.tablet {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap:2rem;
+    @include m.desktop-xl{
+        @include m.grid(3,2rem);
 
     }
 
+    &__buscador{
+        display: flex;
 
 
+        #{$modificador}__submit{
+            @include m.boton(v.$azul,v.$blanco);
+            flex: 0;
+        }
+        #{$modificador}__input{
+            flex:1;
+        }
+
+
+    }
+
+    &--categorias{
+        @extend .filtro;
+
+        @include m.tablet{
+            @include m.grid(2,2rem);
+    
+        }
+    }
 
 }
+

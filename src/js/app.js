@@ -6,3 +6,5 @@ import './tipo-acero';
 import './formulario-producto-comercial';
 import './producto-comercial';
 import './producto-kilo';
+import './formulario-producto-proveedor';
+import './producto-proveedor';

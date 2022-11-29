@@ -20,9 +20,9 @@
         text-align: start;
         padding: 1rem;
 
-        &--categoria{
+        &--categoria {
             border-radius: .5rem;
-            padding:1rem .5rem .5rem .5rem;
+            padding: 1rem .5rem .5rem .5rem;
         }
 
 
@@ -51,10 +51,10 @@
     }
 
     &__tr {
-    
+
 
         &:nth-child(even) {
-            background-color: v.$grisClaro;
+            background-color: darken(v.$grisClaro,5%);
         }
 
     }
@@ -63,18 +63,30 @@
     &__td {
         padding: 1.5rem 1rem;
 
-        &--slp{
-            &-naranja{
+        &--slp {
+            &-naranja {
                 background-color: v.$naranja;
-                &:hover{
+
+                &:hover {
                     cursor: pointer;
                 }
             }
         }
 
-        &--prolamsa,&--arcoMetal{
+        &--resaltar {
+            background-color: v.$naranja;
 
-            &:hover{
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+
+
+        &--prolamsa,
+        &--arcoMetal {
+
+            &:hover {
                 cursor: pointer;
             }
         }

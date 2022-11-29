@@ -1,6 +1,6 @@
 <div class="fieldset-grid">
     <fieldset class="formulario__fieldset">
-        <legend>Datos de la Cuenta</legend>
+        <legend class="formulario__legend" >Datos de la Cuenta</legend>
 
         <div class="formulario__campo">
             <label class="formulario__label" for="usuario">Usuario</label>
@@ -31,7 +31,7 @@
     </fieldset>
 
     <fieldset class="formulario__fieldset">
-        <legend>Datos de Contacto</legend>
+        <legend class="formulario__legend">Datos de Contacto</legend>
 
         <div class="formulario__campo">
             <label class="formulario__label" for="nombre">Nombre</label>
@@ -52,6 +52,8 @@
             <label class="formulario__label" for="surcursal">Surcursal</label>
             <input class="formulario__input" type="text" name="surcursal" id="surcursal" placeholder="Surcursal" value="<?php echo s($usuario->surcursal) ?>">
         </div>
+
+        <input type="hidden" value="<?php echo $usuario->nivel;?>" id="nivel-hidden">
 
 
     </fieldset>

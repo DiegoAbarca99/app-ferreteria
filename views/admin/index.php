@@ -2,7 +2,7 @@
 
 <main class="contenedor  bloques">
     <div class="bloques__grid">
-        <a class="bloque" href="#">
+        <a class="bloque" href="/admin/producto-proveedor">
             <div class="bloque__contenido">
                 <h3 class="bloque__heading">Productos Proveedores</h3>
             </div>

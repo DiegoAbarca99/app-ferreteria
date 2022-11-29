@@ -2,13 +2,13 @@
 <div class="contenedor">
     <div class="flex-izquierda">
         <a class="btn-regresar" href="/perfiles/index">
-            <i class="fa-solid fa-arrow-left"></i>Regresar</a>
+            <i class="fa-solid fa-arrow-left"></i> Regresar</a>
     </div>
     <form class="formulario ">
 
         <div class="fieldset-grid">
             <fieldset class="formulario__fieldset">
-                <legend>Datos de la Cuenta</legend>
+                <legend class="formulario__legend">Datos de la Cuenta</legend>
 
                 <div class="formulario__campo">
                     <label class="formulario__label" for="usuario">Usuario</label>
@@ -45,7 +45,7 @@
             </fieldset>
 
             <fieldset class="formulario__fieldset">
-                <legend>Datos de Contacto</legend>
+                <legend class="formulario__legend">Datos de Contacto</legend>
 
                 <div class="formulario__campo">
                     <label class="formulario__label" for="nombre">Nombre</label>

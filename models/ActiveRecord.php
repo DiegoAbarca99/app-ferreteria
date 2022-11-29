@@ -135,6 +135,15 @@ class ActiveRecord
         return $resultado;
     }
 
+    
+    // Filtra consultas aproximadas a una columna en base a los datos enviados por un buscador
+    public static function filtrar($columna, $valor)
+    {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} LIKE '%${valor}%'";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
     // Busqueda Where con Columna 
     public static function where($columna, $valor)
     {

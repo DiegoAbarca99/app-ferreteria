@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
             boton.addEventListener('click', function (e) {
                 e.preventDefault();
                 const id = e.target.parentElement.querySelector('input').value;
-                
+
 
 
                 Swal.fire({
@@ -60,15 +60,27 @@ import Swal from 'sweetalert2';
             }
         }
 
-          // Filtra el contenido por categoria seleccionada en el select
-          const filtro = document.querySelector('#select-producto');
+        // Filtra el contenido por categoria seleccionada en el select
+        const filtro = document.querySelector('#select-producto');
 
-          filtro.addEventListener('input', function (e) {
-              const categoria = e.target.value;
-  
-              window.location = `?categoria=${categoria}`;
-          });
-  
+        filtro.addEventListener('input', function (e) {
+            const categoria = e.target.value;
+
+            window.location = `?categoria=${categoria}`;
+        });
+
+        //Filtra el contenido en función del nombre ingresado
+        const buscador = document.querySelector('#buscador');
+
+
+        buscador.addEventListener('click', function (e) {
+            e.preventDefault();
+            const nombre = e.target.parentElement.querySelector('input').value;
+            window.location = `?nombre=${nombre}`;
+        });
+
+
+
 
 
     }

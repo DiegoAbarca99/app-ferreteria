@@ -21,20 +21,32 @@ class ProductosComercialesController
         isAuth();
         isAdmin();
 
-        $categorias = CategoriaProducto::all();
 
-        $categoriaFiltrada = $_GET['categoria'] ?? '';
 
-        if ($categoriaFiltrada) {
-            $respuesta = CategoriaProducto::find($categoriaFiltrada);
-            if (!$respuesta || !filter_var($categoriaFiltrada, FILTER_VALIDATE_INT)) {
-                header('Location:/admin/index');
+        $nombre = $_GET['nombre'] ?? '';
+
+
+        $productos = [];
+
+        if ($nombre) {
+            $productos = ProductosComerciales::filtrar('nombre', $nombre);
+        } else {
+
+            $categoriaFiltrada = $_GET['categoria'] ?? '';
+
+            if ($categoriaFiltrada) {
+
+                $respuesta = CategoriaProducto::find($categoriaFiltrada);
+
+                if (!$respuesta || !filter_var($categoriaFiltrada, FILTER_VALIDATE_INT)) {
+                    header('Location:/admin/index');
+                }
             }
+
+            $productos = ProductosComerciales::belongsToAndOrden('categoriaProducto_id', $categoriaFiltrada, 'categoriaProducto_id', 'ASC');
         }
 
 
-
-        $productos = ProductosComerciales::belongsToAndOrden('categoriaProducto_id', $categoriaFiltrada, 'categoriaProducto_id', 'ASC');
         $categorias = CategoriaProducto::ordenar('id', 'ASC');
         $productosAll = ProductosComerciales::all();
 
@@ -167,17 +179,30 @@ class ProductosComercialesController
         isAdmin();
 
 
-        $categoriaFiltrada = $_GET['categoria'] ?? '';
 
-        if ($categoriaFiltrada) {
-            $respuesta = CategoriaProducto::find($categoriaFiltrada);
-            if (!$respuesta || !filter_var($categoriaFiltrada, FILTER_VALIDATE_INT)) {
-                header('Location:/admin/index');
+
+        $nombre = $_GET['nombre'] ?? '';
+        $productos = [];
+
+        if ($nombre) {
+            $productos = ProductosComerciales::filtrar('nombre', $nombre);
+        } else {
+            $categoriaFiltrada = $_GET['categoria'] ?? '';
+
+            if ($categoriaFiltrada) {
+                $respuesta = CategoriaProducto::find($categoriaFiltrada);
+                if (!$respuesta || !filter_var($categoriaFiltrada, FILTER_VALIDATE_INT)) {
+                    header('Location:/admin/index');
+                }
             }
+
+            $productos = ProductosComerciales::belongsToAndOrden('categoriaProducto_id', $categoriaFiltrada, 'categoriaProducto_id', 'ASC');
         }
 
+
+
+
         $productosKilo = PreciosKilo::all();
-        $productos = ProductosComerciales::belongsToAndOrden('categoriaProducto_id', $categoriaFiltrada, 'categoriaProducto_id', 'ASC');
         $categorias = CategoriaProducto::ordenar('id', 'ASC');
         $productosAll = ProductosComerciales::all();
 

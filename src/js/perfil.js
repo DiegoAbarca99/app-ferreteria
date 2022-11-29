@@ -7,16 +7,35 @@ import Swal from 'sweetalert2';
 
         status.addEventListener('input', seleccionarStatus);
 
+
+        //En caso de que se actualize un perfil, se obtienen el status y nivel de acceso previamente definidos.
+        let nivelValue = '';
+        const nivelHidden = document.querySelector('#nivel-hidden');
+        nivelValue = nivelHidden.value;
+
+        let statusValue = '';
+        statusValue = status.value;
+
+        mostrarStatus();
+
         function seleccionarStatus(e) {
 
-            const status = e.target.value;
+            statusValue = e.target.value;
 
             const contenedorPrevio = document.querySelector('.existe');
             if (contenedorPrevio) {
                 contenedorPrevio.remove();
             }
 
-            if (status === '1') {
+            mostrarStatus();
+
+
+
+        }
+
+        function mostrarStatus() {
+
+            if (statusValue === '1') {
 
 
                 const contenedorNivel = document.createElement('DIV');
@@ -32,8 +51,8 @@ import Swal from 'sweetalert2';
                 selectNivel.classList.add('formulario__input', 'formulario__input--select');
 
                 selectNivel.innerHTML = `
-                <option value=0>Regular</option>
-                <option value=1>Privilegiado</option>`;
+                <option value=0 ${nivelValue == 0 ? 'selected' : ''}>Regular</option>
+                <option value=1 ${nivelValue == 1 ? 'selected' : ''}>Privilegiado</option>`;
 
                 contenedorNivel.appendChild(labelNivel);
                 contenedorNivel.appendChild(selectNivel);
@@ -42,10 +61,7 @@ import Swal from 'sweetalert2';
                 const contenedorCampos = document.querySelector('#campos');
                 contenedorCampos.appendChild(contenedorNivel);
 
-
-
             }
-
         }
 
     }
@@ -89,7 +105,7 @@ import Swal from 'sweetalert2';
                 id = id.value;
 
                 Swal.fire({
-                    title: '¿Eliminar Perfil Seleccionado?',
+                    title: '¿Eliminar Registro Seleccionado?',
                     showCancelButton: true,
                     confirmButtonText: 'Si',
                     cancelButtonText: 'No',
@@ -133,6 +149,25 @@ import Swal from 'sweetalert2';
                 Swal.fire('Error!', 'Ocurrió un error', 'error');
             }
         }
+
+
+
     }
+
+
+    //Filtrar perfiles de acuerdo al nombre especificado
+    const buscador = document.querySelector('#buscador');
+
+    if (buscador) {
+        buscador.addEventListener('click', function (e) {
+            e.preventDefault();
+            const nombre = e.target.parentElement.querySelector('input').value;
+            window.location = `?nombre=${nombre}`;
+        })
+
+    }
+
+
+
 
 })();

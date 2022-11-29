@@ -2,7 +2,7 @@
 <div class="contenedor">
     <div class="filtro">
 
-        <select class="filtro__select" id="select-producto">
+        <select class="filtro__select" id="select-producto-proveedor">
             <option value="" selected disabled>--Seleccione Una Categoria--</option>
             <option value="">Seleccionar Todas</option>
             <?php foreach ($categorias as $categoria) { ?>
@@ -16,7 +16,7 @@
 
         </form>
 
-        <a class="btn-agregar" href="/admin/producto-comercial/crear">
+        <a class="btn-agregar" href="/admin/producto-proveedor/crear">
             <i class="fa-solid fa-circle-plus"></i>
             Agregar Producto
         </a>
@@ -33,7 +33,7 @@
                 <?php $contador = 0; ?>
                 <!--Contador se emplea como auxiliar para saber cuando el arreglo de productos formateados está en su ultimo elemento por categoria cafificada-->
                 <?php foreach ($productos[$categoria->id] as $key => $producto) { ?>
-                    <?php if ($categoriaId != $producto->categoriaProducto_id) { ?>
+                    <?php if ($categoriaId != $producto->categoriaProductosProveedores_id) { ?>
                         <table class="table contenedor-sombra mt-4">
 
                             <caption class="table__caption table__caption--resaltar"><span> Categoria <i class="fa-solid fa-arrow-right"></i> </span><?php echo $producto->categoria->nombre; ?></caption>
@@ -42,6 +42,8 @@
 
                                 <tr>
                                     <th class="table__th ">Nombre</th>
+                                    <th class="table__th ">PesoP</th>
+                                    <th class="table__th ">Peso</th>
                                     <th class="table__th">Publico1</th>
                                     <th class="table__th ">Herrero2</th>
                                     <th class="table__th ">Herrero3</th>
@@ -54,11 +56,13 @@
                             <tbody class="table__body">
                             <?php } //Reasignación de valores para comparar el valor actual con el previo, y así continuar apilando registros o crear una nueva tabla 
                             ?>
-                            <?php $categoriaId = $producto->categoriaProducto_id; ?>
+                            <?php $categoriaId = $producto->categoriaProductosProveedores_id; ?>
 
 
                             <tr class="table__tr">
                                 <td class="table__td "> <?php echo $producto->nombre ?></td>
+                                <td class="table__td "> <?php echo $producto->peso->pesoPromedio ?></td>
+                                <td class="table__td  table__td--resaltar"> <?php echo $producto->peso->pesoNuevo ?></td>
                                 <td class="table__td"> <?php echo $producto->precio->publico1 ?></td>
                                 <td class="table__td"> <?php echo $producto->precio->herrero2 ?></td>
                                 <td class="table__td"> <?php echo $producto->precio->herrero3 ?></td>
@@ -67,13 +71,13 @@
                                 <td class="table__td"> <?php echo $producto->precio->mayoreo2 ?></td>
 
                                 <td class="table__td--acciones">
-                                    <a class="table__accion table__accion--editar" href="/admin/producto-comercial/ver?id=<?php echo $producto->id ?>">
-                                        <i class="fa-solid fa-eye"></i>
-                                        Ver
+                                    <a class="table__accion table__accion--editar" href="/admin/producto-proveedor/actualizar?id=<?php echo $producto->id ?>">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        Editar
                                     </a>
 
-                                    <form action="/admin/producto-comercial/eliminar" method="POST" class="table__formulario">
-                                        <input type="hidden" class="eliminar-productoComercial" value="<?php echo $producto->id ?>">
+                                    <form action="/api/producto-proveedor/eliminar" method="POST" class="table__formulario">
+                                        <input type="hidden" class="eliminar-productoProveedor" value="<?php echo $producto->id ?>">
                                         <button class="table__accion table__accion--eliminar btn-eliminar" type="submit">
                                             <i class="fa-solid fa-circle-xmark"></i>
                                             Eliminar
@@ -81,7 +85,6 @@
                                     </form>
                                 </td>
                             </tr>
-
                             <!--Cierre de la tabla actual-->
                             <?php if (!isset($productos[$categoria->id][$contador + 1])) { ?>
                             </tbody>
@@ -92,15 +95,6 @@
             <?php } ?>
         <?php } ?>
     <?php } ?>
-
-    <div class="flex-derecha mt-3">
-        <a class="btn-verde" href="/admin/producto-comercial/precios-kilos">
-            <i class="fa-solid fa-arrow-right"></i>
-            Ver Precios Por Kilos
-        </a>
-    </div>
-
-
 
 </div>
 <?php include_once __DIR__ . '/../../templates/footer-dashboard.php'; ?>

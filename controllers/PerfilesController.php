@@ -16,6 +16,9 @@ class PerfilesController
         isAuth();
         isAllowed(); //Corrobora que el usuario sea admin o tenga status de oficina
 
+
+
+
         $pagina_actual = $_GET['page'];
         $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
 
@@ -39,10 +42,22 @@ class PerfilesController
         }
 
 
+
         if ($_SESSION['status'] === 2) {
-            $usuarios = Usuario::belongsToAndPag('status', 1, $registro_por_pagina, $paginacion->offset());
+            $usuario = $_GET['nombre'] ?? '';
+            if ($usuario) {
+                $usuarios = Usuario::whereArray(['status' => 1, 'usuario' => $usuario]);
+            } else {
+                $usuarios = Usuario::belongsToAndPag('status', 1, $registro_por_pagina, $paginacion->offset());
+            }
         } else {
-            $usuarios = Usuario::whereNotAndPag($paginacion->offset(), $registro_por_pagina, 'status', 0);
+            $usuario = $_GET['nombre'] ?? '';
+            if ($usuario) {
+
+                $usuarios = Usuario::whereArray(['status' => 1, 'status' => 2, 'usuario' => $usuario]);
+            } else {
+                $usuarios = Usuario::whereNotAndPag($paginacion->offset(), $registro_por_pagina, 'status', 0);
+            }
         }
 
 
@@ -178,7 +193,7 @@ class PerfilesController
     public static function eliminar()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-           
+
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (!$id) {

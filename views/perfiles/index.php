@@ -1,11 +1,25 @@
 <?php include_once __DIR__ . '/../templates/header-dashboard.php'; ?>
 <div class="contenedor">
-    <div class="flex-derecha">
+    <div class="filtro">
+
+        <select class="filtro__select" id="select-perfil">
+            <option value="" selected disabled>--Seleccione Surcursal--</option>
+            <option value="">Seleccionar Todas</option>
+        </select>
+
+        <form class="filtro__buscador">
+            <input type="text" class="filtro__input" placeholder="Buscar por Nombre">
+            <input type="submit" class="filtro__submit" value="Buscar" id="buscador">
+
+        </form>
+
+
         <a class="btn-agregar" href="/perfiles/crear">
-            <i class="fa-solid fa-circle-plus"></i>
-            Crear Perfil
+            <i class="fa-solid fa-circle-plus"></i> Crear Perfil
         </a>
+
     </div>
+
 
     <div class="contenedor-sombra mt-4">
         <?php if (empty($usuarios)) { ?>
