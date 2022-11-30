@@ -2,7 +2,7 @@
 <div class="contenedor">
     <div class="filtro">
 
-        <select class="filtro__select" id="select-producto">
+        <select class="filtro__select" id="select-productoComercial">
             <option value="" selected disabled>--Seleccione Una Categoria--</option>
             <option value="">Seleccionar Todas</option>
             <?php foreach ($categorias as $categoria) { ?>

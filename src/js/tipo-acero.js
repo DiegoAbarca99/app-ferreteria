@@ -319,9 +319,13 @@ import Swal from 'sweetalert2';
             }
         }
 
+    }
 
-        // Filtra el contenido por categoria seleccionada en el select
-        const filtro = document.querySelector('#select-acero');
+
+    // Filtra el contenido por categoria seleccionada en el select
+    const filtro = document.querySelector('#select-acero');
+
+    if (filtro) {
 
         filtro.addEventListener('input', function (e) {
             const categoria = e.target.value;
@@ -339,6 +343,6 @@ import Swal from 'sweetalert2';
             window.location = `?nombre=${nombre}`;
         });
 
-
     }
+
 })();

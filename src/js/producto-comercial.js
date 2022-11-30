@@ -82,16 +82,19 @@ import Swal from 'sweetalert2';
             }
         }
 
-        // Filtra el contenido por categoria seleccionada en el select
-        const filtro = document.querySelector('#select-producto');
 
+    }
+
+    // Filtra el contenido por categoria seleccionada en el select
+    const filtro = document.querySelector('#select-productoComercial');
+    if (filtro) {
         filtro.addEventListener('input', function (e) {
             const categoria = e.target.value;
 
             window.location = `?categoria=${categoria}`;
         });
 
-        
+
         //Filtra el contenido en función del nombre ingresado
         const buscador = document.querySelector('#buscador');
 
@@ -102,6 +105,7 @@ import Swal from 'sweetalert2';
             window.location = `?nombre=${nombre}`;
         });
 
-
     }
+
+
 })();
