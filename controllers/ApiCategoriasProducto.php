@@ -28,27 +28,32 @@ class ApiCategoriasProducto
         echo json_encode($categorias);
     }
 
-    public static function filtrar()
+    public static function filtrar() //Filtra categoria en función del valor seleccionado en el select.
     {
         session_start();
         isAuth();
         isAdmin();
 
-        $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
-        $categoriaExistente = CategoriaProducto::find($id);
+        //Validación del valor seleccionado en el input
 
-        if (!$id || !$categoriaExistente) {
+        $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
+        if (!$id) {
             header('Location:/admin/index');
         }
 
-        $categorias = CategoriaProducto::belongsTo('id', $id);
+        $categoria = CategoriaProducto::find($id);
 
-        foreach ($categorias as $categoria) {
-            $categoria->impuestos = Impuestos::where('id', $categoria->impuestos_id);
-            $categoria->ganancias = PorcentajeGanancias::where('id', $categoria->porcentajeGanancias_id);
+        if (!$categoria) {
+            header('Location:/admin/index');
         }
 
-        echo json_encode($categorias);
+        
+        // Formateo de la categoria seleccionada
+        $categoria->impuestos = Impuestos::where('id', $categoria->impuestos_id);
+        $categoria->ganancias = PorcentajeGanancias::where('id', $categoria->porcentajeGanancias_id);
+
+        //Envio a JavaScript via GET
+        echo json_encode($categoria);
     }
 
     public static function ganancias(Router $router)

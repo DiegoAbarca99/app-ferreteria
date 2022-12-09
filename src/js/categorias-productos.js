@@ -1,28 +1,30 @@
 
 import Swal from 'sweetalert2';
 (function () {
-    const selectCategorias = document.querySelector('#select-categoria');
+    const selectCategorias = document.querySelector('#select-categoria'); //Select de las categorias
     if (selectCategorias) {
 
-
+        //Variables globales
         let categoriaFiltrada = {};
         let value = '';
         let nombre = '';
 
+        //Evento del select
         selectCategorias.addEventListener('input', function (e) {
             value = e.target.value;
             nombre = document.querySelector(`option[value='${value}']`).textContent;
 
-            filtarCategorias(value);
+            filtarCategoria(value);
 
         });
 
-        const enlaceEliminar = document.querySelector('#categoria-eliminar');
 
+        // Evento Eliminar categoria seleccionada
+        const enlaceEliminar = document.querySelector('#categoria-eliminar');
         enlaceEliminar.addEventListener('click', confirmarEliminarCategoria);
 
+        // Evento editar nombre de la categoria seleccionada
         const enlaceEditar = document.querySelector('#categoria-editar');
-
         enlaceEditar.addEventListener('click', function () {
             if (value == '') {
                 Swal.fire('No Hay Ninguna Categoria Seleccionada', 'Ha Ocurrido Un Error', 'error').then(() => {
@@ -30,6 +32,7 @@ import Swal from 'sweetalert2';
                 });
 
             } else {
+                //Se abre modal
                 mostrarFormularioNombre();
             }
 
@@ -38,12 +41,12 @@ import Swal from 'sweetalert2';
 
 
 
-        async function filtarCategorias(valor) {
+        async function filtarCategoria(valor) {
             const url = `/api/categorias/filtrar?id=${valor}`;
 
             const respuesta = await fetch(url);
             const resultado = await respuesta.json();
-            categoriaFiltrada = resultado[0];
+            categoriaFiltrada = resultado;
             mostrarCategoria();
 
         }
@@ -89,8 +92,6 @@ import Swal from 'sweetalert2';
 
             const contenedor = document.createElement('TR');
             contenedor.classList.add('categoria__grid', 'contenedor-sombra');
-
-
 
 
 
@@ -369,6 +370,7 @@ import Swal from 'sweetalert2';
         function mostrarFormulario(is_ganancia, tipo, objeto = {}) {
             let formulario;
 
+            //Scroll automaticó al modal desplegado
             const inicio = document.querySelector('#cerrar-menu');
             if (inicio) {
                 inicio.scrollIntoView({
@@ -376,6 +378,7 @@ import Swal from 'sweetalert2';
                 });
             }
 
+            //Imposibilita hacer es scroll con el modal activo
             const body = document.querySelector('body');
             body.classList.add('pausar');
 
@@ -452,13 +455,13 @@ import Swal from 'sweetalert2';
 
 
                 //--------------Aplicando delegation para determinar cuando se dió click en cerrar
-                if (e.target.classList.contains('cerrar-modal')) {
+                if (e.target.classList.contains('cerrar-modal')) { 
 
                     body.classList.remove('pausar');
                     const formulario = document.querySelector('.formulario');
                     formulario.classList.add('cerrar');
 
-
+                    //Evita que se remueva inmediatamente para poder visualizar la transition de sass
                     setTimeout(() => {
                         modal.remove();
                     }, 500);
