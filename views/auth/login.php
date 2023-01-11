@@ -3,7 +3,7 @@
     <?php include_once __DIR__ . '/../templates/alertas.php' ?>
 
     <h1 class="login__titulo">FerreTinoco</h1>
-    <p class="login__tagline">Comienza a Gestionar tu Negocio</p>
+    <p class="login__tagline">¡Bienvenido!, Comienza a Gestionar tu Negocio</p>
     <p class="login__descripcion">Iniciar Sesión</p>
 
 
