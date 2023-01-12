@@ -8,6 +8,7 @@ body {
 }
 
 .login {
+    $modificador: &;
 
    @include m.desktop{
     background-color: v.$blanco ;
@@ -20,6 +21,8 @@ body {
     padding: 25px;
     
    }
+   
+   
 
     &__tagline{
         font-family: v.$fuente_headings;
@@ -48,7 +51,7 @@ body {
     &__titulo {
         @include m.textoDegradado(v.$cyan);
         margin-top: 2rem;
-        font-size: 4.5rem;
+        font-size: 4.5rem !important;
 
 
     }

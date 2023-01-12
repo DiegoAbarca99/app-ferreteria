@@ -113,6 +113,7 @@ img {
 .btn-submit {
     @extend .btn;
     width: 100%;
+    padding: 1.5rem;
 
     @include m.tablet {
         width: auto;
