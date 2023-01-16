@@ -1,6 +1,6 @@
 <aside class="sidebar">
     <div class="sidebar__contenedor">
-        <h2>FerreTinoco</h2>
+        <h2 id="ferretinoco">FerreTinoco</h2>
 
         <div class="sidebar__cerrar-menu">
             <img id="cerrar-menu" src="/build/img/cerrar.svg" alt="imagen cerrar menu">
@@ -20,7 +20,9 @@
     <!--Navegación para proveedores-->
     <?php if ($_SESSION['status'] === 1) { ?>
         <nav class="sidebar__nav">
-            <a class=" sidebar__enlace  <?php echo pagina_actual('/proveedor') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/index">Levantar Pedido</a>
+            <a class=" sidebar__enlace  <?php echo pagina_actual('/index') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/index">Levantar Pedido</a>
+            <a class=" sidebar__enlace  <?php echo pagina_actual('/clientes') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/clientes">Clientes</a>
+            <a class=" sidebar__enlace  <?php echo pagina_actual('/productos') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/productos">Productos</a>
         </nav>
     <?php } ?>
 

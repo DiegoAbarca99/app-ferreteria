@@ -1,0 +1,55 @@
+@use '../base/mixins' as m;
+@use '../base/variables' as v;
+
+.bloques-proveedores {
+    margin-top: 2rem;
+
+    @include m.tablet {
+        @include m.grid(2, 1rem);
+    }
+
+    @include m.desktop-xl {
+        @include m.grid(2, 1rem);
+    }
+
+    @include m.desktop-xl {
+        @include m.grid(3, 1rem);
+    }
+
+
+
+
+    .bloque-producto {
+        height: 8rem;
+        margin: 1rem 0;
+        padding: 3rem 3rem 3rem 4rem;
+        border-radius: 1rem;
+        @include m.shadow;
+
+
+        background-color: v.$blanco;
+
+        transition: transform 500ms ease-in-out;
+
+        &:hover,
+        &--seleccionado {
+            cursor: pointer;
+            background-color: v.$azul;
+            color: v.$blanco;
+        }
+
+        &__heading {
+            font-family: v.$fuente_textos;
+            font-size: 1.6rem;
+            font-weight: 500;
+
+            &--resaltar {
+                font-weight: bold;
+            }
+
+        }
+
+
+    }
+
+}

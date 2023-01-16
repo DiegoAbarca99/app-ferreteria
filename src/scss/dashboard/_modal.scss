@@ -14,11 +14,22 @@
         background-color: v.$blanco;
         padding: 2rem;
         margin: 0 auto;
+        border-radius: 1rem;
         transform: translateY(-30rem);
         transition-property: all;
         transition-duration: 300ms;
         transition-timing-function: ease-in-out;
         opacity: 0;
+
+        .grid {
+            @include m.grid(2, 1rem);
+
+            &__expandir {
+                grid-column: 1 / 3;
+            }
+        }
+
+
 
         input[type="number"] {
             border: 1px solid v.$gris;
@@ -34,11 +45,15 @@
         }
 
         .opciones {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
 
             @include m.telefono {
-                display: flex;
+                flex-direction: row;
                 justify-content: space-between;
             }
+
 
         }
 

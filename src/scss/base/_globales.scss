@@ -66,13 +66,23 @@ img {
     }
 }
 
-.mt-3 {
-    margin-top: 3rem;
-}
 
 .no-margin {
     margin: 0;
 }
+
+.mt-1 {
+    margin-top: .5rem;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mt-3 {
+    margin-top: 3rem;
+}
+
 
 .mt-4 {
     margin-top: 4rem;
@@ -84,6 +94,13 @@ img {
     display: flex;
     justify-content: center;
     gap: 2rem;
+}
+
+.flex-centro-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn {
@@ -99,6 +116,22 @@ img {
     }
 }
 
+.btn-paginador {
+    color: v.$blanco;
+    background-color: v.$azul;
+    font-size: 1.5rem;
+    transition: background-color 500ms ease;
+
+    &:hover {
+        cursor: pointer;
+        background-color: darken($color: v.$azul, $amount: 20%);
+    }
+
+    &:disabled{
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}
 
 .btn-editar {
     color: v.$blanco;
@@ -139,6 +172,19 @@ img {
     border-radius: .5rem;
 }
 
+.btn-editar {
+    color: v.$blanco;
+    background-color: v.$azul;
+    padding: 1.5rem 4rem;
+    font-weight: bold;
+    border: none;
+    border-radius: .5rem;
+
+    &:hover {
+        cursor: pointer;
+        background-color: darken($color: v.$azul, $amount: 20%)
+    }
+}
 
 
 .contenedor-sombra {
@@ -151,6 +197,14 @@ img {
 
 .w-100 {
     width: 100%;
+}
+
+.w-auto {
+    width: 100%;
+
+    @include m.tablet {
+        width: auto
+    }
 }
 
 .resaltar-texto {

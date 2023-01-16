@@ -7,7 +7,9 @@
             "email": "abarcarodriguezdiego@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "dompdf/dompdf": "^2.0"
+    },
     "autoload": {
         "psr-4": {
             "MVC\\":"./",

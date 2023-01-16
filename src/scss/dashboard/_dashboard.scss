@@ -29,6 +29,10 @@
         &__label {
             color: v.$gris;
             font-size: 2rem;
+            &--radio{
+                @extend .formulario__label;
+                font-size: 1.7rem;
+            }
         }
 
         &__input {

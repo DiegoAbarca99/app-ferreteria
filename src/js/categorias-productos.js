@@ -107,7 +107,7 @@ import Swal from 'sweetalert2';
             cantidadPublico1.textContent = `% ${ganancias.gananciapublico1}`;
             cantidadPublico1.classList.add('categoria__cantidad');
             cantidadPublico1.onclick = function () {
-                mostrarFormulario(true, 1, { ...ganancias });
+                mostrarFormulario(true, 1, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Publico1',ganancias.gananciapublico1);
             };
 
             const logo = document.createElement('P');
@@ -130,7 +130,7 @@ import Swal from 'sweetalert2';
             cantidadHerrero2.textContent = `% ${ganancias.gananciaherrero2}`;
             cantidadHerrero2.classList.add('categoria__cantidad');
             cantidadHerrero2.onclick = function () {
-                mostrarFormulario(true, 2, { ...ganancias });
+                mostrarFormulario(true, 2, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Herrero2',ganancias.gananciaherrero2);
             };
 
             const logo2 = document.createElement('P');
@@ -153,7 +153,7 @@ import Swal from 'sweetalert2';
             cantidadHerrero3.textContent = `% ${ganancias.gananciaherrero3}`;
             cantidadHerrero3.classList.add('categoria__cantidad');
             cantidadHerrero3.onclick = function () {
-                mostrarFormulario(true, 3, { ...ganancias });
+                mostrarFormulario(true, 3, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Herrero3',ganancias.gananciaherrero3);
             };
 
             const logo3 = document.createElement('P');
@@ -176,7 +176,7 @@ import Swal from 'sweetalert2';
             cantidadHerrero4.textContent = `% ${ganancias.gananciaherrero4}`;
             cantidadHerrero4.classList.add('categoria__cantidad');
             cantidadHerrero4.onclick = function () {
-                mostrarFormulario(true, 4, { ...ganancias });
+                mostrarFormulario(true, 4, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Herrero4',ganancias.gananciaherrero4);
             };
 
             const logo4 = document.createElement('P');
@@ -199,7 +199,7 @@ import Swal from 'sweetalert2';
             cantidadMayoreo1.textContent = `% ${ganancias.gananciamayoreo1}`;
             cantidadMayoreo1.classList.add('categoria__cantidad');
             cantidadMayoreo1.onclick = function () {
-                mostrarFormulario(true, 5, { ...ganancias });
+                mostrarFormulario(true, 5, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Mayoreo1',ganancias.gananciamayoreo1);
             };
 
             const logo5 = document.createElement('P');
@@ -222,7 +222,7 @@ import Swal from 'sweetalert2';
             cantidadMayoreo2.textContent = `% ${ganancias.gananciamayoreo2}`;
             cantidadMayoreo2.classList.add('categoria__cantidad');
             cantidadMayoreo2.onclick = function () {
-                mostrarFormulario(true, 6, { ...ganancias });
+                mostrarFormulario(true, 6, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Mayoreo2',ganancias.gananciamayoreo2);
             };
 
             const logo6 = document.createElement('P');
@@ -272,7 +272,7 @@ import Swal from 'sweetalert2';
             cantidadIva.textContent = `${impuestos.iva}`;
             cantidadIva.classList.add('categoria__cantidad--impuestos');
             cantidadIva.onclick = function () {
-                mostrarFormulario(false, 1, { ...impuestos });
+                mostrarFormulario(false, 1, { ...impuestos }, 'Editar Impuesto', 'IVA',impuestos.iva);
             };
 
             const logo = document.createElement('P');
@@ -295,7 +295,7 @@ import Swal from 'sweetalert2';
             cantidadFlete.textContent = `${impuestos.flete}`;
             cantidadFlete.classList.add('categoria__cantidad--impuestos');
             cantidadFlete.onclick = function () {
-                mostrarFormulario(false, 2, { ...impuestos });
+                mostrarFormulario(false, 2, { ...impuestos }, 'Editar Impuesto', 'Flete',impuestos.flete);
             };
 
             const logo2 = document.createElement('P');
@@ -318,7 +318,7 @@ import Swal from 'sweetalert2';
             cantidadDescarga.textContent = `${impuestos.descarga}`;
             cantidadDescarga.classList.add('categoria__cantidad--impuestos');
             cantidadDescarga.onclick = function () {
-                mostrarFormulario(false, 3, { ...impuestos });
+                mostrarFormulario(false, 3, { ...impuestos }, 'Editar Impuesto', 'Descarga',impuestos.descarga);
             };
 
             const logo3 = document.createElement('P');
@@ -341,7 +341,7 @@ import Swal from 'sweetalert2';
             cantidadSeguro.textContent = `${impuestos.seguro}`;
             cantidadSeguro.classList.add('categoria__cantidad--impuestos');
             cantidadSeguro.onclick = function () {
-                mostrarFormulario(false, 4, { ...impuestos });
+                mostrarFormulario(false, 4, { ...impuestos }, 'Editar Impuesto', 'Seguro',impuestos.seguro);
             };
 
             const logo4 = document.createElement('P');
@@ -367,7 +367,7 @@ import Swal from 'sweetalert2';
 
         }
 
-        function mostrarFormulario(is_ganancia, tipo, objeto = {}) {
+        function mostrarFormulario(is_ganancia, tipo, objeto = {}, titulo, label,cantidad) {
             let formulario;
 
             //Scroll automaticó al modal desplegado
@@ -387,60 +387,21 @@ import Swal from 'sweetalert2';
 
             formulario += `
             <form class="formulario">
-
-                <legend>${is_ganancia ? 'Editar Porcentaje de Ganancia' : 'Editar Impuesto'}</legend>
+                <legend>${titulo}</legend>
             `;
 
             formulario += ` 
-                <div class="formulario__campo">`;
-            switch (tipo) {
-                case 1:
-                    formulario += ` 
-                            <label class="formulario__label" for="valor">${is_ganancia ? 'Publico1' : 'Iva'}</label>
-                            <input class="formulario__input" step="any" type="number" min="0" name="valor" id="valor"  value="${is_ganancia ? objeto.gananciapublico1 : objeto.iva}"> </input>
-                        </div>`;
-                    break;
-                case 2:
-                    formulario += `
-                            <label class="formulario__label" for="valor">${is_ganancia ? 'Herrero2' : 'Flete'}</label>
-                            <input class="formulario__input" step="any" type="number" min="0" name="valor" id="valor"  value="${is_ganancia ? objeto.gananciaherrero2 : objeto.flete}"> </input>
-                        </div>`;
-                    break;
-                case 3:
-                    formulario += `
-                            <label class="formulario__label" for="valor">${is_ganancia ? 'Herrero3' : 'Descarga'}</label>
-                            <input class="formulario__input" step="any" type="number" min="0" name="valor" id="valor"  value="${is_ganancia ? objeto.gananciaherrero3 : objeto.descarga}"> </input>
-                        </div>`;
-                    break;
-                case 4:
-                    formulario += `
-                            <label class="formulario__label" for="valor">${is_ganancia ? 'Herrero4' : 'Seguro'}</label>
-                            <input class="formulario__input" step="any" type="number" min="0" name="valor" id="valor"  value="${is_ganancia ? objeto.gananciaherrero4 : objeto.seguro}"> </input>
-                        </div>`;
-                    break;
-                case 5:
-                    formulario += `
-                            <label class="formulario__label" for="valor">${is_ganancia ? 'Mayoreo1' : ''}</label>
-                            <input class="formulario__input" step="any" type="number" min="0" name="valor" id="valor"  value="${is_ganancia ? objeto.gananciamayoreo1 : ''}"> </input>
-                        </div>`;
-                    break;
-                case 6:
-                    formulario += `
-                            <label class="formulario__label"  for="valor">${is_ganancia ? 'Mayoreo2' : ''}</label>
-                            <input class="formulario__input" step="any"  type="number" min="0" name="valor" id="valor"  value="${is_ganancia ? objeto.gananciamayoreo2 : ''}"> </input>
-                        </div>`;
-                    break;
-
-                default:
-                    break;
-            }
+                <div class="formulario__campo">
+                    <label class="formulario__label" for="valor">${label}</label>
+                    <input class="formulario__input" step="any" type="number" min="0" name="valor" id="valor"  value="${cantidad}"> </input>
+                </div>`;
 
             formulario += `
                 <div class="opciones">
                     <input type="submit" class="submit-nuevo-valor" value="Guardar Cambios"></input>
                     <button class="cerrar-modal" type="button">Cancelar </button>
-                </div>
-            </form >`;
+                </div >
+            </form > `;
 
             modal.innerHTML = formulario;
 
@@ -724,7 +685,7 @@ import Swal from 'sweetalert2';
                         <button class="cerrar-modal" type="button">Cancelar </button>
                     </div>
 
-                </form>`;
+                </form > `;
 
 
             modal.innerHTML = formulario;
