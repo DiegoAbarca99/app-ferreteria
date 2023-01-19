@@ -24,6 +24,15 @@ class OficinaController {
         ]);
     }
 
+    public static function estado(Router $router){
+        session_start();
+        isAuth();
+        isOficina();
+
+        $router->render('oficina/estado-venta/index',[
+            'titulo'=>'Estado de venta',
+        ]);
+    }
    
 
 

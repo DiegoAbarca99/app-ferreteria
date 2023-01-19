@@ -92,6 +92,7 @@ $router->post('/admin/producto-proveedor/actualizar', [ProductosProveedoresContr
 
 //Dashboard(Oficina)
 $router->get('/oficina/index', [OficinaController::class, 'index']);
+$router->get('/oficina/estado-venta/index', [OficinaController::class, 'estado']);
 
 //Gestión de perfiles(Admin y Oficina)
 $router->get('/perfiles/index', [PerfilesController::class, 'index']);
