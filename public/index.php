@@ -30,7 +30,7 @@ $router->get('/', [AuthController::class, 'login']);
 $router->post('/', [AuthController::class, 'login']);
 $router->get('/logout', [AuthController::class, 'logout']);
 
-
+//--------------Proveedor---------------
 //Dashboard(Proveedor)
 $router->get('/proveedor/index', [ProveedorController::class, 'index']);
 
@@ -52,7 +52,7 @@ $router->get('/proveedor/productos/pdf', [ProductosController::class, 'pdf']);
 
 
 
-
+//------------------Admin------------------------
 //Dashboard(Admin)
 $router->get('/admin/index', [AdminController::class, 'index']);
 $router->get('/historial', [AdminController::class, 'historial']);
@@ -89,9 +89,10 @@ $router->post('/admin/producto-proveedor/crear', [ProductosProveedoresController
 $router->get('/admin/producto-proveedor/actualizar', [ProductosProveedoresController::class, 'actualizar']);
 $router->post('/admin/producto-proveedor/actualizar', [ProductosProveedoresController::class, 'actualizar']);
 
-
+//-------------------Oficina--------------------------
 //Dashboard(Oficina)
 $router->get('/oficina/index', [OficinaController::class, 'index']);
+$router->get('/pedidos/graficar', [OficinaController::class, 'graficar']);
 
 //Gestión de perfiles(Admin y Oficina)
 $router->get('/perfiles/index', [PerfilesController::class, 'index']);
@@ -101,7 +102,6 @@ $router->get('/perfiles/perfil', [PerfilesController::class, 'perfil']);
 $router->get('/perfiles/editar', [PerfilesController::class, 'editar']);
 $router->post('/perfiles/editar', [PerfilesController::class, 'editar']);
 $router->post('/perfiles/eliminar', [PerfilesController::class, 'eliminar']);
-
 //--------------Apis----------------------------------------
 
 //-----Admin----------
@@ -144,6 +144,12 @@ $router->get('/api/clientes', [ApiClientes::class,'index']);
 $router->post('/api/municipios/eliminar', [ApiMunicipios::class,'eliminar']);
 $router->post('/api/pedidos/levantar', [Apipedidos::class,'index']);
 
+//-------Oficina---------
+$router->get('/api/pedidos/listar', [Apipedidos::class,'listar']);
+$router->post('/api/pedidos/estado', [Apipedidos::class,'cambiarEstado']);
+$router->post('/api/pedidos/pagado', [Apipedidos::class,'cambiarPagado']);
+$router->post('/api/pedidos/credito', [Apipedidos::class,'cambiarCredito']);
+$router->get('/api/pedidos/graficar', [Apipedidos::class,'graficar']);
 
 
 $router->comprobarRutas();

@@ -33,6 +33,7 @@
         &--producto {
             @extend .resumen__contenedor;
             border-bottom: .3rem solid v.$grisOscuro;
+            padding: 0;
 
             &:last-of-type {
                 border: none;

@@ -15,3 +15,5 @@ import './eliminar-cliente';
 import './eliminar-municipio';
 import './codigo-postal';
 import './levantar-pedido';
+import './gestionar-pedido';
+import './graficar';

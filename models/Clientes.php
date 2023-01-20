@@ -7,11 +7,12 @@ use Model\ActiveRecord;
 class Clientes extends ActiveRecord
 {
     protected static $tabla = 'clientes';
-    protected static $columnasDB = ['id', 'nombre', 'telefono', 'rfc', 'codigoPostal', 'estado', 'calle', 'numeroExterno', 'numeroInterno', 'colonia', 'cuotaConsumo', 'credito', 'municipios_id'];
+    protected static $columnasDB = ['id', 'nombre', 'telefono','curp', 'rfc', 'codigoPostal', 'estado', 'calle', 'numeroExterno', 'numeroInterno', 'colonia', 'cuotaConsumo', 'credito', 'municipios_id'];
 
     public $id;
     public $nombre;
     public $telefono;
+    public $curp;
     public $rfc;
     public $codigoPostal;
     public $estado;
@@ -29,6 +30,7 @@ class Clientes extends ActiveRecord
         $this->id = $args['id'] ?? null;
         $this->nombre = $args['nombre'] ?? '';
         $this->telefono = $args['telefono'] ?? '';
+        $this->curp = $args['curp'] ?? '';
         $this->rfc = $args['rfc'] ?? '';
         $this->codigoPostal = $args['codigoPostal'] ?? '';
         $this->estado = $args['estado'] ?? '';

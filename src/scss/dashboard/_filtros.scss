@@ -4,6 +4,11 @@
 .filtro {
     width: 100%;
     margin-top: 3rem;
+
+    &--no-margin {
+        margin: 0;
+    }
+
     @include m.grid(1, 2rem);
 
 

@@ -1,30 +1,36 @@
-<?php 
+<?php
+
 namespace Controllers;
+
+use Model\OficinaPedido;
+use Model\OficinaPedidoKilos;
+use Model\PedidosKilo;
+use Model\ProductosPedidos;
 use MVC\Router;
 
-class OficinaController {
-    public static function index(Router $router){
-        session_start(); 
-        isAuth(); 
+class OficinaController
+{
+    public static function index(Router $router)
+    {
+        session_start();
+        isAuth();
         isOficina();
 
-        $router->render('oficina/index',[
-            'titulo'=>'Oficina',
+
+        $router->render('oficina/index', [
+            'titulo' => 'Gestionar Pedidos',
         ]);
     }
 
-    public static function historial(Router $router){
-        session_start(); 
-        isAuth(); 
+    public static function graficar(Router $router)
+    {
+        session_start();
+        isAuth();
         isOficina();
+
         
-
-        $router->render('oficina/historial',[
-            'titulo'=>'Historial',
+        $router->render('oficina/grafico', [
+            'titulo' => 'Estadísticas'
         ]);
     }
-
-   
-
-
 }

@@ -30,8 +30,8 @@
     <?php if ($_SESSION['status'] === 2) { ?>
         <nav class="sidebar__nav">
             <a class=" sidebar__enlace  <?php echo pagina_actual('/oficina') ? 'sidebar__enlace--activo' : '' ?>" href="/oficina/index">Gestionar Pedidos</a>
+            <a class=" sidebar__enlace  <?php echo pagina_actual('/graficar') ? 'sidebar__enlace--activo' : '' ?>" href="/pedidos/graficar">Estadísticas</a>
             <a class=" sidebar__enlace <?php echo pagina_actual('/perfiles') ? 'sidebar__enlace--activo' : '' ?>" href="/perfiles/index">Perfiles</a>
-            <a class=" sidebar__enlace <?php echo pagina_actual('/historial') ? 'sidebar__enlace--activo' : '' ?>" href="/historial">Historial de Cambios</a>
         </nav>
     <?php } ?>
 

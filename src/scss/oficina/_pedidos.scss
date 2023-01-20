@@ -1,0 +1,153 @@
+@use '../base/mixins' as m;
+@use '../base/variables' as v;
+
+
+.contenedor-pedidos {
+    display: flex;
+    flex-direction: column;
+
+    @include m.desktop-xl {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+}
+
+.pedidos {
+
+    margin: 5rem auto;
+    width: 100%;
+
+    .pedido {
+
+        padding: 2rem;
+
+        @include m.shadow;
+
+        @include m.desktop {
+            @include m.grid(2, 1rem);
+        }
+
+        &:nth-child(odd) {
+
+            .pedido__producto {
+
+                &:nth-child(even) {
+                    @include m.bg-gradient(darken(v.$grisClaro, 70%));
+                }
+
+                &:nth-child(odd) {
+                    @include m.bg-gradient(darken(v.$gris, 20%));
+                }
+            }
+
+            .pedido__heading,
+            .pedido__heading--principal,
+            .pedido__parrafo {
+                color: v.$blanco;
+            }
+
+            .pedido__parrafo--alerta {
+                color: v.$rojo;
+            }
+
+            .pedido__parrafo--success {
+                color: lighten(v.$verde, 10%);
+            }
+
+            .pedido__parrafo--total {
+                color: lighten(v.$verde, 30%);
+            }
+
+            @include m.bg-gradient(lighten($color: v.$grisOscuro, $amount: 10));
+
+        }
+
+        &:nth-child(even) {
+            .pedido__producto {
+
+                &:nth-child(even) {
+                    @include m.bg-gradient(lighten(v.$gris, 30%));
+
+                }
+
+                &:nth-child(odd) {
+                    @include m.bg-gradient(darken(v.$grisClaro, 5%));
+                }
+            }
+
+            @include m.bg-gradient(v.$grisClaro);
+        }
+
+
+        &__heading {
+            font-size: 2.5rem;
+            margin: 1rem 0;
+            font-weight: 900;
+
+            &--principal {
+                margin: 0;
+            }
+        }
+
+        &__parrafo {
+            font-size: 1.8rem;
+            margin: 0;
+            color: v.$negro;
+            font-weight: 900;
+            text-align: center;
+            line-height: 1.5;
+
+            &--alerta {
+                color: v.$rojo;
+            }
+
+            &--success{
+                color: v.$verde;
+            }
+
+            span {
+                font-size: 1.6rem;
+                font-weight: 400;
+            }
+
+            &--total {
+                @extend .pedido__parrafo;
+                color: v.$verde;
+                font-size: 2.3rem;
+
+                span {
+                    font-size: 1.9rem;
+                    font-weight: 400;
+                }
+            }
+        }
+
+        &__contenedor,
+        &__producto,
+        &__productos {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        &__contenedor {
+            padding: 1.5rem 1rem;
+        }
+
+
+        &__producto {
+            @include m.shadow;
+            padding: 2rem;
+            margin: 0;
+            border-radius: .5rem;
+
+        }
+
+
+    }
+
+}
