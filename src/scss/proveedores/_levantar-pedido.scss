@@ -17,7 +17,7 @@
 .resumen {
     &__contenedor {
         margin: 1rem auto;
-        padding: 2rem;
+        padding: 1rem 2rem 0 2rem;
 
         @include m.tablet {
             display: flex;
@@ -66,8 +66,8 @@
     &__total {
         @extend .resumen__parrafo;
         margin-top: 1rem;
-        border-top: .3rem solid v.$rojo;
-        color: v.$rojo;
+        border-top: .3rem solid v.$verde;
+        color: v.$verde;
         font-weight: bold;
         text-align: center;
         font-size: 2.5rem;

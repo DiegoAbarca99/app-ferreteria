@@ -1408,6 +1408,8 @@ const { default: Swal } = require("sweetalert2");
             const productos = pedido.productos.length > 0 ? JSON.stringify(pedido.productos) : '';
             const productoskilos = pedido.productoskilos.length > 0 ? JSON.stringify(pedido.productoskilos) : '';
 
+
+
             const datos = new FormData();
             datos.append('usuarios_id', pedido.usuarios_id);
             datos.append('cliente', pedido.cliente);
@@ -1433,6 +1435,8 @@ const { default: Swal } = require("sweetalert2");
                     });
                 }
 
+            
+
             } catch (error) {
                 console.log(error);
                 Swal.fire('Ha ocurrido un Error', 'Error', 'error');
@@ -1440,6 +1444,7 @@ const { default: Swal } = require("sweetalert2");
 
 
         }
+
 
         function limpiarHtml(contenedor) {
             while (contenedor.firstChild) {

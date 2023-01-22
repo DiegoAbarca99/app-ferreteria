@@ -69,7 +69,7 @@ import Swal from 'sweetalert2';
             fecha = inputFecha.value;
             usuario = buscador.value;
 
-            console.log(pagado)
+
             if (usuarioInvalido) {
                 Swal.fire('El usuario ingresado no es valido!', '', 'error');
             } else if (!pagado) {
@@ -77,8 +77,7 @@ import Swal from 'sweetalert2';
                 Swal.fire('Debe especificar el tipo de pago!', '', 'error');
 
             } else if (!tipo) {
-                Swal.fire('Debe especificar el tipo de usuario!', '', 'error');
-
+                Swal.fire('Debe especificar el tipo de filtro!', '', 'error');
             } else {
                 await obtenerPedidos();
                 obtenerResumen();
@@ -141,7 +140,7 @@ import Swal from 'sweetalert2';
 
 
                 const headingPrincipal = document.createElement('H3');
-                headingPrincipal.innerHTML = `Pedido #${pedidos[i].id}`;
+                headingPrincipal.innerHTML = `${pedidos[i].folio}`;
                 headingPrincipal.classList.add('pedido__heading--principal');
 
                 //---------Usuario---------------
@@ -189,6 +188,8 @@ import Swal from 'sweetalert2';
                 const cuota = document.createElement('P');
                 cuota.innerHTML = `Cuota Consumo: <span>${pedidos[i].cuota}</span>`;
                 cuota.classList.add('pedido__parrafo');
+                if (pedidos[i].pagado == 1) cuota.classList.add('pedido__parrafo--success');
+                else if (pedidos[i].pagado == 0) cuota.classList.add('pedido__parrafo--alerta');
 
                 const telefono = document.createElement('P');
                 telefono.innerHTML = `Teléfono: <span>${pedidos[i].telefono}</span>`;
@@ -543,7 +544,7 @@ import Swal from 'sweetalert2';
                 if (pedidos[index - 1] && (pedido.cliente == pedidos[index - 1].cliente)) cuotaValida = false;
                 else cuotaValida = true;
                 if (cuotaValida) gananciaTotal += parseFloat(pedido.cuota);
-              
+
             });
 
             let numeroPedidos = 0;

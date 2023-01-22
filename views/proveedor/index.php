@@ -97,15 +97,15 @@
                     <div class="formulario__contenedor-campos">
                         <div class="formulario__campo">
                             <div class="flex-centro-col">
-                                <label for="pagado" class="formulario__label">Pagado:</label>
+                                <label for="pagado" class="text-dark-heading">Pagado:</label>
                                 <div class="formulario__contenedor--radios">
                                     <div class="formulario__radio">
-                                        <label for="si" class="formulario__label--radio">Si</label>
+                                        <label for="si" class="text-dark">Si</label>
                                         <input type="radio" name="pagado" value="1" id="si">
                                     </div>
 
                                     <div class="formulario__radio">
-                                        <label for="no" class="formulario__label--radio">No</label>
+                                        <label for="no" class="text-dark">No</label>
                                         <input type="radio" name="pagado" value="0" id="no">
                                     </div>
                                 </div>
@@ -115,14 +115,14 @@
                         <div class="formulario__campo">
 
                             <div class="flex-centro-col">
-                                <label for="pagado" class="formulario__label">Método de pago:</label>
+                                <label for="pagado" class="text-dark-heading">Método de pago:</label>
                                 <div class="formulario__radio no-margin">
-                                    <label for="efectivo" class="formulario__label--radio">Efectivo</label>
+                                    <label for="efectivo" class="text-dark">Efectivo</label>
                                     <input type="radio" name="metodoPago" value="1" id="efectivo">
                                 </div>
 
                                 <div class="formulario__radio no-margin">
-                                    <label for="transferencia" class="formulario__label--radio">Transferencia</label>
+                                    <label for="transferencia" class="text-dark">Transferencia</label>
                                     <input type="radio" name="metodoPago" value="0" id="transferencia">
                                 </div>
 
@@ -133,20 +133,20 @@
                         <div class="formulario__campo--extender formulario__campo ">
 
                             <div class="flex-centro-col">
-                                <label for="status" class="formulario__label">Estado:</label>
+                                <label for="status" class="text-dark-heading">Estado:</label>
 
                                 <div class="formulario__radio no-margin">
-                                    <label for="entregado" class="formulario__label--radio">Entregado</label>
+                                    <label for="entregado" class="text-dark">Entregado</label>
                                     <input type="radio" name="status" value="2" id="entregado">
                                 </div>
 
                                 <div class="formulario__radio no-margin">
-                                    <label for="enviado" class="formulario__label--radio">Enviado</label>
+                                    <label for="enviado" class="text-dark">Enviado</label>
                                     <input type="radio" name="status" value="1" id="enviado">
                                 </div>
 
                                 <div class="formulario__radio no-margin">
-                                    <label for="envio" class="formulario__label--radio">Proceso de Envio</label>
+                                    <label for="envio" class="text-dark">Proceso de Envio</label>
                                     <input type="radio" name="status" value="0" id="envio">
                                 </div>
 

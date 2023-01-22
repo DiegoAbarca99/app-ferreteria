@@ -29,6 +29,17 @@
             @include m.grid(2, 1rem);
         }
 
+        &__heading--principal {
+            font-size: 2.8rem;
+        }
+
+        &__heading--principal,
+        &__heading,
+        &__parrafo {
+            text-align: center;
+
+        }
+
         &:nth-child(odd) {
 
             .pedido__producto {
@@ -47,6 +58,9 @@
             .pedido__parrafo {
                 color: v.$blanco;
             }
+
+
+
 
             .pedido__parrafo--alerta {
                 color: v.$rojo;
@@ -103,7 +117,7 @@
                 color: v.$rojo;
             }
 
-            &--success{
+            &--success {
                 color: v.$verde;
             }
 

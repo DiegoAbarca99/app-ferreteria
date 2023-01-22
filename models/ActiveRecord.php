@@ -135,11 +135,26 @@ class ActiveRecord
         return $resultado;
     }
 
-    
+
     // Filtra consultas aproximadas a una columna en base a los datos enviados por un buscador
     public static function filtrar($columna, $valor)
     {
         $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} LIKE '%${valor}%'";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
+    public static function filtrarArray($array = [])
+    {
+        $query = "SELECT * FROM " . static::$tabla . ' WHERE';
+        foreach ($array as $key => $value) {
+            if ($key === array_key_last($array)) {
+                $query .= " ${key} LIKE '%${value}%' ORDER BY ${key} DESC";
+            } else {
+                $query .= " ${key} = '${value}' AND";
+            }
+        }
+        
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
@@ -229,7 +244,7 @@ class ActiveRecord
         $query .= join("', '", array_values($atributos));
         $query .= " ') ";
 
-      
+
 
         // Resultado de la consulta
         $resultado = self::$db->query($query);
@@ -260,7 +275,7 @@ class ActiveRecord
         $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
         $query .= " LIMIT 1 ";
 
-       
+
 
         // debuguear($query);
 

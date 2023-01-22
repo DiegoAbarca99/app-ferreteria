@@ -23,6 +23,7 @@
             <a class=" sidebar__enlace  <?php echo pagina_actual('/index') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/index">Levantar Pedido</a>
             <a class=" sidebar__enlace  <?php echo pagina_actual('/clientes') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/clientes">Clientes</a>
             <a class=" sidebar__enlace  <?php echo pagina_actual('/productos') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/productos">Productos</a>
+            <a class=" sidebar__enlace  <?php echo pagina_actual('/historial-pedidos') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/historial-pedidos">Historial Pedidos</a>
         </nav>
     <?php } ?>
 

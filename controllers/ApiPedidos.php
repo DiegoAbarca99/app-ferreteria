@@ -35,6 +35,10 @@ class ApiPedidos
                 echo json_encode([]);
                 exit;
             }
+            $cliente = Clientes::find($pedido->clientes_id);
+            $pedido->total += floatval($cliente->cuotaConsumo);
+            $folio = uniqid();
+            $pedido->folio = $folio;
 
             $resultado = $pedido->guardar();
 
@@ -80,7 +84,7 @@ class ApiPedidos
                             $terminado = true;
                             echo json_encode([
                                 'tipo' => 'exito',
-                                'mensaje' => 'Pedido Realizado Correctamente'
+                                'mensaje' => 'Su folio de compra es el siguiente: ' . $folio
                             ]);
                         }
                     } else {
@@ -162,7 +166,7 @@ class ApiPedidos
 
 
 
-        $consulta = "  SELECT pedidos.id,fecha, pagado, pedidos.status, metodoPago, total, usuarios.nombre as usuario, usuarios.surcursal,";
+        $consulta = "  SELECT pedidos.id,fecha, folio, pagado, pedidos.status, metodoPago, total, usuarios.nombre as usuario, usuarios.surcursal,";
         $consulta .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $consulta .= " clientes.cuotaConsumo as cuota, clientes.telefono, productosproveedores.nombre as producto, ";
         $consulta .= " productospedidos.cantidad, productospedidos.precio, productospedidos.tipo";
@@ -180,11 +184,16 @@ class ApiPedidos
         if (empty($usuario)) {
             $consulta .= " WHERE pedidos.fecha  LIKE  '{$fecha}%' AND pedidos.pagado = '{$pagado}' ORDER BY pedidos.id ASC";
         } else {
-            $consulta .= " WHERE pedidos.fecha  LIKE  '{$fecha}%' AND pedidos.pagado = '{$pagado}'";
-            if ($tipo == 'proveedor') {
-                $consulta .= " AND usuarios.nombre LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
-            } else if ($tipo == 'cliente') {
-                $consulta .= " AND clientes.nombre LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
+
+            if ($tipo == 'folio') {
+                $consulta .= " WHERE pedidos.folio LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
+            } else {
+                $consulta .= " WHERE pedidos.fecha  LIKE  '{$fecha}%' AND pedidos.pagado = '{$pagado}'";
+                if ($tipo == 'proveedor') {
+                    $consulta .= " AND usuarios.nombre LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
+                } else if ($tipo == 'cliente') {
+                    $consulta .= " AND clientes.nombre LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
+                }
             }
         }
 
@@ -194,7 +203,7 @@ class ApiPedidos
 
 
 
-        $query = "  SELECT pedidos.id, pagado,fecha, pedidos.status, metodoPago, total, usuarios.nombre as usuario, usuarios.surcursal,";
+        $query = "  SELECT pedidos.id, pagado,fecha, folio, pedidos.status, metodoPago, total, usuarios.nombre as usuario, usuarios.surcursal,";
         $query .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $query .= " clientes.cuotaConsumo as cuota, clientes.telefono, precioskilo.nombre as producto, ";
         $query .= " pedidoskilo.cantidad, pedidoskilo.precio, pedidoskilo.tipo";
@@ -209,14 +218,19 @@ class ApiPedidos
         $query .= " ON pedidoskilo.pedidos_id=pedidos.id ";
         $query .= " INNER JOIN precioskilo ";
         $query .= " ON pedidoskilo.precioskilo_id=precioskilo.id ";
-        if (empty($usuario)) {
+        if (empty($usuario) || empty($tipo)) {
             $query .= " WHERE pedidos.fecha  LIKE  '{$fecha}%' AND pedidos.pagado = '{$pagado}' ORDER BY pedidos.id ASC ";
         } else {
-            $query .= " WHERE pedidos.fecha  LIKE  '{$fecha}%' AND pedidos.pagado = '{$pagado}'";
-            if ($tipo == 'proveedor') {
-                $query .= " AND usuarios.nombre LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
-            } else if ($tipo == 'cliente') {
-                $query .= " AND clientes.nombre LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
+
+            if ($tipo == 'folio') {
+                $query .= " WHERE pedidos.folio LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
+            } else {
+                $query .= " WHERE pedidos.fecha  LIKE  '{$fecha}%' AND pedidos.pagado = '{$pagado}'";
+                if ($tipo == 'proveedor') {
+                    $query .= " AND usuarios.nombre LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
+                } else if ($tipo == 'cliente') {
+                    $query .= " AND clientes.nombre LIKE '%{$usuario}%' ORDER BY pedidos.id ASC";
+                }
             }
         }
 
@@ -382,8 +396,8 @@ class ApiPedidos
         }
 
         $arregloClasificado = [];
-        $arregloTotales = [0,0,0,0];
-        
+        $arregloTotales = [0, 0, 0, 0];
+
 
         foreach ($pedidos as  $pedido) {
             if (preg_match_all('/20..\-..\-0([1-7])/', $pedido->fecha)) $arregloClasificado[0][] = $pedido;
@@ -399,7 +413,7 @@ class ApiPedidos
             }
         }
 
-       
+
 
 
         echo json_encode($arregloTotales);

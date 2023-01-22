@@ -22,6 +22,10 @@
                 <label for="cliente">Cliente</label>
                 <input type="radio" name="tipo" id="cliente" value="cliente">
             </div>
+            <div class="formulario__campo">
+                <label for="folio">Folio</label>
+                <input type="radio" name="tipo" id="folio" value="folio">
+            </div>
 
         </div>
     </div>

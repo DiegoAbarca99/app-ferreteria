@@ -65,6 +65,10 @@ img {
         margin-top: 0;
     }
 }
+.align-center{
+    display: flex;
+    align-items: center;
+}
 
 .no-margin {
     margin: 0;
@@ -87,7 +91,17 @@ img {
     margin-top: 4rem;
 }
 
-
+.text-dark{
+    color: v.$negro;
+    font-weight: 900;
+    font-size: 1.8rem;
+}
+.text-dark-heading{
+    @extend .text-dark;
+    font-size: 2.3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
 
 .flex-centro {
     display: flex;

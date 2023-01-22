@@ -33,6 +33,8 @@ $router->get('/logout', [AuthController::class, 'logout']);
 //--------------Proveedor---------------
 //Dashboard(Proveedor)
 $router->get('/proveedor/index', [ProveedorController::class, 'index']);
+$router->get('/proveedor/historial-pedidos', [ProveedorController::class, 'historial']);
+$router->post('/proveedor/historial-pedidos', [ProveedorController::class, 'historial']);
 
 //Gestión de Clientes(Proveedor)
 $router->get('/proveedor/clientes', [ClientesController::class, 'index']); 
@@ -48,6 +50,7 @@ $router->get('/proveedor/productos', [ProductosController::class, 'index']);
 $router->get('/proveedor/productos/kilos', [ProductosController::class, 'indexKilos']);
 $router->get('/proveedor/productos/kilos/pdf', [ProductosController::class, 'pdfkilos']);
 $router->get('/proveedor/productos/pdf', [ProductosController::class, 'pdf']);
+
 
 
 

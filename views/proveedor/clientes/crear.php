@@ -15,6 +15,13 @@
             <legend class="formulario__legend">Datos del Cliente</legend>
 
             <div class="formulario__campo">
+                <label for="curp" class="formulario__label">Curp</label>
+                <input type="text" id="curp" name="curp" class="formulario__input" placeholder='Introduzca su Curp' value="<?php echo s($cliente->curp); ?>">
+                <a href="https://www.gob.mx/curp/" target="_blank" >Obtenlo aqui.</a>
+            </div>
+
+
+            <div class="formulario__campo">
                 <label for="nombre" class="formulario__label">Nombre Completo</label>
                 <input type="text" id="nombre" name="nombre" class="formulario__input" placeholder='Ej. Juan Perèz' value="<?php echo s($cliente->nombre); ?>">
             </div>
@@ -27,6 +34,7 @@
             <div class="formulario__campo">
                 <label for="rfc" class="formulario__label">RFC</label>
                 <input type="text" id="rfc" name="rfc" class="formulario__input" placeholder='Ingrese su RFC' value="<?php echo s($cliente->rfc); ?>">
+                <a href="https://www.mi-rfc.com.mx/consulta-rfc-homoclave" target="_blank" >Obtenlo aqui.</a>
             </div>
 
 
@@ -43,12 +51,12 @@
 
             <div class="formulario__campo">
                 <label for="estado" class="formulario__label">Estado</label>
-                <input type="text" id="estado" name="estado" class="formulario__input"  value="<?php echo s($cliente->estado); ?>" >
+                <input type="text" id="estado" name="estado" class="formulario__input" value="<?php echo s($cliente->estado); ?>">
             </div>
 
             <div class="formulario__campo">
                 <label for="municipio" class="formulario__label">Municipio</label>
-                <input type="text" id="municipio" name="municipio" class="formulario__input" value="<?php echo s($municipio->nombre); ?>" >
+                <input type="text" id="municipio" name="municipio" class="formulario__input" value="<?php echo s($municipio->nombre); ?>">
             </div>
 
             <div class="formulario__campo">
@@ -83,20 +91,6 @@
 
             <legend class="formulario__legend">Información Extra</legend>
 
-            <div class="formulario__contenedor-campos">
-                <div class="formulario__campo">
-                    <label class="formulario__label">Crèdito Activo</label>
-                    <div class="formulario__contenedor--radios">
-                        <div class="formulario__radio">
-                            <label for="si" class="formulario__label">Si</label>
-                            <input type="radio" name="credito" id="si" value="1" <?php echo $cliente->credito == '1' ? 'checked' : ''; ?>>
-                        </div>
-                        <div class="formulario__radio">
-                            <label for="no" class="formulario__label">No</label>
-                            <input type="radio" name="credito" id="no" value="0" <?php echo $cliente->credito == '0' ? 'checked' : ''; ?>>
-                        </div>
-                    </div>
-                </div>
 
 
                 <div class="formulario__campo">

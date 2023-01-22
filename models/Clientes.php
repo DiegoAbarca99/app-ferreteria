@@ -7,7 +7,7 @@ use Model\ActiveRecord;
 class Clientes extends ActiveRecord
 {
     protected static $tabla = 'clientes';
-    protected static $columnasDB = ['id', 'nombre', 'telefono','curp', 'rfc', 'codigoPostal', 'estado', 'calle', 'numeroExterno', 'numeroInterno', 'colonia', 'cuotaConsumo', 'credito', 'municipios_id'];
+    protected static $columnasDB = ['id', 'nombre', 'telefono', 'curp', 'rfc', 'codigoPostal', 'estado', 'calle', 'numeroExterno', 'numeroInterno', 'colonia', 'cuotaConsumo', 'credito', 'municipios_id'];
 
     public $id;
     public $nombre;
@@ -50,6 +50,14 @@ class Clientes extends ActiveRecord
             self::$alertas['error'][] = 'El nombre completo es obligatorio';
         }
 
+        if (!$this->curp) {
+            self::$alertas['error'][] = 'El CURP es obligatorio';
+        }
+
+        if (!validarCURP($this->curp)) {
+            self::$alertas['error'][] = 'El CURP no es valido';
+        }
+
         if (!$this->telefono) {
             self::$alertas['error'][] = 'El telefono es obligatorio';
         }
@@ -65,8 +73,8 @@ class Clientes extends ActiveRecord
         if (!$this->rfc) {
             self::$alertas['error'][] = 'Debe especificar el rfc';
         }
-        if (strlen($this->rfc) != 13) {
-            self::$alertas['error'][] = 'El rfc debe tener 13 caràcteteres';
+        if (!preg_match('/^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$/', $this->rfc)) {
+            self::$alertas['error'][] = 'El rfc no es valido';
         }
 
         if (!$this->codigoPostal) {
@@ -92,10 +100,6 @@ class Clientes extends ActiveRecord
 
         if (!$this->colonia) {
             self::$alertas['error'][] = 'Debe especificar la colonia';
-        }
-
-        if (is_null($this->credito)) {
-            self::$alertas['error'][] = 'Debe especificar si cuenta con un crèdito activo';
         }
 
 

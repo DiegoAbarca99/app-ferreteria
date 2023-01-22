@@ -6,6 +6,7 @@ use Model\Clientes;
 use Model\Municipios;
 use MVC\Router;
 use Dompdf\Dompdf;
+use Model\Pedidos;
 
 class ClientesController
 {
@@ -193,10 +194,11 @@ class ClientesController
         }
 
         $municipio = Municipios::find($cliente->municipios_id);
+        $pedidos = Pedidos::belongsTo('clientes_id', $cliente->id);
+
 
         $alertas = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
 
             $municipio->nombre = $_POST['municipio'];
             $resultado = [];
@@ -211,7 +213,19 @@ class ClientesController
                 }
             }
 
+            $cuotaAnterior = $cliente->cuotaConsumo;
             $cliente->sincronizar($_POST);
+            if ($cuotaAnterior != $cliente->cuotaConsumo) $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
+            foreach ($pedidos as $pedido) {
+                if ($cuotaAnterior > $cliente->cuotaConsumo) {
+                    $pedido->total = floatval($pedido->total) - $diferencia;
+                } else {
+                    $pedido->total = floatval($pedido->total) + $diferencia;
+                }
+                $pedido->guardar();
+            }
+
+
             $cliente->id = $id;
             $cliente->municipios_id = $resultado['id'] ?? '';
             $alertas = $cliente->validar();
