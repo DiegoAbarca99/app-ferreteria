@@ -39,7 +39,7 @@ class Clientes extends ActiveRecord
         $this->numeroInterno = $args['numeroInterno'] ?? '';
         $this->colonia = $args['colonia'] ?? '';
         $this->cuotaConsumo = $args['cuotaConsumo'] ?? '';
-        $this->credito = $args['credito'] ?? '';
+        $this->credito = $args['credito'] ?? '0';
         $this->municipios_id = $args['municipios_id'] ?? '';
     }
 

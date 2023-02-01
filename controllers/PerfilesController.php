@@ -4,8 +4,8 @@ namespace Controllers;
 
 use MVC\Router;
 use Model\Usuario;
-use Classes\Paginacion;
 
+//Controlador destinado al CRUD de los perfiles de usuarios.
 class PerfilesController
 {
 
@@ -16,48 +16,18 @@ class PerfilesController
         isAuth();
         isAllowed(); //Corrobora que el usuario sea admin o tenga status de oficina
 
+        //TODO: Filtrar usuario por Nombre
+        //Sanitizar usuario
+        $usuario = $_GET['nombre'] ?? '';
+        $usuarioSanitizado = s($usuario);
 
-
-
-        $pagina_actual = $_GET['page'];
-        $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
-
-        if (!$pagina_actual || $pagina_actual < 1) {
-            header('Location:/perfiles/index?page=1');
-        }
-
-        $total_registros = 0;
+        //Status de Oficina
         if ($_SESSION['status'] === 2) {
-            $total_registros = Usuario::total('status', 1);
+
+            $usuarios = Usuario::Notall('status', 0);
+            //TODO: Filtrar usuarios por surcusal y nombre
         } else {
-            $total_registros = Usuario::totalAndNot('status', 0);
-        }
-
-        $registro_por_pagina = 5;
-
-        $paginacion = new Paginacion($pagina_actual, $registro_por_pagina, $total_registros);
-
-        if ($paginacion->total_paginas() < $pagina_actual) {
-            header('Location:/perfiles/index?page=1');
-        }
-
-
-
-        if ($_SESSION['status'] === 2) {
-            $usuario = $_GET['nombre'] ?? '';
-            if ($usuario) {
-                $usuarios = Usuario::whereArray(['status' => 1, 'usuario' => $usuario]);
-            } else {
-                $usuarios = Usuario::belongsToAndPag('status', 1, $registro_por_pagina, $paginacion->offset());
-            }
-        } else {
-            $usuario = $_GET['nombre'] ?? '';
-            if ($usuario) {
-
-                $usuarios = Usuario::whereArray(['status' => 1, 'status' => 2, 'usuario' => $usuario]);
-            } else {
-                $usuarios = Usuario::whereNotAndPag($paginacion->offset(), $registro_por_pagina, 'status', 0);
-            }
+            $usuarios = Usuario::Notall('status', 0);
         }
 
 
@@ -65,11 +35,9 @@ class PerfilesController
         $router->render('perfiles/index', [
             'titulo' => 'Perfiles',
             'usuarios' => $usuarios,
-            'paginacion' => $paginacion->paginacion()
         ]);
     }
 
-    //Muestra formulario y envia petición POST para guardar un usuario 
     public static function crear(Router $router)
     {
         session_start();
@@ -92,7 +60,7 @@ class PerfilesController
                 if ($usuarioPrevio) {
                     Usuario::setAlerta('error', 'Ya existe un usuario con ese nombre de usuario');
                 } else {
-                    //Crear nuevo Usuario
+
                     $usuario->hashearPassword();
                     $usuario->guardar();
                     header('Location: /perfiles/index');
@@ -118,20 +86,14 @@ class PerfilesController
         //Obtiene y valida Id pasado en la URL 
         $id = filter_Var($_GET['id'], FILTER_VALIDATE_INT);
 
+        if (!$id)  header('Location:/');
 
+        if ($_SESSION['status'] === 0) $usuario = Usuario::find($id); //Administrador
 
-        if (!$id) {
-            header('Location:/');
-        }
+        if ($_SESSION['status'] === 2) $usuario = Usuario::whereNotArray(['status' => 0, 'id' => $id,]); //Oficina
 
+        if (!$usuario)  header('Location:/');
 
-
-        $usuario = Usuario::find($id);
-
-
-        if (!$usuario) {
-            header('Location:/');
-        }
 
 
         $router->render('perfiles/perfil', [
@@ -140,7 +102,7 @@ class PerfilesController
         ]);
     }
 
-    //Muestra formulario y envia petición POST para guardar un usuario 
+
     public static function editar(Router $router)
     {
         session_start();
@@ -150,35 +112,35 @@ class PerfilesController
         //Obtiene y valida Id pasado en la URL 
         $id = filter_Var($_GET['id'], FILTER_VALIDATE_INT);
 
+        if (!$id)  header('Location:/');
 
-        if (!$id) {
-            header('Location:/');
-        }
+        if ($_SESSION['status'] === 0) $usuario = Usuario::find($id); //Administrador
 
+        if ($_SESSION['status'] === 2) $usuario = Usuario::whereNotArray(['status' => 0, 'id' => $id,]); //Oficina
 
+        if (!$usuario)  header('Location:/');
 
-        $usuario = Usuario::find($id);
-
-
-        if (!$usuario) {
-            header('Location:/');
-        }
-
+        $nombreUsuarioPrevio = $usuario->usuario;
 
         $alertas = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $usuario->sincronizar($_POST);
 
-
+            $usuario->sincronizar($_POST);    
             $alertas = $usuario->validarCuenta();
 
             if (empty($alertas)) {
 
-                //Crear nuevo Usuario
-                $usuario->hashearPassword();
-                $usuario->guardar();
-                header('Location: /perfiles/index');
+                $usuarioExistente = Usuario::where('usuario', $usuario->usuario);
+
+
+                if (!is_null($usuarioExistente) && ($usuarioExistente->usuario !== $nombreUsuarioPrevio)) {
+                    Usuario::setAlerta('error', 'Ya existe un perfil con ese nombre de usuario');
+                } else {
+                    $usuario->hashearPassword();
+                    $usuario->guardar();
+                    header('Location: /perfiles/index');
+                }
             }
         }
 
@@ -198,6 +160,7 @@ class PerfilesController
 
             if (!$id) {
                 echo json_encode([]);
+                exit;
             }
 
             $usuario = Usuario::find($id);

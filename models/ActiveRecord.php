@@ -127,14 +127,6 @@ class ActiveRecord
         return array_shift($resultado);
     }
 
-    // Retorna registro de la BD en función de la paginación dada
-    public static function paginar($por_pagina, $offset)
-    {
-        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC LIMIT ${por_pagina} OFFSET ${offset} ";
-        $resultado = self::consultarSQL($query);
-        return $resultado;
-    }
-
 
     // Filtra consultas aproximadas a una columna en base a los datos enviados por un buscador
     public static function filtrar($columna, $valor)
@@ -154,7 +146,7 @@ class ActiveRecord
                 $query .= " ${key} = '${value}' AND";
             }
         }
-        
+
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
@@ -163,6 +155,21 @@ class ActiveRecord
     public static function where($columna, $valor)
     {
         $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
+        $resultado = self::consultarSQL($query);
+        return array_shift($resultado);
+    }
+
+    // Busqueda Where con Array y not
+    public static function whereNotArray($array)
+    {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE NOT";
+        foreach ($array as $key => $value) {
+            if ($key === array_key_last($array)) {
+                $query .= " ${key} = '${value}'";
+            } else {
+                $query .= " ${key} = '${value}' AND ";
+            }
+        }
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
@@ -201,14 +208,6 @@ class ActiveRecord
             $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}' ORDER BY ${columna2} ${orden} ";
         }
 
-        $resultado = self::consultarSQL($query);
-        return  $resultado;
-    }
-
-    //Busca todos los registros que pertenecen a un ID y en base a una paginación dada
-    public static function belongsToAndPag($columna, $valor, $por_pagina, $offset)
-    {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}' ORDER BY id DESC LIMIT ${por_pagina} OFFSET ${offset} ";
         $resultado = self::consultarSQL($query);
         return  $resultado;
     }

@@ -65,9 +65,7 @@
         <?php } ?>
     </div>
 
-    <?php
-    echo $paginacion;
-    ?>
+   
 </div>
 
 <?php include_once __DIR__ . '/../templates/footer-dashboard.php' ?>
