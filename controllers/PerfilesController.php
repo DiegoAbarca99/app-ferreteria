@@ -1,6 +1,7 @@
 <?php
 
 namespace Controllers;
+use Model\Historico;
 
 use Model\Sucursales;
 use MVC\Router;
@@ -16,6 +17,7 @@ class PerfilesController
         session_start();
         isAuth();
         isAllowed(); //Corrobora que el usuario sea admin o tenga status de oficina
+<<<<<<< Updated upstream
 
         //Sanitizar usuario
         $nombreUsuarioFiltrado = $_GET['nombre'] ?? '';
@@ -30,6 +32,39 @@ class PerfilesController
                     'usuario' => $nombreUsuarioSanitizado,
                     'status' => 0
                 ]);
+=======
+        
+
+
+        $pagina_actual = $_GET['page'];
+        $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
+
+        if (!$pagina_actual || $pagina_actual < 1) {
+            header('Location:/perfiles/index?page=1');
+        }
+
+        $total_registros = 0;
+        if ($_SESSION['status'] === 2) {
+            $total_registros = Usuario::total('status', 1);
+        } else {
+            $total_registros = Usuario::totalAndNot('status', 0);
+        }
+
+        $registro_por_pagina = 5;
+
+        $paginacion = new Paginacion($pagina_actual, $registro_por_pagina, $total_registros);
+
+        if ($paginacion->total_paginas() < $pagina_actual) {
+            header('Location:/perfiles/index?page=1');
+        }
+
+
+
+        if ($_SESSION['status'] === 2) {
+            $usuario = $_GET['nombre'] ?? '';
+            if ($usuario) {
+                $usuarios = Usuario::whereArray(['status' => 1, 'usuario' => $usuario]);
+>>>>>>> Stashed changes
             } else {
                 $usuarios = Usuario::filtrar('usuario', $nombreUsuarioSanitizado);
             }
@@ -163,16 +198,36 @@ class PerfilesController
 
         //Obtiene y valida Id pasado en la URL 
         $id = filter_Var($_GET['id'], FILTER_VALIDATE_INT);
+<<<<<<< Updated upstream
 
         if (!$id)  header('Location:/');
+=======
+        
+>>>>>>> Stashed changes
 
         if ($_SESSION['status'] === 0) $usuario = Usuario::find($id); //Administrador
 
         if ($_SESSION['status'] === 2) $usuario = Usuario::whereNotArray(['status' => 0, 'id' => $id,]); //Oficina
 
+<<<<<<< Updated upstream
         if (!$usuario)  header('Location:/');
 
         $nombreUsuarioPrevio = $usuario->usuario;
+=======
+        
+
+        if (!$usuario) {
+            header('Location:/');
+        }
+
+        $arg=['usuario'=>$usuario->usuario,
+        'nombre'=>$usuario->nombre,
+        'sucursal'=>$usuario->surcursal,
+        'detalles','accion'];
+
+        $historico = new Historico($arg);
+        
+>>>>>>> Stashed changes
 
         $alertas = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -192,6 +247,7 @@ class PerfilesController
 
             if (empty($alertas)) {
 
+<<<<<<< Updated upstream
                 $usuarioExistente = Usuario::where('usuario', $usuario->usuario);
 
 
@@ -202,6 +258,13 @@ class PerfilesController
                     $usuario->guardar();
                     header('Location: /perfiles/index');
                 }
+=======
+                //Crear nuevo Usuario
+                $usuario->hashearPassword();
+                $usuario->guardar();
+                $historico->guardar();
+                header('Location: /perfiles/index');
+>>>>>>> Stashed changes
             }
         }
 

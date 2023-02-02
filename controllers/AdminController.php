@@ -1,12 +1,18 @@
 <?php 
+
 namespace Controllers;
+
 use MVC\Router;
+use Model\Usuario;
+use Model\Historico;
+use Classes\paginacion;
 
 class AdminController {
     public static function index(Router $router){
         session_start(); 
         isAuth(); 
         isAdmin();
+        isAllowed();
         
 
         $router->render('admin/index',[
@@ -18,10 +24,11 @@ class AdminController {
         session_start(); 
         isAuth(); 
         isAdmin();
-        
 
         $router->render('admin/historial',[
-            'titulo'=>'Historial',
+            'titulo'=>'Historial'
+            
+            
         ]);
     }
 
