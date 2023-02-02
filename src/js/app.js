@@ -1,4 +1,3 @@
-import './perfil';
 import './sidebar';
 import './categorias-productos';
 import './formulario-acero';
@@ -17,3 +16,11 @@ import './codigo-postal';
 import './levantar-pedido';
 import './gestionar-pedido';
 import './graficar';
+
+import './perfiles/perfilStatusDomScripting';
+import './perfiles/sucursales/añadirSucursal';
+import './perfiles/sucursales/eliminarSucursal';
+import './perfiles/eliminarPerfil';
+
+//Globales
+import './globales/filtros-perfil-admin';

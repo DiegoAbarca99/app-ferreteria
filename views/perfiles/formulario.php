@@ -1,6 +1,6 @@
 <div class="fieldset-grid">
     <fieldset class="formulario__fieldset">
-        <legend class="formulario__legend" >Datos de la Cuenta</legend>
+        <legend class="formulario__legend">Datos de la Cuenta</legend>
 
         <div class="formulario__campo">
             <label class="formulario__label" for="usuario">Usuario</label>
@@ -49,11 +49,21 @@
         </div>
 
         <div class="formulario__campo">
-            <label class="formulario__label" for="surcursal">Surcursal</label>
-            <input class="formulario__input" type="text" name="surcursal" id="surcursal" placeholder="Surcursal" value="<?php echo s($usuario->surcursal) ?>">
+            <label class="formulario__label" for="surcursal_id">Sucursal</label>
+            <select name="sucursal_id" id="sucursal_id" class="formulario__input formulario__input--select">
+                <?php if (!$usuario->sucursal_id) { ?>
+                    <option disabled value="" selected>--Seleccione una Opción--</option>
+                <?php } ?>
+                <?php foreach ($sucursales as $sucursal) { ?>
+                    <option value="<?php echo $sucursal->id ?>" <?php echo $sucursal->id === $usuario->sucursal_id ? 'selected' : '' ?>><?php echo $sucursal->nombre ?></option>
+                <?php } ?>
+            </select>
+
+            <a class="formulario__enlace" id="sucursal-añadir">Añadir Sucursal</a>
+            <a class="formulario__enlace--eliminar" id="sucursal-eliminar">Eliminar Sucursal</a>
         </div>
 
-        <input type="hidden" value="<?php echo $usuario->nivel;?>" id="nivel-hidden">
+        <input type="hidden" value="<?php echo $usuario->nivel; ?>" id="nivel-hidden">
 
 
     </fieldset>

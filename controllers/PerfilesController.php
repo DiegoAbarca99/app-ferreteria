@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Model\Sucursales;
 use MVC\Router;
 use Model\Usuario;
 
@@ -16,25 +17,62 @@ class PerfilesController
         isAuth();
         isAllowed(); //Corrobora que el usuario sea admin o tenga status de oficina
 
-        //TODO: Filtrar usuario por Nombre
         //Sanitizar usuario
-        $usuario = $_GET['nombre'] ?? '';
-        $usuarioSanitizado = s($usuario);
+        $nombreUsuarioFiltrado = $_GET['nombre'] ?? '';
+        $nombreUsuarioSanitizado = s($nombreUsuarioFiltrado);
+        $usuarios = [];
 
-        //Status de Oficina
-        if ($_SESSION['status'] === 2) {
-
-            $usuarios = Usuario::Notall('status', 0);
-            //TODO: Filtrar usuarios por surcusal y nombre
+        //Filtrar por nombre de usuario
+        if (!empty($nombreUsuarioSanitizado)) {
+            //Status de Oficina
+            if ($_SESSION['status'] === 2) {
+                $usuarios = Usuario::filtrarArrayNot([
+                    'usuario' => $nombreUsuarioSanitizado,
+                    'status' => 0
+                ]);
+            } else {
+                $usuarios = Usuario::filtrar('usuario', $nombreUsuarioSanitizado);
+            }
         } else {
-            $usuarios = Usuario::Notall('status', 0);
+
+            $idSucursalFiltrada = $_GET['categoria'] ?? '';
+            $idSucursalSanitizada = filter_var($idSucursalFiltrada, FILTER_VALIDATE_INT) ?? '';
+
+            //Filtrar por sucursal_id
+            if (!empty($idSucursalSanitizada)) {
+                //Status de Oficina
+                if ($_SESSION['status'] === 2) {
+                    $usuarios = Usuario::whereArrayNot([
+                        'sucursal_id' => $idSucursalSanitizada,
+                        'status' => 0
+                    ]);
+                } else {
+                    $usuarios = Usuario::filtrar('sucursal_id', $idSucursalSanitizada);
+                }
+                //Sin Filtrar
+            } else {
+                //Status de Oficina
+                if ($_SESSION['status'] === 2) {
+                    $usuarios = Usuario::Notall('status', 0);
+                } else {
+                    $usuarios = Usuario::all();
+                }
+            }
         }
 
+        $categorias = Sucursales::all();
+
+        if (!empty($usuarios))
+            foreach ($usuarios as $usuario) $usuario->sucursal = Sucursales::find($usuario->sucursal_id);
 
 
         $router->render('perfiles/index', [
             'titulo' => 'Perfiles',
             'usuarios' => $usuarios,
+            'categorias' => $categorias,
+            'href' => '/perfiles/crear',
+            'mensaje_boton' => ' Crear Perfil',
+            'mensaje_select' => 'Seleccione una Sucursal'
         ]);
     }
 
@@ -48,7 +86,18 @@ class PerfilesController
         $alertas = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $usuario = new Usuario($_POST);
+            $arregloNormalizado = [];
+            foreach ($_POST as $key => $value) {
+
+                if ($key === 'email') $arregloNormalizado[$key] = trim(strtolower($value));
+
+                else if ($key === 'usuario' || $key === 'nombre') $arregloNormalizado[$key] = trim(strtoupper($value));
+
+                else $arregloNormalizado[$key] = $value;
+            }
+
+
+            $usuario = new Usuario($arregloNormalizado);
 
 
             $alertas = $usuario->validarCuenta();
@@ -69,10 +118,12 @@ class PerfilesController
         }
 
         $alertas = Usuario::getAlertas();
+        $sucursales = Sucursales::all();
         $router->render('perfiles/crear-perfil', [
             'titulo' => 'Crear-Perfil',
             'usuario' => $usuario,
-            'alertas' => $alertas
+            'alertas' => $alertas,
+            'sucursales' => $sucursales
         ]);
     }
 
@@ -95,10 +146,11 @@ class PerfilesController
         if (!$usuario)  header('Location:/');
 
 
-
+        $sucursal = Sucursales::where('id', $usuario->sucursal_id);
         $router->render('perfiles/perfil', [
             'titulo' => 'Perfil',
-            'usuario' => $usuario
+            'usuario' => $usuario,
+            'sucursal' => $sucursal
         ]);
     }
 
@@ -126,7 +178,16 @@ class PerfilesController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
-            $usuario->sincronizar($_POST);    
+
+            $arregloNormalizado = [];
+            foreach ($_POST as $key => $value) {
+                if ($key === 'email') $arregloNormalizado[$key] = trim(strtolower($value));
+                else if ($key === 'usuario' || $key === 'nombre') $arregloNormalizado[$key] = trim(strtoupper($value));
+                else $arregloNormalizado[$key] = $value;
+            }
+
+
+            $usuario->sincronizar($arregloNormalizado);
             $alertas = $usuario->validarCuenta();
 
             if (empty($alertas)) {
@@ -144,11 +205,13 @@ class PerfilesController
             }
         }
 
+        $sucursales = Sucursales::all();
         $alertas = Usuario::getAlertas();
         $router->render('perfiles/editar-perfil', [
             'titulo' => 'Editar-Perfil',
             'usuario' => $usuario,
-            'alertas' => $alertas
+            'alertas' => $alertas,
+            'sucursales' => $sucursales
         ]);
     }
 
@@ -159,17 +222,22 @@ class PerfilesController
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (!$id) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
-            $usuario = Usuario::find($id);
+            $usuario = Usuario::find($id);            
             $resultado = $usuario->eliminar();
 
-            echo json_encode([
-                'resultado' => $resultado,
-                'mensaje' => 'Usuario eliminado correctamente'
-            ]);
+            if ($resultado) {
+                echo json_encode([
+                    'tipo' => 'exito',
+                    'mensaje' => 'Usuario Eliminado Correctamente'
+                ]);
+            }
         }
     }
 }

@@ -151,6 +151,27 @@ class ActiveRecord
         return $resultado;
     }
 
+
+    //Busqueda con filtro LIKE y negando el último 
+    public static function filtrarArrayNot($array = [])
+    {
+        $query = "SELECT * FROM " . static::$tabla . ' WHERE';
+        foreach ($array as $key => $value) {
+            if ($key === array_key_last($array)) {
+                $query .= " NOT ${key} = '${value}' ";
+            } else {
+                $query .= " ${key} LIKE '%${value}%' AND";
+            }
+        }
+        echo '<pre>';
+        var_dump($query);
+        echo '</pre>';
+        exit;
+
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
     // Busqueda Where con Columna 
     public static function where($columna, $valor)
     {
@@ -166,6 +187,21 @@ class ActiveRecord
         foreach ($array as $key => $value) {
             if ($key === array_key_last($array)) {
                 $query .= " ${key} = '${value}'";
+            } else {
+                $query .= " ${key} = '${value}' AND ";
+            }
+        }
+        $resultado = self::consultarSQL($query);
+        return array_shift($resultado);
+    }
+
+    // Busqueda Where con Array y Not en el último elemento de array
+    public static function whereArrayNot($array)
+    {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE ";
+        foreach ($array as $key => $value) {
+            if ($key === array_key_last($array)) {
+                $query .= " NOT ${key} = '${value}'";
             } else {
                 $query .= " ${key} = '${value}' AND ";
             }

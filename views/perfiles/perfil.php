@@ -63,8 +63,8 @@
                 </div>
 
                 <div class="formulario__campo">
-                    <label class="formulario__label" for="surcursal">Surcursal</label>
-                    <input disabled class="formulario__input" type="text" name="surcursal" id="surcursal" placeholder="Surcursal" value="<?php echo s($usuario->surcursal) ?>">
+                    <label class="formulario__label" for="sucursal">Sucursal</label>
+                    <input disabled class="formulario__input" type="text" name="surcursal" id="sucursal" placeholder="Surcursal" value="<?php echo s($sucursal->nombre) ?>">
                 </div>
 
 

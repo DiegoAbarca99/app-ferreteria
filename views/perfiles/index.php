@@ -1,24 +1,7 @@
 <?php include_once __DIR__ . '/../templates/header-dashboard.php'; ?>
 <div class="contenedor">
-    <div class="filtro">
-
-        <select class="filtro__select" id="select-perfil">
-            <option value="" selected disabled>--Seleccione Surcursal--</option>
-            <option value="">Seleccionar Todas</option>
-        </select>
-
-        <form class="filtro__buscador">
-            <input type="text" class="filtro__input" placeholder="Buscar por Nombre">
-            <input type="submit" class="filtro__submit" value="Buscar" id="buscador">
-
-        </form>
-
-
-        <a class="btn-agregar" href="/perfiles/crear">
-            <i class="fa-solid fa-circle-plus"></i> Crear Perfil
-        </a>
-
-    </div>
+    
+    <?php include_once __DIR__ . '/../templates/filtros-admin.php' ?>
 
 
     <div class="contenedor-sombra mt-4">
@@ -41,7 +24,7 @@
                         <tr class="table__tr">
                             <td class="table__td table__td--ocultar"> <?php echo $usuario->usuario ?></td>
                             <td class="table__td"> <?php echo $usuario->nombre ?></td>
-                            <td class="table__td table__td--ocultar"> <?php echo $usuario->surcursal ?></td>
+                            <td class="table__td table__td--ocultar"> <?php echo $usuario->sucursal->nombre ?></td>
                             <td class="table__td "> <?php echo $usuario->status === '1' ? 'Proveedor' : 'Oficina' ?></td>
                             <td class="table__td--acciones">
                                 <a class="table__accion table__accion--editar" href="/perfiles/perfil?id= <?php echo $usuario->id ?>">
@@ -65,7 +48,7 @@
         <?php } ?>
     </div>
 
-   
+
 </div>
 
 <?php include_once __DIR__ . '/../templates/footer-dashboard.php' ?>

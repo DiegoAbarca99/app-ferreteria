@@ -3,7 +3,7 @@ namespace Model;
 use Model\ActiveRecord;
 class Usuario extends ActiveRecord {
     protected static $tabla='usuarios'; 
-    protected static $columnasDB=['id','nombre','usuario','surcursal','password','status','telefono','email','nivel'];
+    protected static $columnasDB=['id','nombre','usuario','sucursal_id','password','status','telefono','email','nivel'];
 
     public $id;
     public $nombre;
@@ -12,7 +12,7 @@ class Usuario extends ActiveRecord {
     public $password2;
     public $status;
     public $nivel;
-    public $surcursal;
+    public $sucursal_id;
     public $telefono;
     public $email;
 
@@ -24,7 +24,7 @@ class Usuario extends ActiveRecord {
         $this->password2=$args['password2']??'';
         $this->status=$args['status']??'0';
         $this->nivel=$args['nivel']??'0';
-        $this->surcursal=$args['surcursal']??'';
+        $this->sucursal_id=$args['sucursal_id']??'';
         $this->telefono=$args['telefono']??'';
         $this->email=$args['email']??'';
 
@@ -82,7 +82,7 @@ class Usuario extends ActiveRecord {
             self::$alertas['error'][]='El telefono es Obligatorio';
         }
 
-        if(!$this->surcursal){
+        if(!$this->sucursal_id){
             self::$alertas['error'][]='La surcursal es obligatoria';
         }
 
@@ -99,41 +99,6 @@ class Usuario extends ActiveRecord {
         $this->password=password_hash($this->password,PASSWORD_BCRYPT);
     }
 
-   
 
-    public function validarPerfil(){
-        if(!$this->usuario){
-            self::$alertas['error'][]='El Nombre es Obligatorio';
-        }
-
-        if(!$this->email){
-            self::$alertas['error'][]='El Email es Obligatorio';
-        }
-
-        if(!filter_var($this->email,FILTER_VALIDATE_EMAIL)){
-            self::$alertas['error'][]='Email no válido';
-        }
-
-        return self::$alertas;
-
-    }
-
-    public function nuevo_password(){
-        if(!$this->passwordActual){
-            self::$alertas['error'][]='El Password Actual no puede ir vacio';
-        }
-
-        if(!$this->passwordNuevo){
-            self::$alertas['error'][]='El Password Nuevo no puede ir vacio';
-        }
-        if(strlen($this->passwordNuevo)<6){
-            self::$alertas['error'][]='El Password Nuevo debe tener al menos 6 carácteres';
-        }
-
-        return self::$alertas;
-    }
-
-    public function comprobarPassword(){
-      return  password_verify($this->passwordActual,$this->password);
-    }
+ 
 }

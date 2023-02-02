@@ -12,6 +12,7 @@ use Controllers\Apipedidos;
 use Controllers\ApiProductos;
 use Controllers\ApiProductosComerciales;
 use Controllers\ApiProductosProveedores;
+use Controllers\ApiSucursales;
 use Controllers\ApiTiposAcero;
 use Controllers\CategoriasProductoController;
 use Controllers\OficinaController;
@@ -154,5 +155,8 @@ $router->post('/api/pedidos/pagado', [Apipedidos::class,'cambiarPagado']);
 $router->post('/api/pedidos/credito', [Apipedidos::class,'cambiarCredito']);
 $router->get('/api/pedidos/graficar', [Apipedidos::class,'graficar']);
 
+//-------Perfiles--------
+$router->post('/api/sucursales/crear',[ApiSucursales::class,'crearSucursal'] );
+$router->post('/api/sucursales/eliminar',[ApiSucursales::class,'eliminarSucursal'] );
 
 $router->comprobarRutas();
