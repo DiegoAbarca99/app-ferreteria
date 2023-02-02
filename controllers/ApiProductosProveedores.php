@@ -22,11 +22,17 @@ class ApiProductosProveedores
             isAdmin();
 
             if (empty($_POST)) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
-            $categoria = new CategoriaProductosProveedores($_POST);
+            $arrayFormateado = [];
+            $arrayFormateado['nombre'] = trim(strtoupper($_POST['nombre']));
+
+            $categoria = new CategoriaProductosProveedores($arrayFormateado);
             $categoriaExistente = CategoriaProductosProveedores::where('nombre', $categoria->nombre);
 
 
@@ -35,17 +41,16 @@ class ApiProductosProveedores
                     'tipo' => 'error',
                     'mensaje' => 'Ya Hay Una Categoria Con Ese Nombre'
                 ]));
-            } else {
+                exit;
+            }
 
-                $resultado = $categoria->guardar();
+            $resultado = $categoria->guardar();
 
-
-                if ($resultado) {
-                    echo json_encode([
-                        'tipo' => 'exito',
-                        'mensaje' => 'Se Ha Agregado Correctamente la Categoria'
-                    ]);
-                }
+            if ($resultado) {
+                echo json_encode([
+                    'tipo' => 'exito',
+                    'mensaje' => 'Se Ha Agregado Correctamente la Categoria'
+                ]);
             }
         }
     }
@@ -62,18 +67,14 @@ class ApiProductosProveedores
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (!$id) {
-                echo json_encode([]);
+                echo json_encode(([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]));
                 exit;
             }
 
             $categoria = CategoriaProductosProveedores::find($id);
-
-            if (!$categoria) {
-                echo json_encode([]);
-                exit;
-            }
-
-
             $resultado = $categoria->eliminar();
 
 
@@ -98,17 +99,20 @@ class ApiProductosProveedores
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (!$id) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
             $producto = ProductosProveedores::find($id);
 
-            if (!$producto) {
-                echo json_encode([]);
-                exit;
-            }
+            $pesos = Pesos::find($producto->pesos_id);
+            $resultado = $pesos->eliminar();
 
+            $precios = PreciosProveedores::find($producto->preciosProveedores_id);
+            $resultado = $precios->eliminar();
 
             $resultado = $producto->eliminar();
 
@@ -135,7 +139,10 @@ class ApiProductosProveedores
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (!$id || empty($_POST)) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
@@ -147,7 +154,10 @@ class ApiProductosProveedores
 
 
             if (!$pesos || !$precios) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
@@ -171,11 +181,13 @@ class ApiProductosProveedores
 
             $resultado = $precios->guardar();
 
-            if(!$resultado){
-                echo json_encode([]);
+            if (!$resultado) {
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
-
 
 
             $resultado = $pesos->guardar();

@@ -49,11 +49,17 @@ import { eliminarElemento } from "../helpers";
                 icon: 'question'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    eliminarElemento(id,url,'',mensajeError,true);
+                    prepararDatos(id);
+                    
                 }
             })
 
         }));
+
+        async function prepararDatos(id) {
+            await eliminarElemento(id, url, '', mensajeError, true);
+        }
     }
+
 
 })();

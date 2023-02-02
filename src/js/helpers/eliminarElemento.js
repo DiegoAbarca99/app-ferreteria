@@ -5,7 +5,7 @@ export async function eliminarElemento(id, url, urlRedireccionar, mensajeError, 
     try {
 
         if (!id) {
-            Swal.fire('No Hay Ningún Elemento Seleccionado', 'Error!', 'error');
+            Swal.fire(`No Hay Ningún Elemento Seleccionado`, 'Error!', 'error');
             return;
         }
 

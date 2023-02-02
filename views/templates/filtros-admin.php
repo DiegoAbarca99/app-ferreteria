@@ -1,10 +1,11 @@
 <div class="filtro">
 
     <select class="filtro__select" id="filtro-select">
-        <option value="" selected disabled>-- <?php echo $mensaje_select?> --</option>
+        <option value="" selected disabled>-- <?php echo $mensaje_select ?> --</option>
         <option value="">Seleccionar Todas</option>
         <?php foreach ($categorias as $categoria) { ?>
-            <option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
+            <option value="<?php echo $categoria->id; ?>"><?php if ($href == '/admin/acero/crear') echo $categoria->categoria;
+                                                            else  echo $categoria->nombre; ?></option>
         <?php } ?>
     </select>
 
@@ -14,8 +15,8 @@
     </form>
 
 
-    <a class="btn-agregar" href=<?php echo $href?>>
-        <i class="fa-solid fa-circle-plus"></i> <?php echo $mensaje_boton?>
+    <a class="btn-agregar" href=<?php echo $href ?>>
+        <i class="fa-solid fa-circle-plus"></i> <?php echo $mensaje_boton ?>
     </a>
 
 </div>

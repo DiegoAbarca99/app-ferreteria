@@ -87,6 +87,9 @@ class ProductosProveedoresController
             'titulo' => 'Listado de Precios Proveedores',
             'categorias' => $categorias,
             'productos' => $productosFormateados,
+            'href'=>'/admin/producto-proveedor/crear',
+            'mensaje_boton' => ' Agregar Producto',
+            'mensaje_select' => 'Seleccione una Categoria'
         ]);
     }
 

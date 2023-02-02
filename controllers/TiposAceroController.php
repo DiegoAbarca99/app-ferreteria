@@ -72,7 +72,10 @@ class TiposAceroController
         $router->render('admin/aceros/index', [
             'titulo' => 'Tipos de Acero',
             'aceros' => $acerosFormateados,
-            'categorias' => $categorias
+            'categorias' => $categorias,
+            'href' => '/admin/acero/crear',
+            'mensaje_boton' => ' Agregar Tipo',
+            'mensaje_select' => 'Seleccione una Categoria'
         ]);
     }
 
@@ -190,7 +193,11 @@ class TiposAceroController
 
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
             if (empty($id)) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
             }
 
             $acero = TiposAceros::find($id);
@@ -198,12 +205,10 @@ class TiposAceroController
 
             if ($resultado) {
                 echo json_encode([
-                    'resultado' => true,
-                    'mensaje' => 'Registro Eliminado Correctamente'
+                    'tipo' => 'exito',
+                    'mensaje' => 'Registro Eliminado Correctamente!'
 
                 ]);
-            } else {
-                echo json_encode([]);
             }
         }
     }

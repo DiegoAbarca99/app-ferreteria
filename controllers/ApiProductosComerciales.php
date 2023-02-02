@@ -38,7 +38,7 @@ class ApiProductosComerciales
             }
 
 
-            $productoExistente = ProductosComerciales::where('nombre',$producto->nombre);
+            $productoExistente = ProductosComerciales::where('nombre', $producto->nombre);
 
             if ($productoExistente) {
                 echo  json_encode([
@@ -255,7 +255,7 @@ class ApiProductosComerciales
     }
 
 
-    public static function eliminar(Router $router)
+    public static function eliminar()
     {
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             session_start();
@@ -264,11 +264,18 @@ class ApiProductosComerciales
 
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
+            if (!$id) {
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
+            }
+
             $producto = ProductosComerciales::find($id);
 
-            if (!$id || !$producto) {
-                echo json_encode([]);
-            }
+            $precios=PreciosProduccion::find($producto->preciosProduccion_id);
+            $precios->eliminar();
 
             $resultado = $producto->eliminar();
 
@@ -281,7 +288,7 @@ class ApiProductosComerciales
         }
     }
 
-    public static function preciosKilosEliminar(Router $router)
+    public static function preciosKilosEliminar()
     {
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
             session_start();
@@ -290,12 +297,16 @@ class ApiProductosComerciales
 
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
-            $producto = PreciosKilo::find($id);
-
-            if (!$id || !$producto) {
-                echo json_encode([]);
+            if (!$id) {
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
             }
 
+
+            $producto = PreciosKilo::find($id);
             $resultado = $producto->eliminar();
 
             if ($resultado) {
