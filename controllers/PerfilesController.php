@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Model\Sucursales;
 use MVC\Router;
+use Model\Historico;
 use Model\Usuario;
 
 //Controlador destinado al CRUD de los perfiles de usuarios.
@@ -175,6 +176,16 @@ class PerfilesController
         $nombreUsuarioPrevio = $usuario->usuario;
 
         $alertas = [];
+
+
+        $arg=['usuario'=>$usuario->usuario,
+        'nombre'=>$usuario->nombre ,
+        'sucursal'=>$usuario->sucursal_id
+        ,'detalles'=>'el estatus está en: '. $usuario->status,
+        'accion'=>'modificacion de la información de un usuario'];
+
+        $historico = new Historico($arg);
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
@@ -200,6 +211,7 @@ class PerfilesController
                 } else {
                     $usuario->hashearPassword();
                     $usuario->guardar();
+                    $historico->guardar();
                     header('Location: /perfiles/index');
                 }
             }

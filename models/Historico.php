@@ -4,7 +4,7 @@ namespace Model;
 use Model\ActiveRecord;
 class Historico extends ActiveRecord {
     protected static $tabla='historicousuarios';
-    protected static $columnasDB=['id','usuario','nombre','fecha','sucursal','detalles','accion','usuarios_id'];
+    protected static $columnasDB=['id','usuario','nombre','fecha','sucursal','detalles','accion'];
 
     public function __construct($args=[]){
         $this->id=$args['id']??null;
