@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Model\Clientes;
 use Model\Municipios;
+use Model\Historico;
 use MVC\Router;
 use Dompdf\Dompdf;
 use Model\Pedidos;
@@ -187,7 +188,6 @@ class ClientesController
 
         $cliente = Clientes::find($id);
 
-
         if (!$cliente) {
             header('Location:/proveedor/clientes');
             exit;
@@ -214,6 +214,8 @@ class ClientesController
             }
 
             $cuotaAnterior = $cliente->cuotaConsumo;
+
+
             $cliente->sincronizar($_POST);
             if ($cuotaAnterior != $cliente->cuotaConsumo) $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
             foreach ($pedidos as $pedido) {
@@ -224,7 +226,14 @@ class ClientesController
                 }
                 $pedido->guardar();
             }
-
+            // Historial
+            $arg=['usuario'=>$usuario->usuario,
+            'nombre'=>$usuario->nombre ,
+            'sucursal'=>$usuario->surcursal
+            ,'detalles'=>'Cuota de consumo anterior: '.$cuotaAnterior.'Cuota de consumo nueva: '.$cliente->cuotaConsumo,
+            'accion'=>'Se modificó la cuota de consumo'];
+            
+            $historico = new Historico($arg);
 
             $cliente->id = $id;
             $cliente->municipios_id = $resultado['id'] ?? '';
@@ -234,7 +243,7 @@ class ClientesController
 
             if (empty($alertas)) {
                 $cliente->guardar();
-
+                $historico->guardar();
                 header('Location:/proveedor/clientes');
             }
         }
