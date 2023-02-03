@@ -172,20 +172,24 @@ class PerfilesController
         if ($_SESSION['status'] === 2) $usuario = Usuario::whereNotArray(['status' => 0, 'id' => $id,]); //Oficina
 
         if (!$usuario)  header('Location:/');
-
         $nombreUsuarioPrevio = $usuario->usuario;
-
+        $nivelAnterior = $usuario->nivel;
         $alertas = [];
+        $arg = [];
+        
+        $usuario->sincronizar($_POST);
+        if($usuario->status === '1'){
+            if($usuario->nivel =! $nivelAnterior){
+                $arg=['usuario'=>$usuario->usuario,
+                'nombre'=>$usuario->nombre ,
+                'sucursal'=>$usuario->sucursal_id
+                ,'detalles'=>'Anterior: '.($nivelAnterior === '0' ? 'Privilegiado' : 'Regular').' Actual: '. ($usuario->nivel === '0' ? 'privilegiado' : 'Regular'),
+                'accion'=>'Modificacion, nivel acceso de un proveedor'];
+            }
+            
 
-
-        $arg=['usuario'=>$usuario->usuario,
-        'nombre'=>$usuario->nombre ,
-        'sucursal'=>$usuario->sucursal_id
-        ,'detalles'=>'el estatus está en: '. $usuario->status,
-        'accion'=>'modificacion de la información de un usuario'];
-
+        }
         $historico = new Historico($arg);
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
@@ -211,7 +215,7 @@ class PerfilesController
                 } else {
                     $usuario->hashearPassword();
                     $usuario->guardar();
-                    $historico->guardar();
+                    if(!empty($arg)) $historico->guardar();
                     header('Location: /perfiles/index');
                 }
             }

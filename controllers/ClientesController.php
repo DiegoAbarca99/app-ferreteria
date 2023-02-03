@@ -5,6 +5,7 @@ namespace Controllers;
 use Model\Clientes;
 use Model\Municipios;
 use Model\Historico;
+use Model\Usuario;
 use MVC\Router;
 use Dompdf\Dompdf;
 use Model\Pedidos;
@@ -188,6 +189,8 @@ class ClientesController
 
         $cliente = Clientes::find($id);
 
+        $usuario = Usuario::find($id);
+
         if (!$cliente) {
             header('Location:/proveedor/clientes');
             exit;
@@ -217,7 +220,15 @@ class ClientesController
 
 
             $cliente->sincronizar($_POST);
-            if ($cuotaAnterior != $cliente->cuotaConsumo) $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
+            if ($cuotaAnterior != $cliente->cuotaConsumo){
+                $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
+                $arg=['usuario'=>$usuario->usuario,
+                'nombre'=>'Nombre cliente: '.$cliente->nombre ,
+                'sucursal'=>$usuario->surcursal
+                ,'detalles'=>'Cuota anterior: '.$cuotaAnterior.' nueva: '.$cliente->cuotaConsumo,
+                'accion'=>'Se modificó la cuota de consumo'];
+
+            } 
             foreach ($pedidos as $pedido) {
                 if ($cuotaAnterior > $cliente->cuotaConsumo) {
                     $pedido->total = floatval($pedido->total) - $diferencia;
@@ -227,11 +238,7 @@ class ClientesController
                 $pedido->guardar();
             }
             // Historial
-            $arg=['usuario'=>$usuario->usuario,
-            'nombre'=>$usuario->nombre ,
-            'sucursal'=>$usuario->surcursal
-            ,'detalles'=>'Cuota de consumo anterior: '.$cuotaAnterior.'Cuota de consumo nueva: '.$cliente->cuotaConsumo,
-            'accion'=>'Se modificó la cuota de consumo'];
+            
             
             $historico = new Historico($arg);
 
@@ -243,7 +250,7 @@ class ClientesController
 
             if (empty($alertas)) {
                 $cliente->guardar();
-                $historico->guardar();
+                if(!empty($arg)) $historico->guardar();
                 header('Location:/proveedor/clientes');
             }
         }
