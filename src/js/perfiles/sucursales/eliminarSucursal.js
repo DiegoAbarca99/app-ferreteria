@@ -17,11 +17,18 @@ import { eliminarElemento } from "../../helpers/eliminarElemento";
                 if (result.isConfirmed) {
                     const url = '/api/sucursales/eliminar';
                     const id = e.target.parentElement.querySelector('#sucursal_id').value;
+                    prepararDatos(id);
 
-                    eliminarElemento(id, url, '', 'Hay Perfiles Vinculados a Esta Sucursal', true);
                 }
             })
         });
+
+        async function prepararDatos(id) {
+            const url = '/api/sucursales/eliminar';
+            await eliminarElemento(id, url, '', 'Hay Perfiles Vinculados a Esta Sucursal', true);
+        }
+
+
 
     }
 })();

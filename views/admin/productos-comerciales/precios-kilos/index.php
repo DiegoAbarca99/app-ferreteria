@@ -1,28 +1,6 @@
 <?php include_once __DIR__ . '/../../../templates/header-dashboard.php'; ?>
 <div class="contenedor">
-    <div class="filtro">
-
-        <select class="filtro__select" id="select-productoKilo">
-            <option value="" selected disabled>--Seleccione Una Categoria--</option>
-            <option value="">Seleccionar Todas</option>
-            <?php foreach ($categorias as $categoria) { ?>
-                <option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
-            <?php } ?>
-        </select>
-
-        <form class="filtro__buscador">
-            <input type="text" class="filtro__input" placeholder="Buscar por Nombre">
-            <input type="submit" class="filtro__submit" value="Buscar" id="buscador">
-
-        </form>
-
-        <a class="btn-agregar" href="/admin/producto-comercial/precios-kilos/crear">
-            <i class="fa-solid fa-circle-plus"></i>
-            Agregar Producto
-        </a>
-
-
-    </div>
+    <?php include_once __DIR__ . '/../../../templates/filtros-admin.php' ?>
     <?php if (empty($productos)) { ?>
         <p class="text-center">No Hay Ningún Producto Que Pueda Gestionar Aún</p>
     <?php } else { ?>
@@ -76,7 +54,7 @@
 
                                     <form action="/admin/producto-comercial/precios-kilos/eliminar" method="POST" class="table__formulario">
                                         <input type="hidden" class="eliminar-productoKilo" value="<?php echo $producto->id ?>">
-                                        <button class="table__accion table__accion--eliminar btn-eliminar" type="submit">
+                                        <button class="table__accion table__accion--eliminar eliminar-precioKilo" type="submit">
                                             <i class="fa-solid fa-circle-xmark"></i>
                                             Eliminar
                                         </button>

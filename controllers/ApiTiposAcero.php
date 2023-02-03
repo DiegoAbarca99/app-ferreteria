@@ -15,7 +15,7 @@ class ApiTiposAcero
         isAuth();
         isAdmin();
 
-        $aceros=TiposAceros::all();
+        $aceros = TiposAceros::all();
         echo json_encode($aceros);
     }
 
@@ -29,13 +29,19 @@ class ApiTiposAcero
             isAdmin();
 
             if (empty($_POST)) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido un Error!'
+                ]);
                 exit;
             }
 
-            $categoria = new CategoriaAcero($_POST);
-            $categoriaExistente = CategoriaAcero::where('categoria',$categoria->categoria);
-           
+            $arrayFormateado = [];
+            $arrayFormateado['categoria'] = trim(strtoupper($_POST['categoria']));
+
+            $categoria = new CategoriaAcero($arrayFormateado);
+            $categoriaExistente = CategoriaAcero::where('categoria', $categoria->categoria);
+
 
             if ($categoriaExistente) {
                 echo json_encode(([
@@ -67,13 +73,19 @@ class ApiTiposAcero
             isAdmin();
 
             if (empty($_POST)) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error'
+                ]);
                 exit;
             }
 
-            $descripcion = new DescripcionAcero($_POST);
-            $descripcionExistente = DescripcionAcero::where('descripcion',$descripcion->descripcion);
-            
+            $arrayFormateado = [];
+            $arrayFormateado['descripcion'] = trim(strtoupper($_POST['descripcion']));
+
+            $descripcion = new DescripcionAcero($arrayFormateado);
+            $descripcionExistente = DescripcionAcero::where('descripcion', $descripcion->descripcion);
+
             if ($descripcionExistente) {
                 echo json_encode([
                     'tipo' => 'error',
@@ -105,7 +117,10 @@ class ApiTiposAcero
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (empty($_POST) || !$id) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error'
+                ]);
                 exit;
             }
 
@@ -133,10 +148,15 @@ class ApiTiposAcero
 
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
+
             if (empty($_POST) || !$id) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error'
+                ]);
                 exit;
             }
+
 
             $descripcion = DescripcionAcero::find($id);
             $resultado = $descripcion->eliminar();
@@ -163,7 +183,10 @@ class ApiTiposAcero
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (empty($_POST) || !$id) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
@@ -215,15 +238,14 @@ class ApiTiposAcero
                             'tipo' => 'exito',
                             'mensaje' => 'Se Ha Actualizado Correctamente el Registro'
                         ]);
-                    } else {
-                        echo json_encode([]);
                     }
                 } else {
 
-                    echo json_encode([]);
+                    echo json_encode([
+                        'tipo' => 'error',
+                        'error' => 'Ha Ocurrido Un Error!'
+                    ]);
                 }
-            } else {
-                echo json_encode([]);
             }
         }
     }

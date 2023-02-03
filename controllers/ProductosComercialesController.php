@@ -80,7 +80,10 @@ class ProductosComercialesController
         $router->render('/admin/productos-comerciales/index', [
             'titulo' => 'Listado de Precios Producción',
             'categorias' => $categorias,
-            'productos' => $productosFormateados
+            'productos' => $productosFormateados,
+            'href' => '/admin/producto-comercial/crear',
+            'mensaje_boton' => ' Agregar Producto',
+            'mensaje_select' => 'Seleccione una Categoria'
         ]);
     }
 
@@ -255,7 +258,10 @@ class ProductosComercialesController
         $router->render('/admin/productos-comerciales/precios-kilos/index', [
             'titulo' => 'Listado de Precios Producción (Kilos)',
             'categorias' => $categorias,
-            'productos' => $productosFormateados
+            'productos' => $productosFormateados,
+            'href' => '/admin/producto-comercial/precios-kilos/crear',
+            'mensaje_boton' => ' Agregar Producto',
+            'mensaje_select' => 'Seleccione una Categoria'
         ]);
     }
 

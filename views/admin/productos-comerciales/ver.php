@@ -202,7 +202,7 @@
     <div class="flex-centro contenedor">
         <a class="btn btn-editar" href="/admin/producto-comercial/actualizar?id=<?php echo $producto->id ?>">Editar</a>
         <form>
-            <input class="eliminar-productoComercial" type="hidden" name="id" value="<?php echo $producto->id ?>">
+            <input id="eliminar-productoComercial" type="hidden" name="id" value="<?php echo $producto->id ?>">
             <input class="btn btn-eliminar" type="submit" value="Eliminar">
         </form>
     </div>

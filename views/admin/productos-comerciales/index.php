@@ -1,28 +1,7 @@
 <?php include_once __DIR__ . '/../../templates/header-dashboard.php'; ?>
 <div class="contenedor">
-    <div class="filtro">
+    <?php include_once __DIR__ . '/../../templates/filtros-admin.php' ?>
 
-        <select class="filtro__select" id="select-productoComercial">
-            <option value="" selected disabled>--Seleccione Una Categoria--</option>
-            <option value="">Seleccionar Todas</option>
-            <?php foreach ($categorias as $categoria) { ?>
-                <option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
-            <?php } ?>
-        </select>
-
-        <form class="filtro__buscador">
-            <input type="text" class="filtro__input" placeholder="Buscar por Nombre">
-            <input type="submit" class="filtro__submit" value="Buscar" id="buscador">
-
-        </form>
-
-        <a class="btn-agregar" href="/admin/producto-comercial/crear">
-            <i class="fa-solid fa-circle-plus"></i>
-            Agregar Producto
-        </a>
-
-
-    </div>
     <?php if (empty($productos)) { ?>
         <p class="text-center">No Hay Ningún Producto Que Pueda Gestionar Aún</p>
     <?php } else { ?>
@@ -73,8 +52,8 @@
                                     </a>
 
                                     <form action="/admin/producto-comercial/eliminar" method="POST" class="table__formulario">
-                                        <input type="hidden" class="eliminar-productoComercial" value="<?php echo $producto->id ?>">
-                                        <button class="table__accion table__accion--eliminar btn-eliminar" type="submit">
+                                        <input type="hidden" id="eliminar-productosComerciales" value="<?php echo $producto->id ?>">
+                                        <button class="table__accion table__accion--eliminar eliminar-productoComercial" type="submit">
                                             <i class="fa-solid fa-circle-xmark"></i>
                                             Eliminar
                                         </button>

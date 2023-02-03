@@ -1,28 +1,6 @@
 <?php include_once __DIR__ . '/../../templates/header-dashboard.php'; ?>
 <div class="contenedor">
-    <div class="filtro">
-
-        <select class="filtro__select" id="select-producto-proveedor">
-            <option value="" selected disabled>--Seleccione Una Categoria--</option>
-            <option value="">Seleccionar Todas</option>
-            <?php foreach ($categorias as $categoria) { ?>
-                <option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
-            <?php } ?>
-        </select>
-
-        <form class="filtro__buscador">
-            <input type="text" class="filtro__input" placeholder="Buscar por Nombre">
-            <input type="submit" class="filtro__submit" value="Buscar" id="buscador">
-
-        </form>
-
-        <a class="btn-agregar" href="/admin/producto-proveedor/crear">
-            <i class="fa-solid fa-circle-plus"></i>
-            Agregar Producto
-        </a>
-
-
-    </div>
+    <?php include_once __DIR__ . '/../../templates/filtros-admin.php' ?>
     <?php if (empty($productos)) { ?>
         <p class="text-center">No Hay Ningún Producto Que Pueda Gestionar Aún</p>
     <?php } else { ?>
@@ -62,7 +40,7 @@
                             <tr class="table__tr">
                                 <td class="table__td "> <?php echo $producto->nombre ?></td>
                                 <td class="table__td "> <?php echo $producto->peso->pesoPromedio ?></td>
-                                <td class="table__td  table__td--resaltar"> <?php echo $producto->peso->pesoNuevo ?></td>
+                                <td class="table__td  table__td--resaltar table--peso"> <?php echo $producto->peso->pesoNuevo ?></td>
                                 <td class="table__td"> <?php echo $producto->precio->publico1 ?></td>
                                 <td class="table__td"> <?php echo $producto->precio->herrero2 ?></td>
                                 <td class="table__td"> <?php echo $producto->precio->herrero3 ?></td>
@@ -78,7 +56,7 @@
 
                                     <form action="/api/producto-proveedor/eliminar" method="POST" class="table__formulario">
                                         <input type="hidden" class="eliminar-productoProveedor" value="<?php echo $producto->id ?>">
-                                        <button class="table__accion table__accion--eliminar btn-eliminar" type="submit">
+                                        <button class="table__accion table__accion--eliminar btn-eliminarProductoProveedor" type="submit">
                                             <i class="fa-solid fa-circle-xmark"></i>
                                             Eliminar
                                         </button>
