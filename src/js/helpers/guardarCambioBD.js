@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-export async function agregarElemento(datos, url) {
+export async function guardarCambioBD(datos, url, urlRedirrecionar = '') {
     try {
 
 
@@ -14,7 +14,8 @@ export async function agregarElemento(datos, url) {
 
         if (resultado.tipo === 'exito') {
             Swal.fire(resultado.mensaje, 'Operación exitosa', 'success').then(() => {
-                window.location.reload();
+                if (urlRedirrecionar !== '') window.location.href = urlRedirrecionar
+                else window.location.reload();
             });
 
         } else if (resultado.tipo === 'error') {

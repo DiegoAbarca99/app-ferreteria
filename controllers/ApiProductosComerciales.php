@@ -28,16 +28,27 @@ class ApiProductosComerciales
             isAuth();
             isAdmin();
 
-            $producto->sincronizar($_POST);
 
-
-            if ((isset($_POST['tiposaceros_id']) && empty($_POST['tiposaceros_id'])) || (isset($_POST['costo']) && empty($_POST['costo'])) || empty($_POST['categoriaProducto_id'] || empty($_POST['nombre']))) {
-
-                echo  json_encode([]);
+            if (!isset($_POST['tiposaceros_id']) && !isset($_POST['costo'])) {
+                echo  json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
 
+
+            if ((isset($_POST['tiposaceros_id']) && $_POST['tiposaceros_id'] === '') || (isset($_POST['costo']) && empty($_POST['costo'])) || empty($_POST['categoriaProducto_id'] || empty($_POST['nombre']))) {
+
+                echo  json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
+            }
+
+            $producto->sincronizar($_POST);
             $productoExistente = ProductosComerciales::where('nombre', $producto->nombre);
 
             if ($productoExistente) {
@@ -45,69 +56,75 @@ class ApiProductosComerciales
                     'tipo' => 'error',
                     'mensaje' => 'Ya existe un producto con ese nombre'
                 ]);
-            } else {
+                exit;
+            }
 
-                //Se obtiene la categoria seleccionada
-                $categoria = CategoriaProducto::find($producto->categoriaProducto_id);
+            //Se obtiene la categoria seleccionada
+            $categoria = CategoriaProducto::find($producto->categoriaProducto_id);
 
-                if (!$categoria) {
-                    echo json_encode([]);
+            if (!$categoria) {
+                echo  json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
+            }
+
+            //Se obtiene tipo de acero seleccionado en caso de lo que lo haya sido
+            if (!is_null($producto->tiposaceros_id)) {
+
+                $tipoAcero = TiposAceros::find($producto->tiposaceros_id);
+
+                if (!$tipoAcero) {
+                    echo  json_encode([
+                        'tipo' => 'error',
+                        'mensaje' => 'Ha Ocurrido Un Error!'
+                    ]);
                     exit;
                 }
-
-                //Se obtiene tipo de acero seleccionado en caso de lo que lo haya sido
-                if (!is_null($producto->tiposaceros_id)) {
-
-                    $tipoAcero = TiposAceros::find($producto->tiposaceros_id);
-
-                    if (!$tipoAcero) {
-                        echo json_encode([]);
-                        exit;
-                    }
-                }
+            }
 
 
 
-                //Se obtiene valores que operan entre sí para obtener los precios de producción del producto
-                $impuestos = Impuestos::find($categoria->impuestos_id);
-                $porcentajeGanancias = PorcentajeGanancias::find($categoria->porcentajeGanancias_id);
+            //Se obtiene valores que operan entre sí para obtener los precios de producción del producto
+            $impuestos = Impuestos::find($categoria->impuestos_id);
+            $porcentajeGanancias = PorcentajeGanancias::find($categoria->porcentajeGanancias_id);
 
-                //Se convierten las ganancias como nominal
-                $porcentajeGanancias->gananciapublico1 = obtenerNominal($porcentajeGanancias->gananciapublico1);
-                $porcentajeGanancias->gananciaherrero2 = obtenerNominal($porcentajeGanancias->gananciaherrero2);
-                $porcentajeGanancias->gananciaherrero3 = obtenerNominal($porcentajeGanancias->gananciaherrero3);
-                $porcentajeGanancias->gananciaherrero4 = obtenerNominal($porcentajeGanancias->gananciaherrero4);
-                $porcentajeGanancias->gananciamayoreo1 = obtenerNominal($porcentajeGanancias->gananciamayoreo1);
-                $porcentajeGanancias->gananciamayoreo2 = obtenerNominal($porcentajeGanancias->gananciamayoreo2);
+            //Se convierten las ganancias como nominal
+            $porcentajeGanancias->gananciapublico1 = obtenerNominal($porcentajeGanancias->gananciapublico1);
+            $porcentajeGanancias->gananciaherrero2 = obtenerNominal($porcentajeGanancias->gananciaherrero2);
+            $porcentajeGanancias->gananciaherrero3 = obtenerNominal($porcentajeGanancias->gananciaherrero3);
+            $porcentajeGanancias->gananciaherrero4 = obtenerNominal($porcentajeGanancias->gananciaherrero4);
+            $porcentajeGanancias->gananciamayoreo1 = obtenerNominal($porcentajeGanancias->gananciamayoreo1);
+            $porcentajeGanancias->gananciamayoreo2 = obtenerNominal($porcentajeGanancias->gananciamayoreo2);
 
-                //Se asgina el costo Base si está como NULL
-                if (is_null($producto->costo)) {
-                    $producto->costo = $tipoAcero->slp;
-                }
+            //Se asgina el costo Base si está como NULL
+            if (is_null($producto->costo)) {
+                $producto->costo = $tipoAcero->slp;
+            }
 
-                //Se calcula el costo neto
-                $producto->costoneto = ($producto->costo + $impuestos->flete + $impuestos->descarga + $impuestos->seguro) * $impuestos->iva;
+            //Se calcula el costo neto
+            $producto->costoneto = ($producto->costo + $impuestos->flete + $impuestos->descarga + $impuestos->seguro) * $impuestos->iva;
 
-                //Se calculan los costros de Producción
-                $preciosProduccion->publico1 = $producto->costoneto * $porcentajeGanancias->gananciapublico1;
-                $preciosProduccion->herrero2 = $producto->costoneto * $porcentajeGanancias->gananciaherrero2;
-                $preciosProduccion->herrero3 = $producto->costoneto * $porcentajeGanancias->gananciaherrero3;
-                $preciosProduccion->herrero4 = $producto->costoneto * $porcentajeGanancias->gananciaherrero4;
-                $preciosProduccion->mayoreo1 = $producto->costoneto * $porcentajeGanancias->gananciamayoreo1;
-                $preciosProduccion->mayoreo2 = $producto->costoneto * $porcentajeGanancias->gananciamayoreo2;
+            //Se calculan los costros de Producción
+            $preciosProduccion->publico1 = $producto->costoneto * $porcentajeGanancias->gananciapublico1;
+            $preciosProduccion->herrero2 = $producto->costoneto * $porcentajeGanancias->gananciaherrero2;
+            $preciosProduccion->herrero3 = $producto->costoneto * $porcentajeGanancias->gananciaherrero3;
+            $preciosProduccion->herrero4 = $producto->costoneto * $porcentajeGanancias->gananciaherrero4;
+            $preciosProduccion->mayoreo1 = $producto->costoneto * $porcentajeGanancias->gananciamayoreo1;
+            $preciosProduccion->mayoreo2 = $producto->costoneto * $porcentajeGanancias->gananciamayoreo2;
 
-                $resultado = $preciosProduccion->guardar();
+            $resultado = $preciosProduccion->guardar();
 
-                if ($resultado['id']) {
-                    $producto->preciosProduccion_id = $resultado['id'];
+            if ($resultado['id']) {
+                $producto->preciosProduccion_id = $resultado['id'];
 
-                    $respuesta = $producto->guardar();
-                    if ($respuesta) {
-                        echo json_encode([
-                            'tipo' => 'exito',
-                            'mensaje' => 'Producto Creado Correctamente'
-                        ]);
-                    }
+                $respuesta = $producto->guardar();
+                if ($respuesta) {
+                    echo json_encode([
+                        'tipo' => 'exito',
+                        'mensaje' => 'Producto Creado Correctamente'
+                    ]);
                 }
             }
         }
@@ -130,13 +147,33 @@ class ApiProductosComerciales
 
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
             $productoActual = ProductosComerciales::find($id);
-            $nombreActual = $productoActual->nombre;
-
 
             if (!$productoActual) {
                 echo json_encode([]);
                 exit;
             }
+
+            $nombreActual = $productoActual->nombre;
+
+
+            if (!isset($_POST['tiposaceros_id']) && !isset($_POST['costo'])) {
+                echo  json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
+            }
+
+
+            if ((isset($_POST['tiposaceros_id']) && $_POST['tiposaceros_id'] === '') || (isset($_POST['costo']) && empty($_POST['costo'])) || empty($_POST['categoriaProducto_id'] || empty($_POST['nombre']))) {
+
+                echo  json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
+            }
+
 
             //Se corrobora si es pertinente eliminar un costo Base o un tipo de acero previo asociado en función de la actualización realizada
 
@@ -160,14 +197,6 @@ class ApiProductosComerciales
 
 
 
-
-            if ((isset($_POST['tiposaceros_id']) && empty($_POST['tiposaceros_id'])) || (isset($_POST['costo']) && empty($_POST['costo'])) || empty($_POST['categoriaProducto_id'] || empty($_POST['nombre']))) {
-
-                echo  json_encode([]);
-                exit;
-            }
-
-
             $productoExistente = ProductosComerciales::where('nombre', $productoActual->nombre);
 
             if ($productoExistente && $productoExistente->nombre != $nombreActual) {
@@ -175,80 +204,86 @@ class ApiProductosComerciales
                     'tipo' => 'error',
                     'mensaje' => 'Ya existe un producto con ese nombre'
                 ]);
-            } else {
+                exit;
+            }
 
-                //Se obtiene la categoria seleccionada
-                $categoria = CategoriaProducto::find($productoActual->categoriaProducto_id);
+            //Se obtiene la categoria seleccionada
+            $categoria = CategoriaProducto::find($productoActual->categoriaProducto_id);
 
-                if (!$categoria) {
-                    echo json_encode([]);
+            if (!$categoria) {
+                echo  json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
+            }
+
+            //Se obtiene tipo de acero seleccionado en caso de lo que lo haya sido
+            if (!is_null($productoActual->tiposaceros_id)) {
+                $tipoAcero = TiposAceros::find($productoActual->tiposaceros_id);
+
+                if (!$tipoAcero) {
+                    echo  json_encode([
+                        'tipo' => 'error',
+                        'mensaje' => 'Ha Ocurrido Un Error!'
+                    ]);
                     exit;
                 }
-
-                //Se obtiene tipo de acero seleccionado en caso de lo que lo haya sido
-                if (!is_null($productoActual->tiposaceros_id)) {
-                    $tipoAcero = TiposAceros::find($productoActual->tiposaceros_id);
-
-                    if (!$tipoAcero) {
-                        echo json_encode([]);
-                        exit;
-                    }
-                }
+            }
 
 
+            //Se obtiene valores que operan entre sí para obtener los precios de producción del producto
+            $impuestos = Impuestos::find($categoria->impuestos_id);
+            $porcentajeGanancias = PorcentajeGanancias::find($categoria->porcentajeGanancias_id);
+
+            //Se convierten las ganancias como nominal
+            $porcentajeGanancias->gananciapublico1 = obtenerNominal($porcentajeGanancias->gananciapublico1);
+            $porcentajeGanancias->gananciaherrero2 = obtenerNominal($porcentajeGanancias->gananciaherrero2);
+            $porcentajeGanancias->gananciaherrero3 = obtenerNominal($porcentajeGanancias->gananciaherrero3);
+            $porcentajeGanancias->gananciaherrero4 = obtenerNominal($porcentajeGanancias->gananciaherrero4);
+            $porcentajeGanancias->gananciamayoreo1 = obtenerNominal($porcentajeGanancias->gananciamayoreo1);
+            $porcentajeGanancias->gananciamayoreo2 = obtenerNominal($porcentajeGanancias->gananciamayoreo2);
+
+            //Se asgina el costo Base si está como NULL
+
+            if (is_null($productoActual->costo)) {
+                $productoActual->costo = $tipoAcero->slp;
+            }
+
+            //Se calcula el costo neto
+            $productoActual->costoneto = ($productoActual->costo + $impuestos->flete + $impuestos->descarga + $impuestos->seguro) * $impuestos->iva;
 
 
-                //Se obtiene valores que operan entre sí para obtener los precios de producción del producto
-                $impuestos = Impuestos::find($categoria->impuestos_id);
-                $porcentajeGanancias = PorcentajeGanancias::find($categoria->porcentajeGanancias_id);
+            //Se obtienen lo costos de producción a actualizar
+            $preciosProduccion = PreciosProduccion::find($productoActual->preciosProduccion_id);
 
-                //Se convierten las ganancias como nominal
-                $porcentajeGanancias->gananciapublico1 = obtenerNominal($porcentajeGanancias->gananciapublico1);
-                $porcentajeGanancias->gananciaherrero2 = obtenerNominal($porcentajeGanancias->gananciaherrero2);
-                $porcentajeGanancias->gananciaherrero3 = obtenerNominal($porcentajeGanancias->gananciaherrero3);
-                $porcentajeGanancias->gananciaherrero4 = obtenerNominal($porcentajeGanancias->gananciaherrero4);
-                $porcentajeGanancias->gananciamayoreo1 = obtenerNominal($porcentajeGanancias->gananciamayoreo1);
-                $porcentajeGanancias->gananciamayoreo2 = obtenerNominal($porcentajeGanancias->gananciamayoreo2);
+            if (!$preciosProduccion) {
+                echo  json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
+            }
 
-                //Se asgina el costo Base si está como NULL
+            //Se calculan los nuevos costos de Producción
+            $preciosProduccion->publico1 = $productoActual->costoneto * $porcentajeGanancias->gananciapublico1;
+            $preciosProduccion->herrero2 = $productoActual->costoneto * $porcentajeGanancias->gananciaherrero2;
+            $preciosProduccion->herrero3 = $productoActual->costoneto * $porcentajeGanancias->gananciaherrero3;
+            $preciosProduccion->herrero4 = $productoActual->costoneto * $porcentajeGanancias->gananciaherrero4;
+            $preciosProduccion->mayoreo1 = $productoActual->costoneto * $porcentajeGanancias->gananciamayoreo1;
+            $preciosProduccion->mayoreo2 = $productoActual->costoneto * $porcentajeGanancias->gananciamayoreo2;
 
-                if (is_null($productoActual->costo)) {
-                    $productoActual->costo = $tipoAcero->slp;
-                }
+            $resultado = $preciosProduccion->guardar();
 
-                //Se calcula el costo neto
-                $productoActual->costoneto = ($productoActual->costo + $impuestos->flete + $impuestos->descarga + $impuestos->seguro) * $impuestos->iva;
-
-
-
-                //Se obtienen lo costos de producción a actualizar
-                $preciosProduccion = PreciosProduccion::find($productoActual->preciosProduccion_id);
-
-                if (!$preciosProduccion) {
-                    echo json_encode([]);
-                    exit;
-                }
-
-                //Se calculan los nuevos costos de Producción
-                $preciosProduccion->publico1 = $productoActual->costoneto * $porcentajeGanancias->gananciapublico1;
-                $preciosProduccion->herrero2 = $productoActual->costoneto * $porcentajeGanancias->gananciaherrero2;
-                $preciosProduccion->herrero3 = $productoActual->costoneto * $porcentajeGanancias->gananciaherrero3;
-                $preciosProduccion->herrero4 = $productoActual->costoneto * $porcentajeGanancias->gananciaherrero4;
-                $preciosProduccion->mayoreo1 = $productoActual->costoneto * $porcentajeGanancias->gananciamayoreo1;
-                $preciosProduccion->mayoreo2 = $productoActual->costoneto * $porcentajeGanancias->gananciamayoreo2;
-
-                $resultado = $preciosProduccion->guardar();
-
-                if ($resultado) {
+            if ($resultado) {
 
 
-                    $respuesta = $productoActual->guardar();
-                    if ($respuesta) {
-                        echo json_encode([
-                            'tipo' => 'exito',
-                            'mensaje' => 'Producto Actualizado Correctamente'
-                        ]);
-                    }
+                $respuesta = $productoActual->guardar();
+                if ($respuesta) {
+                    echo json_encode([
+                        'tipo' => 'exito',
+                        'mensaje' => 'Producto Actualizado Correctamente'
+                    ]);
                 }
             }
         }
@@ -274,7 +309,7 @@ class ApiProductosComerciales
 
             $producto = ProductosComerciales::find($id);
 
-            $precios=PreciosProduccion::find($producto->preciosProduccion_id);
+            $precios = PreciosProduccion::find($producto->preciosProduccion_id);
             $precios->eliminar();
 
             $resultado = $producto->eliminar();

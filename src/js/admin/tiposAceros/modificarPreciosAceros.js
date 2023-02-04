@@ -1,5 +1,5 @@
 
-import { mostrarAlerta, mostrarFormulario, editarElemento } from '../../helpers/index';
+import { mostrarAlerta, mostrarFormulario, guardarCambioBD} from '../../helpers/index';
 
 (function () {
 
@@ -108,7 +108,7 @@ import { mostrarAlerta, mostrarFormulario, editarElemento } from '../../helpers/
             datos.append('id', registroActualizar.value);
             datos.append(tipo, valor);
 
-            await editarElemento(datos, url);
+            await guardarCambioBD(datos, url);
 
         }
 

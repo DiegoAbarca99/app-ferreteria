@@ -1,41 +1,20 @@
 
 import Swal from 'sweetalert2';
+import { limpiarHtml } from '../../helpers/limpiarHtml';
+import { mostrarAlerta } from '../../helpers/mostrarAlerta';
 (function () {
     const selectCategorias = document.querySelector('#select-categoria'); //Select de las categorias
     if (selectCategorias) {
 
         //Variables globales
         let categoriaFiltrada = {};
-        let value = '';
-        let nombre = '';
+        let value;
 
         //Evento del select
         selectCategorias.addEventListener('input', function (e) {
             value = e.target.value;
-            nombre = document.querySelector(`option[value='${value}']`).textContent;
 
             filtarCategoria(value);
-
-        });
-
-
-        // Evento Eliminar categoria seleccionada
-        const enlaceEliminar = document.querySelector('#categoria-eliminar');
-        enlaceEliminar.addEventListener('click', confirmarEliminarCategoria);
-
-        // Evento editar nombre de la categoria seleccionada
-        const enlaceEditar = document.querySelector('#categoria-editar');
-        enlaceEditar.addEventListener('click', function () {
-            if (value == '') {
-                Swal.fire('No Hay Ninguna Categoria Seleccionada', 'Ha Ocurrido Un Error', 'error').then(() => {
-                    window.location.reload();
-                });
-
-            } else {
-                //Se abre modal
-                mostrarFormularioNombre();
-            }
-
 
         });
 
@@ -52,8 +31,6 @@ import Swal from 'sweetalert2';
         }
 
 
-
-
         function mostrarCategoria() {
 
             const contenedorGanancias = document.querySelector('#ganancias');
@@ -61,7 +38,6 @@ import Swal from 'sweetalert2';
 
             limpiarHtml(contenedorGanancias);
             limpiarHtml(contenedorImpuestos);
-
 
 
             const { impuestos, ganancias } = categoriaFiltrada;
@@ -107,7 +83,7 @@ import Swal from 'sweetalert2';
             cantidadPublico1.textContent = `% ${ganancias.gananciapublico1}`;
             cantidadPublico1.classList.add('categoria__cantidad');
             cantidadPublico1.onclick = function () {
-                mostrarFormulario(true, 1, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Publico1',ganancias.gananciapublico1);
+                mostrarFormulario(true, 1, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Publico1', ganancias.gananciapublico1);
             };
 
             const logo = document.createElement('P');
@@ -130,7 +106,7 @@ import Swal from 'sweetalert2';
             cantidadHerrero2.textContent = `% ${ganancias.gananciaherrero2}`;
             cantidadHerrero2.classList.add('categoria__cantidad');
             cantidadHerrero2.onclick = function () {
-                mostrarFormulario(true, 2, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Herrero2',ganancias.gananciaherrero2);
+                mostrarFormulario(true, 2, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Herrero2', ganancias.gananciaherrero2);
             };
 
             const logo2 = document.createElement('P');
@@ -153,7 +129,7 @@ import Swal from 'sweetalert2';
             cantidadHerrero3.textContent = `% ${ganancias.gananciaherrero3}`;
             cantidadHerrero3.classList.add('categoria__cantidad');
             cantidadHerrero3.onclick = function () {
-                mostrarFormulario(true, 3, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Herrero3',ganancias.gananciaherrero3);
+                mostrarFormulario(true, 3, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Herrero3', ganancias.gananciaherrero3);
             };
 
             const logo3 = document.createElement('P');
@@ -176,7 +152,7 @@ import Swal from 'sweetalert2';
             cantidadHerrero4.textContent = `% ${ganancias.gananciaherrero4}`;
             cantidadHerrero4.classList.add('categoria__cantidad');
             cantidadHerrero4.onclick = function () {
-                mostrarFormulario(true, 4, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Herrero4',ganancias.gananciaherrero4);
+                mostrarFormulario(true, 4, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Herrero4', ganancias.gananciaherrero4);
             };
 
             const logo4 = document.createElement('P');
@@ -199,7 +175,7 @@ import Swal from 'sweetalert2';
             cantidadMayoreo1.textContent = `% ${ganancias.gananciamayoreo1}`;
             cantidadMayoreo1.classList.add('categoria__cantidad');
             cantidadMayoreo1.onclick = function () {
-                mostrarFormulario(true, 5, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Mayoreo1',ganancias.gananciamayoreo1);
+                mostrarFormulario(true, 5, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Mayoreo1', ganancias.gananciamayoreo1);
             };
 
             const logo5 = document.createElement('P');
@@ -222,7 +198,7 @@ import Swal from 'sweetalert2';
             cantidadMayoreo2.textContent = `% ${ganancias.gananciamayoreo2}`;
             cantidadMayoreo2.classList.add('categoria__cantidad');
             cantidadMayoreo2.onclick = function () {
-                mostrarFormulario(true, 6, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Mayoreo2',ganancias.gananciamayoreo2);
+                mostrarFormulario(true, 6, { ...ganancias }, 'Editar Porcentaje de Ganancia', 'Mayoreo2', ganancias.gananciamayoreo2);
             };
 
             const logo6 = document.createElement('P');
@@ -272,7 +248,7 @@ import Swal from 'sweetalert2';
             cantidadIva.textContent = `${impuestos.iva}`;
             cantidadIva.classList.add('categoria__cantidad--impuestos');
             cantidadIva.onclick = function () {
-                mostrarFormulario(false, 1, { ...impuestos }, 'Editar Impuesto', 'IVA',impuestos.iva);
+                mostrarFormulario(false, 1, { ...impuestos }, 'Editar Impuesto', 'IVA', impuestos.iva);
             };
 
             const logo = document.createElement('P');
@@ -295,7 +271,7 @@ import Swal from 'sweetalert2';
             cantidadFlete.textContent = `${impuestos.flete}`;
             cantidadFlete.classList.add('categoria__cantidad--impuestos');
             cantidadFlete.onclick = function () {
-                mostrarFormulario(false, 2, { ...impuestos }, 'Editar Impuesto', 'Flete',impuestos.flete);
+                mostrarFormulario(false, 2, { ...impuestos }, 'Editar Impuesto', 'Flete', impuestos.flete);
             };
 
             const logo2 = document.createElement('P');
@@ -318,7 +294,7 @@ import Swal from 'sweetalert2';
             cantidadDescarga.textContent = `${impuestos.descarga}`;
             cantidadDescarga.classList.add('categoria__cantidad--impuestos');
             cantidadDescarga.onclick = function () {
-                mostrarFormulario(false, 3, { ...impuestos }, 'Editar Impuesto', 'Descarga',impuestos.descarga);
+                mostrarFormulario(false, 3, { ...impuestos }, 'Editar Impuesto', 'Descarga', impuestos.descarga);
             };
 
             const logo3 = document.createElement('P');
@@ -341,7 +317,7 @@ import Swal from 'sweetalert2';
             cantidadSeguro.textContent = `${impuestos.seguro}`;
             cantidadSeguro.classList.add('categoria__cantidad--impuestos');
             cantidadSeguro.onclick = function () {
-                mostrarFormulario(false, 4, { ...impuestos }, 'Editar Impuesto', 'Seguro',impuestos.seguro);
+                mostrarFormulario(false, 4, { ...impuestos }, 'Editar Impuesto', 'Seguro', impuestos.seguro);
             };
 
             const logo4 = document.createElement('P');
@@ -367,7 +343,7 @@ import Swal from 'sweetalert2';
 
         }
 
-        function mostrarFormulario(is_ganancia, tipo, objeto = {}, titulo, label,cantidad) {
+        function mostrarFormulario(is_ganancia, tipo, objeto = {}, titulo, label, cantidad) {
             let formulario;
 
             //Scroll automaticó al modal desplegado
@@ -416,7 +392,7 @@ import Swal from 'sweetalert2';
 
 
                 //--------------Aplicando delegation para determinar cuando se dió click en cerrar
-                if (e.target.classList.contains('cerrar-modal')) { 
+                if (e.target.classList.contains('cerrar-modal')) {
 
                     body.classList.remove('pausar');
                     const formulario = document.querySelector('.formulario');
@@ -509,26 +485,6 @@ import Swal from 'sweetalert2';
 
         }
 
-        function mostrarAlerta(mensaje, tipo, referencia) {
-
-            const alertaPrevia = document.querySelector('.alerta');
-            if (alertaPrevia) {
-                alertaPrevia.remove();
-            }
-
-
-            const alerta = document.createElement('DIV');
-            alerta.classList.add('alerta', tipo);
-            alerta.textContent = mensaje;
-
-
-            referencia.parentElement.insertBefore(alerta, referencia.nextElementSibling);
-
-
-            setTimeout(() => {
-                alerta.remove();
-            }, 3000);
-        }
 
         async function actualizarGanancias(gananciaActualizar = {}) {
             const { id, gananciapublico1, gananciaherrero2, gananciaherrero3, gananciaherrero4, gananciamayoreo1, gananciamayoreo2 } = gananciaActualizar;
@@ -636,20 +592,13 @@ import Swal from 'sweetalert2';
 
                     }
 
-
                     mostrarCategoria();
-
-
-
-
 
 
                 }
 
 
             } catch (error) {
-
-
                 Swal.fire('Error', 'Ha ocurrido un error!', 'error');
 
                 const modal = document.querySelector('.modal');
@@ -657,193 +606,6 @@ import Swal from 'sweetalert2';
                     modal.remove();
                 }
 
-
-            }
-        }
-
-        function mostrarFormularioNombre() {
-            let formulario;
-
-            const body = document.querySelector('body');
-            body.classList.add('pausar');
-
-            const modal = document.createElement('DIV');
-            modal.classList.add('modal');
-
-            formulario =
-                `<form class="formulario">
-
-                    <legend> Editar Nombre </legend>
-
-                    <div class="formulario__campo"
-                        <label class="formulario__label" for="valor">Nombre</label>
-                        <input class="formulario__input" type="text" name="valor" id="valor" value="${nombre}">
-                     </div>
-
-                    <div class="opciones">
-                        <input type="submit" class="submit-nuevo-valor" value="Agregar">
-                        <button class="cerrar-modal" type="button">Cancelar </button>
-                    </div>
-
-                </form > `;
-
-
-            modal.innerHTML = formulario;
-
-
-            setTimeout(() => {
-                const formulario = document.querySelector('.formulario');
-                formulario.classList.add('animar');
-            }, 0);
-
-            modal.addEventListener('click', function (e) {
-                e.preventDefault();
-
-
-                //--------------Aplicando delegation para determinar cuando se dió click en cerrar
-                if (e.target.classList.contains('cerrar-modal')) {
-
-                    body.classList.remove('pausar');
-                    const formulario = document.querySelector('.formulario');
-                    formulario.classList.add('cerrar');
-
-
-                    setTimeout(() => {
-                        modal.remove();
-                    }, 500);
-                }
-
-
-                //--------------Aplicando delegation para determinar cuando se dió click en el input de tipo submit
-                if (e.target.classList.contains('submit-nuevo-valor')) {
-
-                    body.classList.remove('pausar');
-
-                    const valor = document.querySelector('#valor').value.trim();
-
-                    if (valor === '') {
-                        //Mostrar alerta de error
-                        mostrarAlerta('El Valor es obligatorio', 'alerta--error',
-                            document.querySelector('.formulario legend'));
-                        return;
-                    } else {
-                        actualizarNombre(valor);
-
-                    }
-
-
-
-                }
-
-
-
-            });
-
-
-
-            document.querySelector('.dashboard').appendChild(modal);
-
-        }
-
-
-        async function actualizarNombre(valor) {
-
-            try {
-                const url = "/api/categorias/actualizar/nombre";
-
-                const datos = new FormData();
-                datos.append('id', value);
-                datos.append('nombre', valor);
-
-                const respuesta = await fetch(url, {
-                    body: datos,
-                    method: 'POST'
-                });
-
-                const resultado = await respuesta.json();
-
-                if (resultado.tipo == 'exito') {
-                    Swal.fire(resultado.mensaje, 'Exito', 'success').then(() => {
-                        window.location.reload();
-                    });
-                } else if (resultado.tipo == 'error') {
-                    Swal.fire(resultado.mensaje, 'Error', 'error').then(() => {
-                        window.location.reload();
-                    });
-                }
-
-            } catch (error) {
-                console.log(error);
-                Swal.fire('Ha ocurrido un error', 'Error', 'error').then(() => {
-                    window.location.reload();
-                });
-            }
-
-        }
-
-
-        function confirmarEliminarCategoria() {
-
-            Swal.fire({
-                title: '¿Eliminar la Categoría Seleccionada?',
-                showCancelButton: true,
-                confirmButtonText: 'Si',
-                cancelButtonText: 'No',
-                icon: 'question'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    eliminarCategoria();
-                }
-            })
-        }
-
-
-        async function eliminarCategoria() {
-
-
-            if (!value) {
-                Swal.fire('No Hay Ninguna Categoria Seleccionada', 'Ha Ocurrido Un Error', 'error');
-                return;
-            }
-
-
-            try {
-
-                const url = "/api/categorias/eliminar";
-                const datos = new FormData();
-                datos.append('id', value);
-
-                const respuesta = await fetch(url, {
-                    method: 'POST',
-                    body: datos
-                })
-
-                const resultado = await respuesta.json();
-
-
-                if (resultado.tipo == 'exito') {
-
-
-                    Swal.fire('Eliminado!', resultado.mensaje, 'success').then(() => {
-                        window.location.reload();
-                    });
-
-
-                }
-            } catch (error) {
-                console.error(error);
-                Swal.fire('Hay Registros Asociados a Está Categoria', 'Ha ocurrido un error', 'error');
-            }
-        }
-
-
-
-
-
-        function limpiarHtml(contenedor) {
-
-            while (contenedor.firstChild) {
-                contenedor.removeChild(contenedor.firstChild);
             }
         }
 

@@ -1,22 +1,35 @@
-import { guardarCambioBD, mostrarFormulario } from "../../helpers";
+import Swal from "sweetalert2";
+import { guardarCambioBD } from "../../helpers/guardarCambioBD";
+import { mostrarFormulario } from "../../helpers/mostrarFormulario";
 
 (function () {
-    const botonesEditar = document.querySelectorAll('.table--peso');
+    const selectCategorias = document.querySelector('#select-categoria');
+    if (selectCategorias) {
 
-    if (botonesEditar.length > 0) {
+        let valorCategoriaFiltrada = '';
+        let nombreCategoriaFiltrada = '';
 
-        let id;
-        botonesEditar.forEach(boton => {
-            boton.addEventListener('click', function (e) {
-                id = e.target.parentElement.querySelector('.eliminar-productoProveedor').value;
-                const peso = e.target.textContent;
+        selectCategorias.addEventListener('input', function (e) {
+            valorCategoriaFiltrada = e.target.value;
+            nombreCategoriaFiltrada = document.querySelector(`option[value='${valorCategoriaFiltrada}']`).textContent;
 
-                const modal = mostrarFormulario('Nuevo Peso', 'Cambiar Peso', peso);
+        });
+
+
+        const botonEditar = document.querySelector('#categoria-editar');
+        botonEditar.addEventListener('click', function () {
+            if (valorCategoriaFiltrada == '') {
+                Swal.fire('No Hay Ninguna Categoria Seleccionada', 'Ha Ocurrido Un Error', 'error').then(() => {
+                    window.location.reload();
+                });
+
+            } else {
+                const modal = mostrarFormulario('Nombre', 'Editar Nombre', nombreCategoriaFiltrada);
                 const body = document.querySelector('body');
-
 
                 modal.addEventListener('click', function (e) {
                     e.preventDefault();
+
 
                     //--------------Aplicando delegation para determinar cuando se dió click en cerrar
                     if (e.target.classList.contains('cerrar-modal')) {
@@ -44,30 +57,35 @@ import { guardarCambioBD, mostrarFormulario } from "../../helpers";
                             mostrarAlerta('El Valor es obligatorio', 'alerta--error',
                                 document.querySelector('.formulario-animar legend'));
                             return;
+                        } else {
+                            prepararDatos(valor);
+
                         }
-
-                        prepararDatos(valor);
-
                     }
 
                 });
 
-
                 document.querySelector('.dashboard').appendChild(modal);
 
-            });
+            }
+
         });
 
+
         async function prepararDatos(valor) {
-            const url = "/api/producto-proveedor/actualizar/peso";
+            const url = "/api/categorias/actualizar/nombre";
 
             const datos = new FormData();
-            datos.append('peso', valor);
-            datos.append('id', id);
+            datos.append('id', valorCategoriaFiltrada);
+            datos.append('nombre', valor);
 
             await guardarCambioBD(datos, url);
+
         }
 
-
     }
+
+
+
+
 })();

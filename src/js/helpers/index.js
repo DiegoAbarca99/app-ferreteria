@@ -1,5 +1,5 @@
 export * from './mostrarAlerta';
 export * from './mostrarFormulario';
-export * from './agregarElemento';
+export * from './guardarCambioBD';
 export * from './eliminarElemento';
-export * from './editarElemento';
+export * from './limpiarHtml';

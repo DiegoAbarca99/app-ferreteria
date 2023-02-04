@@ -1,4 +1,4 @@
-import { agregarElemento, mostrarAlerta, mostrarFormulario } from "../../helpers/index";
+import { guardarCambioBD, mostrarAlerta, mostrarFormulario } from "../../helpers/index";
 
 (function () {
     const categoria = document.querySelector('#categoria-acero');
@@ -54,7 +54,7 @@ import { agregarElemento, mostrarAlerta, mostrarFormulario } from "../../helpers
             const datos = new FormData();
             datos.append('categoria', valor);
 
-            await agregarElemento(datos, url);
+            await guardarCambioBD(datos, url);
         }
     }
 })();   

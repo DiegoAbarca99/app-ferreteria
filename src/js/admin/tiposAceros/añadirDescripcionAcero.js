@@ -1,4 +1,4 @@
-import { agregarElemento, mostrarAlerta, mostrarFormulario } from "../../helpers/index";
+import { guardarCambioBD, mostrarAlerta, mostrarFormulario } from "../../helpers/index";
 (function () {
     const descripcion = document.querySelector('#descripcion-acero');
     if (descripcion) {
@@ -57,7 +57,7 @@ import { agregarElemento, mostrarAlerta, mostrarFormulario } from "../../helpers
             const datos = new FormData();
             datos.append('descripcion', valor);
 
-            await agregarElemento(datos, url);
+            await guardarCambioBD(datos, url);
         }
     }
 })()

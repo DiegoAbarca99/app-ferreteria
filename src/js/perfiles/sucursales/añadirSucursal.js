@@ -1,4 +1,4 @@
-import { mostrarFormulario, mostrarAlerta, agregarElemento } from "../../helpers/index";
+import { mostrarFormulario, mostrarAlerta, guardarCambioBD } from "../../helpers/index";
 (function () {
     const añadirSucursal = document.querySelector('#sucursal-añadir');
 
@@ -70,7 +70,7 @@ import { mostrarFormulario, mostrarAlerta, agregarElemento } from "../../helpers
             const datos = new FormData();
             datos.append('nombre', valor);
 
-            await agregarElemento(datos, url);
+            await guardarCambioBD(datos, url);
         }
 
     }

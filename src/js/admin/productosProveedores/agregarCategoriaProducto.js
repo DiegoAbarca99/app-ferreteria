@@ -1,4 +1,4 @@
-import { agregarElemento, mostrarAlerta, mostrarFormulario } from "../../helpers";
+import { guardarCambioBD, mostrarAlerta, mostrarFormulario } from "../../helpers";
 
 (function () {
     const btnAgregar = document.querySelector('#categoria-producto');
@@ -54,7 +54,7 @@ import { agregarElemento, mostrarAlerta, mostrarFormulario } from "../../helpers
             const url = '/api/producto-proveedor/agregar/categoria';
             const datos = new FormData();
             datos.append('nombre', valor);
-            await agregarElemento(datos, url);
+            await guardarCambioBD(datos, url);
 
         }
 

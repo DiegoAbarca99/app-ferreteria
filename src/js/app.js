@@ -1,7 +1,5 @@
 import './sidebar';
-import './categorias-productos';
-
-import './formulario-producto-comercial';
+//import './categorias-productos';
 
 
 import './productos';
@@ -21,6 +19,9 @@ import './perfiles/sucursales/eliminarSucursal';
 import './perfiles/eliminarPerfil';
 
 //----------Admin
+//CategoriasProductos
+import './admin/categoriaProductos/index'
+
 //TiposAcero
 import './admin/tiposAceros/index';
 

@@ -47,7 +47,7 @@ class ApiCategoriasProducto
             header('Location:/admin/index');
         }
 
-        
+
         // Formateo de la categoria seleccionada
         $categoria->impuestos = Impuestos::where('id', $categoria->impuestos_id);
         $categoria->ganancias = PorcentajeGanancias::where('id', $categoria->porcentajeGanancias_id);
@@ -108,7 +108,7 @@ class ApiCategoriasProducto
         }
     }
 
-    public static function nombre(Router $router)
+    public static function nombre()
     {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -118,21 +118,30 @@ class ApiCategoriasProducto
             isAdmin();
 
             if (empty($_POST)) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (!$id) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
             $categoria = CategoriaProducto::find($id);
 
             if (!$categoria) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 

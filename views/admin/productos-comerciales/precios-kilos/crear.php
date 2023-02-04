@@ -44,7 +44,7 @@
 
 
         <div class="flex-centro">
-            <input class="btn-submit" type="submit" value="crear producto" id="submit-crear">
+            <input class="btn-submit" type="submit" value="crear producto">
         </div>
 
     </form>
