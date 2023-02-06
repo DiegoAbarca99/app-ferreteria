@@ -2,15 +2,15 @@
 
 <div class="contenedor">
 <div class="contenedor-sombra mt-4">
-        <?php if (empty($usuarios)) { ?>
+        <?php if (empty($historico)) { ?>
             <p class="text-center">Tabla copiada de los usuarios para gestionar, esperando a realizar la tabla de historial y trabajar con ella</p>
         <?php } else { ?>
             <table class="table">
                 <thead class="table__head">
                     <tr>
-                        <th class="table__th table__th--ocultar">Usuario</th>
-                        <th class="table__th">Nombre Completo</th>
-                        <th class="table__th table__th--ocultar">Surcursal</th>
+                        <th class="table__th table__th--ocultar">Modificó</th>
+                        <th class="table__th">Usuario modificado</th>
+                        <th class="table__th table__th--ocultar">ID Surcursal (usuario modificado)</th>
                         <th class="table__th">Acción</th>
                         <th class="table__th">detalles de la modificación</th>
                         <th class="table__th">Fecha de modificación</th>
@@ -18,13 +18,15 @@
                 </thead>
 
                 <tbody class="table__body">
-                    <?php foreach ($usuarios as $usuario) { ?>
+                    <?php foreach ($historico as $historial) { ?>
                         <tr class="table__tr">
-                            <td class="table__td table__td--ocultar"> <?php echo $usuario->usuario ?></td>
-                            <td class="table__td"> <?php echo $usuario->nombre ?></td>
-                            <td class="table__td table__td--ocultar"> <?php echo $usuario->surcursal ?></td>
-                            <td class="table__td "> <?php echo $usuario->status === '1' ? 'Proveedor' : 'Oficina' ?></td>
-                            <td class="table__td--acciones">
+                            <td class="table__td table__td--ocultar"> <?php echo $historial->usuario ?></td>
+                            <td class="table__td"> <?php echo $historial->nombre ?></td>
+                            <td class="table__td table__td--ocultar"> <?php echo $historial->sucursal ?></td>
+                            <td class="table__td "> <?php echo $historial->accion ?></td>
+                            <td class="table__td "> <?php echo $historial->detalles ?></td>
+                            <td class="table__td "> <?php echo $historial->fecha ?></td>
+                        
                         </tr>
 
                     <?php } ?>

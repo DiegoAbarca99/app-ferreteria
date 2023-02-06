@@ -35,7 +35,7 @@
                     <?php if ($usuario->status === '1') { ?>
                         <div class="formulario__campo">
                             <label for="status">Nivel de Acesso</label>
-                            <p><?php echo $usuario->nivel === '0' ? 'Regular' : 'Privilegiado' ?></p>
+                            <p><?php echo $usuario->nivel === '1' ? 'Regular' : 'Privilegiado' ?></p>
                         </div>
 
                     <?php } ?>

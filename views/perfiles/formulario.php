@@ -63,7 +63,7 @@
             <a class="formulario__enlace--eliminar" id="sucursal-eliminar">Eliminar Sucursal</a>
         </div>
 
-        <input type="hidden" value="<?php echo $usuario->nivel; ?>" id="nivel-hidden">
+        <input type="hidden" name="nivel" value="<?php echo $usuario->nivel; ?>" id="nivel-hidden">
 
 
     </fieldset>
