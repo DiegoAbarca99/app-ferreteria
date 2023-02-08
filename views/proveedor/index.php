@@ -95,7 +95,7 @@
 
                 <form class="formulario mt-3 contenedor-sm">
                     <div class="formulario__contenedor-campos">
-                        <div class="formulario__campo">
+                        <div class="formulario__campo bg-azul">
                             <div class="flex-centro-col">
                                 <label for="pagado" class="text-dark-heading">Pagado:</label>
                                 <div class="formulario__contenedor--radios">
@@ -112,25 +112,8 @@
                             </div>
                         </div>
 
-                        <div class="formulario__campo">
 
-                            <div class="flex-centro-col">
-                                <label for="pagado" class="text-dark-heading">Método de pago:</label>
-                                <div class="formulario__radio no-margin">
-                                    <label for="efectivo" class="text-dark">Efectivo</label>
-                                    <input type="radio" name="metodoPago" value="1" id="efectivo">
-                                </div>
-
-                                <div class="formulario__radio no-margin">
-                                    <label for="transferencia" class="text-dark">Transferencia</label>
-                                    <input type="radio" name="metodoPago" value="0" id="transferencia">
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="formulario__campo--extender formulario__campo ">
+                        <div class="formulario__campo--extender formulario__campo bg-azul ">
 
                             <div class="flex-centro-col">
                                 <label for="status" class="text-dark-heading">Estado:</label>
@@ -153,6 +136,24 @@
                                 <input type="hidden" name="usuarios_id" value="<?php echo $_SESSION['id']; ?>">
                             </div>
 
+
+                        </div>
+
+                        <div class="formulario__campo bg-azul display-none" id="metodo-pago">
+
+                            <div class="flex-centro-col">
+                                <label for="pagado" class="text-dark-heading">Método de pago:</label>
+                                <div class="formulario__radio no-margin">
+                                    <label for="efectivo" class="text-dark">Efectivo</label>
+                                    <input type="radio" name="metodoPago" value="1" id="efectivo">
+                                </div>
+
+                                <div class="formulario__radio no-margin">
+                                    <label for="transferencia" class="text-dark">Digital</label>
+                                    <input type="radio" name="metodoPago" value="0" id="transferencia">
+                                </div>
+
+                            </div>
 
                         </div>
                     </div>

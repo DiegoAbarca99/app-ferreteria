@@ -4,6 +4,8 @@ import { eliminarElemento } from "../../helpers/eliminarElemento";
     const botonEliminar = document.querySelector('#eliminar-cliente');
 
     if (botonEliminar) {
+
+        const id = botonEliminar.value;
         botonEliminar.addEventListener('click', function (e) {
             e.preventDefault();
             Swal.fire({

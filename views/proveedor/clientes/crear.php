@@ -108,7 +108,7 @@
 
 
         <div class="flex-centro">
-            <input class="btn-submit" type="submit" value="Crear Cliente" id="submit-crear">
+            <input class="btn-submit" type="submit" value="Crear Cliente" >
         </div>
 
     </form>

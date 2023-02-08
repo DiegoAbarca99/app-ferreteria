@@ -219,7 +219,7 @@ class ClientesController
             $cuotaAnterior = $cliente->cuotaConsumo;
 
 
-            $cliente->sincronizar($_POST); //TODO:Corregir historico , eliminar $args, no debe de estar alli!!!!
+            $cliente->sincronizar($_POST); 
             if ($cuotaAnterior != $cliente->cuotaConsumo) {
                 $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
                 $arg = [

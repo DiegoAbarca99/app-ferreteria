@@ -7,7 +7,7 @@ import { eliminarElemento } from "../../helpers/";
         eliminar.addEventListener('click', function (e) {
             e.preventDefault();
 
-            const select = document.querySelector('#select-municipio');
+            const select = document.querySelector('#select-opcion');
             const id = select.value;
 
 

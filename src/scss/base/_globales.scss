@@ -65,7 +65,8 @@ img {
         margin-top: 0;
     }
 }
-.align-center{
+
+.align-center {
     display: flex;
     align-items: center;
 }
@@ -91,16 +92,24 @@ img {
     margin-top: 4rem;
 }
 
-.text-dark{
-    color: v.$negro;
+.text-dark {
+    color: v.$blanco;
     font-weight: 900;
     font-size: 1.8rem;
 }
-.text-dark-heading{
+
+.text-dark-heading {
     @extend .text-dark;
     font-size: 2.3rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     text-align: center;
+}
+
+.bg-azul {
+    padding: 2rem;
+    border-radius: 5rem;
+    @include m.bg-gradient(lighten($color: v.$grisOscuro, $amount: 10));
+    @include m.shadow;
 }
 
 .flex-centro {
@@ -114,6 +123,7 @@ img {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: .5rem;
 }
 
 .btn {
@@ -229,7 +239,7 @@ img {
 
 .resaltar-texto {
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 2.5rem;
 }
 
 .btn-arriba {
@@ -261,4 +271,12 @@ img {
         cursor: pointer;
     }
 
+}
+
+.display-none {
+    display: none;
+}
+
+.deshabilitar {
+    cursor: not-allowed;
 }

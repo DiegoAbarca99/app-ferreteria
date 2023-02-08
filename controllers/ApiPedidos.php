@@ -24,7 +24,10 @@ class ApiPedidos
 
 
             if ($_SESSION['id'] != $_POST['usuarios_id']) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
@@ -32,7 +35,10 @@ class ApiPedidos
             $pedido->clientes_id = $_POST['cliente'];
 
             if (empty($_POST['productos']) && empty($_POST['productoskilos'])) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
             $cliente = Clientes::find($pedido->clientes_id);
@@ -43,7 +49,10 @@ class ApiPedidos
             $resultado = $pedido->guardar();
 
             if (!$resultado) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
@@ -82,13 +91,23 @@ class ApiPedidos
                     if ($resultadoProducto) {
                         if (array_key_last($_POST['productos']) == $key) {
                             $terminado = true;
-                            echo json_encode([
-                                'tipo' => 'exito',
-                                'mensaje' => 'Su folio de compra es el siguiente: ' . $folio
-                            ]);
+                            if ($cliente->credito == '1') {
+                                echo json_encode([
+                                    'tipo' => 'warning',
+                                    'mensaje' => 'TENGA PRECAUCIÓN EL CLIENTE TIENE AÚN CUENTAS PENDIENTES!!, folio de compra: ' . $folio
+                                ]);
+                            } else {
+                                echo json_encode([
+                                    'tipo' => 'exito',
+                                    'mensaje' => 'Su folio de compra es el siguiente: ' . $folio
+                                ]);
+                            }
                         }
                     } else {
-                        echo json_encode([]);
+                        echo json_encode([
+                            'tipo' => 'error',
+                            'mensaje' => 'Ha Ocurrido Un Error!'
+                        ]);
                         exit;
                     }
                 }
@@ -166,13 +185,15 @@ class ApiPedidos
 
 
 
-        $consulta = "  SELECT pedidos.id,fecha, folio, pagado, pedidos.status, metodoPago, total, usuarios.nombre as usuario, usuarios.surcursal,";
+        $consulta = "  SELECT pedidos.id,fecha, folio, pagado, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre,";
         $consulta .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $consulta .= " clientes.cuotaConsumo as cuota, clientes.telefono, productosproveedores.nombre as producto, ";
         $consulta .= " productospedidos.cantidad, productospedidos.precio, productospedidos.tipo";
         $consulta .= " FROM pedidos ";
         $consulta .= " INNER JOIN usuarios ";
         $consulta .= " ON pedidos.usuarios_id=usuarios.id  ";
+        $consulta .= " INNER JOIN sucursales ";
+        $consulta .= " ON usuarios.sucursal_id=sucursales.id  ";
         $consulta .= " INNER JOIN clientes ";
         $consulta .= " ON pedidos.clientes_id=clientes.id ";
         $consulta .= " INNER JOIN municipios ";
@@ -203,13 +224,15 @@ class ApiPedidos
 
 
 
-        $query = "  SELECT pedidos.id, pagado,fecha, folio, pedidos.status, metodoPago, total, usuarios.nombre as usuario, usuarios.surcursal,";
+        $query = "  SELECT pedidos.id, pagado,fecha, folio, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre,";
         $query .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $query .= " clientes.cuotaConsumo as cuota, clientes.telefono, precioskilo.nombre as producto, ";
         $query .= " pedidoskilo.cantidad, pedidoskilo.precio, pedidoskilo.tipo";
         $query .= " FROM pedidos ";
         $query .= " INNER JOIN usuarios ";
         $query .= " ON pedidos.usuarios_id=usuarios.id  ";
+        $query .= " INNER JOIN sucursales ";
+        $query .= " ON usuarios.sucursal_id=sucursales.id  ";
         $query .= " INNER JOIN clientes ";
         $query .= " ON pedidos.clientes_id=clientes.id ";
         $query .= " INNER JOIN municipios ";

@@ -17,7 +17,10 @@
 .resumen {
     &__contenedor {
         margin: 1rem auto;
-        padding: 1rem 2rem 0 2rem;
+        padding: 1rem 2rem 2rem 2rem;
+        border-radius: .5rem;
+        @include m.bg-gradient(lighten($color: v.$grisOscuro, $amount: 10));
+        @include m.shadow;
 
         @include m.tablet {
             display: flex;
@@ -32,8 +35,19 @@
 
         &--producto {
             @extend .resumen__contenedor;
-            border-bottom: .3rem solid v.$grisOscuro;
+
+
+            &:nth-child(even) {
+                @include m.bg-gradient(darken(v.$grisClaro, 70%));
+            }
+
+            &:nth-child(odd) {
+                @include m.bg-gradient(darken(v.$gris, 20%));
+            }
+
+
             padding: 0;
+
 
             &:last-of-type {
                 border: none;
@@ -44,15 +58,16 @@
 
 
     &__heading {
-        font-size: 2rem;
+        font-size: 2.3rem;
         margin: 0;
         text-align: center;
+        color: v.$blanco;
     }
 
     &__parrafo {
         text-align: center;
         font-size: 1.8rem;
-        color: v.$negro;
+        color: v.$blanco;
         margin: .5rem 0;
         font-weight: bold;
 
@@ -67,7 +82,7 @@
         @extend .resumen__parrafo;
         margin-top: 1rem;
         border-top: .3rem solid v.$verde;
-        color: v.$verde;
+        color: lighten(v.$verde, 30%);
         font-weight: bold;
         text-align: center;
         font-size: 2.5rem;
