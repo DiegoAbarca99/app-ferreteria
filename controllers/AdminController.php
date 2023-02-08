@@ -25,8 +25,11 @@ class AdminController {
         isAuth(); 
         isAdmin();
 
+        $historico = Historico::all();
+
         $router->render('admin/historial',[
-            'titulo'=>'Historial'
+            'titulo'=>'Historial',
+            'historico'=> $historico
             
             
         ]);
