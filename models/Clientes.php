@@ -38,7 +38,7 @@ class Clientes extends ActiveRecord
         $this->numeroExterno = $args['numeroExterno'] ?? '';
         $this->numeroInterno = $args['numeroInterno'] ?? '';
         $this->colonia = $args['colonia'] ?? '';
-        $this->cuotaConsumo = $args['cuotaConsumo'] ?? '';
+        $this->cuotaConsumo = $args['cuotaConsumo'] ?? '0';
         $this->credito = $args['credito'] ?? '0';
         $this->municipios_id = $args['municipios_id'] ?? '';
     }
@@ -100,6 +100,10 @@ class Clientes extends ActiveRecord
 
         if (!$this->colonia) {
             self::$alertas['error'][] = 'Debe especificar la colonia';
+        }
+
+        if ($this->cuotaConsumo == '') {
+            self::$alertas['error'][] = 'La cuota no debe de estar vacía  (si no desea incluirla pongala en 0) ';
         }
 
 

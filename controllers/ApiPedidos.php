@@ -32,8 +32,6 @@ class ApiPedidos
             }
 
 
-            $pedido->clientes_id = $_POST['cliente'];
-
             if (empty($_POST['productos']) && empty($_POST['productoskilos'])) {
                 echo json_encode([
                     'tipo' => 'error',
@@ -41,7 +39,20 @@ class ApiPedidos
                 ]);
                 exit;
             }
-            $cliente = Clientes::find($pedido->clientes_id);
+
+            $cliente = Clientes::find($_POST['cliente']);
+
+            if (empty($cliente)) {
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
+            }
+
+            $pedido->clientes_id = $cliente->id;
+
+
             $pedido->total += floatval($cliente->cuotaConsumo);
             $folio = uniqid();
             $pedido->folio = $folio;
@@ -55,6 +66,8 @@ class ApiPedidos
                 ]);
                 exit;
             }
+
+
 
             $terminado = false;
 
@@ -94,13 +107,17 @@ class ApiPedidos
                             if ($cliente->credito == '1') {
                                 echo json_encode([
                                     'tipo' => 'warning',
-                                    'mensaje' => 'TENGA PRECAUCIÓN EL CLIENTE TIENE AÚN CUENTAS PENDIENTES!!, folio de compra: ' . $folio
+                                    'mensaje' => 'PRECAUCIÓN CLIENTE CON CRÉDITO ACTIVO!!, folio de compra: ' . $folio
                                 ]);
                             } else {
-                                echo json_encode([
-                                    'tipo' => 'exito',
-                                    'mensaje' => 'Su folio de compra es el siguiente: ' . $folio
-                                ]);
+                                if ($pedido->pagado == 0) $cliente->credito = 1;
+                                $respuesta = $cliente->guardar();
+
+                                if ($respuesta)
+                                    echo json_encode([
+                                        'tipo' => 'exito',
+                                        'mensaje' => 'Su folio de compra es el siguiente: ' . $folio
+                                    ]);
                             }
                         }
                     } else {
@@ -146,10 +163,22 @@ class ApiPedidos
                             if ($terminado) {
                                 exit;
                             } else {
-                                echo json_encode([
-                                    'tipo' => 'exito',
-                                    'mensaje' => 'Pedido Realizado Correctamente'
-                                ]);
+
+                                if ($cliente->credito == '1') {
+                                    echo json_encode([
+                                        'tipo' => 'warning',
+                                        'mensaje' => 'PRECAUCIÓN CLIENTE CON CRÉDITO ACTIVO!!, folio de compra: ' . $folio
+                                    ]);
+                                } else {
+                                    if ($pedido->pagado == 0) $cliente->credito = 1;
+                                    $respuesta = $cliente->guardar();
+
+                                    if ($respuesta)
+                                        echo json_encode([
+                                            'tipo' => 'exito',
+                                            'mensaje' => 'Su folio de compra es el siguiente: ' . $folio
+                                        ]);
+                                }
                             }
                         }
                     } else {
@@ -185,7 +214,7 @@ class ApiPedidos
 
 
 
-        $consulta = "  SELECT pedidos.id,fecha, folio, pagado, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre,";
+        $consulta = "  SELECT pedidos.id,fecha, folio, pagado, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre as sucursal,";
         $consulta .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $consulta .= " clientes.cuotaConsumo as cuota, clientes.telefono, productosproveedores.nombre as producto, ";
         $consulta .= " productospedidos.cantidad, productospedidos.precio, productospedidos.tipo";
@@ -224,7 +253,7 @@ class ApiPedidos
 
 
 
-        $query = "  SELECT pedidos.id, pagado,fecha, folio, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre,";
+        $query = "  SELECT pedidos.id, pagado,fecha, folio, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre as sucursal,";
         $query .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $query .= " clientes.cuotaConsumo as cuota, clientes.telefono, precioskilo.nombre as producto, ";
         $query .= " pedidoskilo.cantidad, pedidoskilo.precio, pedidoskilo.tipo";

@@ -189,7 +189,7 @@ class ClientesController
 
         $cliente = Clientes::find($id);
 
-        $usuario = Usuario::find($id);
+        //$usuario = Usuario::find($id);
 
         if (!$cliente) {
             header('Location:/proveedor/clientes');
@@ -222,12 +222,12 @@ class ClientesController
             $cliente->sincronizar($_POST); 
             if ($cuotaAnterior != $cliente->cuotaConsumo) {
                 $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
-                $arg = [
+             /*   $arg = [
                     'usuario' => $usuario->usuario,
                     'nombre' => 'Nombre cliente: ' . $cliente->nombre,
                     'sucursal' => $usuario->surcursal, 'detalles' => 'Cuota anterior: ' . $cuotaAnterior . ' nueva: ' . $cliente->cuotaConsumo,
                     'accion' => 'Se modificó la cuota de consumo'
-                ];
+                ];*/
             }
             foreach ($pedidos as $pedido) {
                 if ($cuotaAnterior > $cliente->cuotaConsumo) {
@@ -289,8 +289,8 @@ class ClientesController
 
             if ($resultado) {
                 echo json_encode([
-                    'resultado' => true,
-                    'mensaje' => 'Registro Eliminado Correctamente'
+                    'tipo' => 'exito',
+                    'mensaje' => 'Cliente Eliminado Correctamente!'
                 ]);
             }
         }

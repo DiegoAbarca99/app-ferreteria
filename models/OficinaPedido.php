@@ -4,7 +4,7 @@ namespace Model;
 class OficinaPedido extends ActiveRecord{ 
     protected static $tabla='productospedidos'; 
 
-    protected static $columnasDB=['id','folio','fecha','celular','credito','curp','pagado','status','metodoPago','total','cantidad','precio','tipo','cliente','direccion','ubicacion','telefono','cuota','producto','usuario','surcursal']; //Nombre de las columnas y alias dfinidos tras efectuar los JOINS
+    protected static $columnasDB=['id','folio','fecha','celular','credito','curp','pagado','status','metodoPago','total','cantidad','precio','tipo','cliente','direccion','ubicacion','telefono','cuota','producto','usuario','sucursal']; //Nombre de las columnas y alias dfinidos tras efectuar los JOINS
 
     public $id;
     public $folio;
@@ -26,7 +26,7 @@ class OficinaPedido extends ActiveRecord{
     public $cuota;
     public $producto;
     public $usuario;
-    public $surcursal;
+    public $sucursal;
 
     public function __construct($args=[])
     {
@@ -50,7 +50,7 @@ class OficinaPedido extends ActiveRecord{
         $this->cuota=$args['cuota']??'';
         $this->producto=$args['producto']??'';
         $this->usuario=$args['usuario']??'';
-        $this->surcursal=$args['surcursal']??'';
+        $this->sucursal=$args['sucursal']??'';
         
     }
 }

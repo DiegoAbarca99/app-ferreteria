@@ -157,7 +157,7 @@ import Swal from 'sweetalert2';
                 celular.classList.add('pedido__parrafo');
 
                 const surcursal = document.createElement('P');
-                surcursal.innerHTML = `Surcursal: <span>${pedidos[i].surcursal}</span>`;
+                surcursal.innerHTML = `Sucursal: <span>${pedidos[i].sucursal}</span>`;
                 surcursal.classList.add('pedido__parrafo');
 
 
@@ -228,7 +228,7 @@ import Swal from 'sweetalert2';
 
 
                 const metodoPago = document.createElement('P');
-                metodoPago.innerHTML = `Método Pago: <span>${pedidos[i].metodoPago == 1 ? 'Efectivo' : 'Transferencia'}</span>`;
+                metodoPago.innerHTML = `Método Pago: <span>${pedidos[i].metodoPago == 1 ? 'Efectivo' : 'Digital'}</span>`;
                 metodoPago.classList.add('pedido__parrafo');
 
                 const status = document.createElement('BUTTON');
@@ -541,7 +541,7 @@ import Swal from 'sweetalert2';
             let cuotaValida = true;
             pedidos.forEach((pedido, index) => {
                 gananciaTotal += (parseFloat(pedido.precio) * parseInt(pedido.cantidad));
-                if (pedidos[index - 1] && (pedido.cliente == pedidos[index - 1].cliente)) cuotaValida = false;
+                if (pedidos[index - 1] && (pedido.folio == pedidos[index - 1].folio)) cuotaValida = false;
                 else cuotaValida = true;
                 if (cuotaValida) gananciaTotal += parseFloat(pedido.cuota);
 
@@ -580,10 +580,10 @@ import Swal from 'sweetalert2';
             ganancia.classList.add('resumen-pedidos__parrafo');
             if (pagado == 1) {
                 ganancia.classList.add('resumen-pedidos__parrafo--success');
-                ganancia.innerHTML = `Ganancia Total: <span>${gananciaTotal}</span>`;
+                ganancia.innerHTML = `Ganancia Total: <span>$${gananciaTotal}</span>`;
             } else {
                 ganancia.classList.add('resumen-pedidos__parrafo--alerta');
-                ganancia.innerHTML = `Deuda Total: <span>${gananciaTotal}</span>`;
+                ganancia.innerHTML = `Deuda Total: <span>$${gananciaTotal}</span>`;
             }
 
 
