@@ -42,7 +42,7 @@
 
             } catch (error) {
                 console.log(error);
-                Swal('Ha ocurrido un error al corroborar el código postal','','error');
+                Swal('Ha Ocurrido Un Error Al Obtener El Código Postal','','error');
             }
 
 

@@ -22,7 +22,7 @@ class ClientesController
 
         $router->render('proveedor/clientes/index', [
             'titulo' => 'Gestionar Clientes',
-            'municipios' => $municipios
+            'categorias' => $municipios
         ]);
     }
 
@@ -219,16 +219,16 @@ class ClientesController
             $cuotaAnterior = $cliente->cuotaConsumo;
 
 
-            $cliente->sincronizar($_POST);
-            if ($cuotaAnterior != $cliente->cuotaConsumo){
+            $cliente->sincronizar($_POST); //TODO:Corregir historico , eliminar $args, no debe de estar alli!!!!
+            if ($cuotaAnterior != $cliente->cuotaConsumo) {
                 $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
-                $arg=['usuario'=>$usuario->usuario,
-                'nombre'=>'Nombre cliente: '.$cliente->nombre ,
-                'sucursal'=>$usuario->surcursal
-                ,'detalles'=>'Cuota anterior: '.$cuotaAnterior.' nueva: '.$cliente->cuotaConsumo,
-                'accion'=>'Se modificó la cuota de consumo'];
-
-            } 
+                $arg = [
+                    'usuario' => $usuario->usuario,
+                    'nombre' => 'Nombre cliente: ' . $cliente->nombre,
+                    'sucursal' => $usuario->surcursal, 'detalles' => 'Cuota anterior: ' . $cuotaAnterior . ' nueva: ' . $cliente->cuotaConsumo,
+                    'accion' => 'Se modificó la cuota de consumo'
+                ];
+            }
             foreach ($pedidos as $pedido) {
                 if ($cuotaAnterior > $cliente->cuotaConsumo) {
                     $pedido->total = floatval($pedido->total) - $diferencia;
@@ -238,8 +238,8 @@ class ClientesController
                 $pedido->guardar();
             }
             // Historial
-            
-            
+
+
             $historico = new Historico($arg);
 
             $cliente->id = $id;
@@ -250,7 +250,7 @@ class ClientesController
 
             if (empty($alertas)) {
                 $cliente->guardar();
-                if(!empty($arg)) $historico->guardar();
+                if (!empty($arg)) $historico->guardar();
                 header('Location:/proveedor/clientes');
             }
         }
@@ -277,17 +277,14 @@ class ClientesController
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (!$id) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
             $cliente = Clientes::find($id);
-
-            if (!$cliente) {
-                echo json_encode([]);
-                exit;
-            }
-
             $resultado = $cliente->eliminar();
 
             if ($resultado) {
@@ -295,8 +292,6 @@ class ClientesController
                     'resultado' => true,
                     'mensaje' => 'Registro Eliminado Correctamente'
                 ]);
-            } else {
-                echo json_encode([]);
             }
         }
     }

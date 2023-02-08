@@ -20,20 +20,6 @@ class Usuario extends ActiveRecord
     public $telefono;
     public $email;
 
-<<<<<<< HEAD
-    public function __construct($args=[]){
-        $this->id=$args['id']??null;
-        $this->nombre=$args['nombre']??'';
-        $this->usuario=$args['usuario']??'';
-        $this->password=$args['password']??'';
-        $this->password2=$args['password2']??'';
-        $this->status=$args['status']??'0';
-        $this->nivel=$args['nivel']??'0';
-        $this->sucursal_id=$args['sucursal_id']??'0';
-        $this->telefono=$args['telefono']??'';
-        $this->email=$args['email']??'';
-
-=======
     public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;
@@ -43,10 +29,9 @@ class Usuario extends ActiveRecord
         $this->password2 = $args['password2'] ?? '';
         $this->status = $args['status'] ?? '0';
         $this->nivel = $args['nivel'] ?? '0';
-        $this->sucursal_id = $args['sucursal_id'] ?? '6';
+        $this->sucursal_id = $args['sucursal_id'] ?? '0';
         $this->telefono = $args['telefono'] ?? '';
         $this->email = $args['email'] ?? '';
->>>>>>> main
     }
 
     public function validarLogin()

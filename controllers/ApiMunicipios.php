@@ -17,15 +17,14 @@ class ApiMunicipios
             $id = filter_Var($_POST['id'], FILTER_VALIDATE_INT);
 
             if (!$id) {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
             $municipio = Municipios::find($id);
-            if (!$municipio) {
-                echo json_encode([]);
-            }
-
             $resultado = $municipio->eliminar();
 
             if ($resultado) {
@@ -33,8 +32,6 @@ class ApiMunicipios
                     'tipo' => 'exito',
                     'mensaje' => 'Municipio Eliminado Correctamente'
                 ]);
-            } else {
-                echo json_encode([]);
             }
         }
     }

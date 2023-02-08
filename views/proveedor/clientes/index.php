@@ -3,13 +3,7 @@
     <div class="filtro">
 
         <div>
-            <select class="filtro__select" id="select-municipio">
-                <option value="" selected disabled>--Seleccionar Municipio--</option>
-                <option value="">Seleccionar Todas</option>
-                <?php foreach ($municipios as $municipio) { ?>
-                    <option value="<?php echo $municipio->id ?>"><?php echo $municipio->nombre; ?></option>
-                <?php } ?>
-            </select>
+           <?php include_once __DIR__ .'/../select-categorias.php'?>
 
             <div class="flex-izquierda mt-1">
                 <a class="formulario__enlace--eliminar  d-block" id="municipio-eliminar">Eliminar Municipio</a>
@@ -17,11 +11,7 @@
         </div>
 
 
-        <form class="filtro__buscador" id="buscador-cliente">
-            <input id="buscar-cliente" type="text" class="filtro__input" placeholder="Buscar por Nombre">
-            <input type="submit" class="filtro__submit" value="Buscar">
-
-        </form>
+       <?php include_once __DIR__.'/../buscador-clientes-productos.php'?>
 
 
         <a class="btn-agregar" href="/proveedor/clientes/crear">

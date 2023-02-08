@@ -3,3 +3,4 @@ export * from './mostrarFormulario';
 export * from './guardarCambioBD';
 export * from './eliminarElemento';
 export * from './limpiarHtml';
+export * from './obtenerInformacionBD';

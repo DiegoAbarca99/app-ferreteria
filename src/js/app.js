@@ -1,24 +1,12 @@
-import './sidebar';
-//import './categorias-productos';
 
 
-import './productos';
-import './productos-kilos';
-import './clientes';
-import './eliminar-cliente';
-import './eliminar-municipio';
-import './codigo-postal';
-import './levantar-pedido';
-import './gestionar-pedido';
-import './graficar';
+//Globales
+import './globales/index';
 
 //Perfiles
-import './perfiles/perfilStatusDomScripting';
-import './perfiles/sucursales/añadirSucursal';
-import './perfiles/sucursales/eliminarSucursal';
-import './perfiles/eliminarPerfil';
+import './perfiles/index';
 
-//----------Admin
+//----------Admin------------------
 //CategoriasProductos
 import './admin/categoriaProductos/index'
 
@@ -32,5 +20,16 @@ import './admin/preciosKilos/eliminarProductoKilo';
 //ProductosProveedores
 import './admin/productosProveedores/index';
 
-//Globales
-import './globales/filtros-perfil-admin';
+
+//-----------Proveedores------------------
+//Clientes
+import './proveedores/clientes/index';
+//Productos
+import './proveedores/productos/index';
+//Pedidos
+import './proveedores/pedidos/levantarPedido';
+
+//-----------Oficina-----------------------
+import './oficina/index';
+
+

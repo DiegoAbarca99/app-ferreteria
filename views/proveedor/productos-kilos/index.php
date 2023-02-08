@@ -7,16 +7,12 @@
             <i class="fa-solid fa-arrow-left"></i> Regresar
         </a>
 
-        <form class="filtro__buscador" id="buscador-producto-kilo">
-            <input type="text" class="filtro__input" placeholder="Buscar por Nombre">
-            <input type="submit" class="filtro__submit" value="Buscar">
-
-        </form>
+        <?php include_once __DIR__ . '/../buscador-clientes-productos.php' ?>
 
 
     </div>
 
-    <div id="productos-kilos" class="bloques-proveedores">
+    <div id="productos-kilos"  class="bloques-proveedores">
 
     </div>
 

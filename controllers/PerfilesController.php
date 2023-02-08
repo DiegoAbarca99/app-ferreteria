@@ -178,7 +178,7 @@ class PerfilesController
         $arg = [];
         
         $usuario->sincronizar($_POST);
-        if($usuario->status === '1'){
+        if($usuario->status === '1'){  //TODO:Corregir historico 
             if($usuario->nivel =! $nivelAnterior){
                 $arg=['usuario'=>$usuario->usuario,
                 'nombre'=>$usuario->nombre ,

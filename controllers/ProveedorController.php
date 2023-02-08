@@ -42,10 +42,19 @@ class ProveedorController
             $clienteNombre = s($_POST['cliente']);
 
 
-            if (empty($clienteNombre) || empty($fecha)) {
-                Pedidos::setAlerta('error', 'Debe llenar todos los campos');
-            } else {
+            if (empty($fecha)) {
+                Pedidos::setAlerta('error', 'La Fecha es Obligatoria');
+            } else if (empty($clienteNombre)) {
 
+                $pedidos = Pedidos::filtrarArray([
+                    'usuarios_id' => $_SESSION['id'],
+                    'fecha' => $fecha,
+                ]);
+
+                foreach ($pedidos as $pedido) {
+                    $pedido->cliente = Clientes::find($pedido->clientes_id);
+                }
+            } else {
 
                 $clientes = Clientes::filtrar('nombre', $clienteNombre);
 

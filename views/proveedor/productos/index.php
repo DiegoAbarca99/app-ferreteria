@@ -3,19 +3,9 @@
 <div class="contenedor">
     <div class="filtro">
 
-        <select class="filtro__select" id="select-producto">
-            <option value="" selected disabled>--Seleccionar Categoria--</option>
-            <option value="">Seleccionar Todas</option>
-            <?php foreach ($categorias as $categoria) { ?>
-                <option value="<?php echo $categoria->id ?>"><?php echo $categoria->nombre; ?></option>
-            <?php } ?>
-        </select>
+        <?php include_once __DIR__ . '/../select-categorias.php' ?>
 
-        <form class="filtro__buscador" id="buscador-producto">
-            <input type="text" class="filtro__input" placeholder="Buscar por Nombre">
-            <input type="submit" class="filtro__submit" value="Buscar">
-
-        </form>
+        <?php include_once __DIR__ . '/../buscador-clientes-productos.php' ?>
 
 
         <a class="btn-verde" href="/proveedor/productos/kilos">

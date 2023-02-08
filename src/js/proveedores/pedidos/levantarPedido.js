@@ -1,4 +1,5 @@
-const { default: Swal } = require("sweetalert2");
+import Swal  from "sweetalert2";
+
 
 (function () {
     const pedido = document.querySelector('#pedido');
