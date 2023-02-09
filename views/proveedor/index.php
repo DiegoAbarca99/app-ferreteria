@@ -156,6 +156,13 @@
                             </div>
 
                         </div>
+
+                        <div class="formulario__campo bg-azul display-none" id='abono'>
+                            <div class="flex-centro-col">
+                                <label class="text-dark-heading">Abono</label>
+                                <input placeholder="Ingrese una Cantidad" class="formulario__input" type="number" step="any" name="abono">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="flex-centro mt-4">

@@ -92,7 +92,9 @@ import Swal from 'sweetalert2';
                 const resultado = await respuesta.json();
 
                 if (resultado.length == 0) {
-                    Swal.fire('No hay Ningún pedido asociado!', 'Error', 'error');
+                    Swal.fire('No hay Ningún pedido asociado!', 'Error', 'error').then(() => {
+                        window.location.reload();
+                    });
                 } else {
 
                     pedidos = formatearPedidos(resultado);
@@ -103,7 +105,9 @@ import Swal from 'sweetalert2';
 
             } catch (error) {
                 console.log(error);
-                Swal.fire('Ha ocurrido un error!', 'Error', 'error');
+                Swal.fire('Ha ocurrido un error!', 'Error', 'error').then(() => {
+                    window.location.reload();
+                });
 
             }
 
@@ -211,25 +215,50 @@ import Swal from 'sweetalert2';
                 headingPedido.innerHTML = "Datos del pedido";
                 headingPedido.classList.add('pedido__heading');
 
+                let deshabilitar;
                 const pagado = document.createElement('BUTTON');
                 pagado.dataset.idPagado = i;
                 if (pedidos[i].pagado == 1) {
                     pagado.textContent = 'Pagado';
                     pagado.classList.add('btn-verde');
+                    deshabilitar = false;
                 } else {
                     pagado.textContent = 'No Pagado';
-                    pagado.classList.add('btn-eliminar');
+                    pagado.classList.add('btn-eliminar-disabled');
+                    deshabilitar = true;
                 }
 
                 pagado.onclick = (e) => {
 
-                    cambiarPagado(parseInt(e.target.dataset.idPagado));
+                    cambiarPagado(parseInt(e.target.dataset.idPagado), deshabilitar);
                 }
 
 
                 const metodoPago = document.createElement('P');
-                metodoPago.innerHTML = `Método Pago: <span>${pedidos[i].metodoPago == 1 ? 'Efectivo' : 'Digital'}</span>`;
-                metodoPago.classList.add('pedido__parrafo');
+                if (pedidos[i].pagado == 1) {
+                    metodoPago.innerHTML = `Método Pago: <span>${pedidos[i].metodoPago == 1 ? 'Efectivo' : 'Digital'}</span>`;
+                    metodoPago.classList.add('pedido__parrafo');
+                } else {
+                    metodoPago.innerHTML = `Método Pago:<span> No Disponible</span>`;
+                    metodoPago.classList.add('pedido__parrafo');
+                }
+
+                const abono = document.createElement('FORM');
+                abono.dataset.idAbono = i;
+                abono.classList.add('flex-centro');
+                if (pedidos[i].pagado == 0) {
+                    abono.innerHTML = `<p class="pedido__parrafo">Abono: </p><input type="number" step="any" class="input-escondido" value="${pedidos[i].abono}">`;
+                    abono.onsubmit = (e) => {
+                        e.preventDefault();
+                        const nuevoAbono = e.target.querySelector('.input-escondido').value;
+
+                        actualizarAbono(parseInt(e.target.dataset.idAbono), parseFloat(nuevoAbono));
+
+                    }
+                }
+
+
+
 
                 const status = document.createElement('BUTTON');
                 status.dataset.id = i;
@@ -295,6 +324,7 @@ import Swal from 'sweetalert2';
                 contenedorPeticiones.appendChild(headingPedido);
                 contenedorPeticiones.appendChild(hora);
                 contenedorPeticiones.appendChild(metodoPago);
+                if (pedidos[i].pagado == 0) contenedorPeticiones.appendChild(abono);
                 contenedorPeticiones.appendChild(pagado);
                 contenedorPeticiones.appendChild(status);
                 contenedorPeticiones.appendChild(total);
@@ -376,20 +406,21 @@ import Swal from 'sweetalert2';
 
         }
 
-        async function cambiarPagado(id) {
-            let pagado;
 
-            if (pedidos[id].pagado == 0) {
-                pagado = 1;
-            } else {
-                pagado = 0;
+        async function actualizarAbono(id, abono) {
+
+            if (abono > parseFloat(pedidos[id].total)) {
+                Swal.fire('El Abono sobrepasa la deuda!', 'Error!', 'error');
+                return;
             }
 
+
+
             try {
-                const url = '/api/pedidos/pagado';
+                const url = '/api/pedidos/abono';
 
                 const datos = new FormData();
-                datos.append('pagado', pagado);
+                datos.append('abono', abono);
                 datos.append('id', pedidos[id].id);
 
                 const respuesta = await fetch(url, {
@@ -404,9 +435,73 @@ import Swal from 'sweetalert2';
 
                     pedidos.forEach((pedido, index) => {
                         if (pedido.id == pedidos[id].id) {
-                            pedidos[index].pagado = pagado;
+                            pedidos[index].abono = abono;
                         }
                     })
+
+                    cambiarPagado(id, false, true);
+
+
+
+                } else {
+                    Swal.fire('Ha ocurrido un error', 'Error!', 'error');
+                }
+
+            } catch (error) {
+                console.log();
+                Swal.fire('Ha ocurrido un error', 'Error!', 'error');
+            }
+
+
+        }
+
+
+
+        async function cambiarPagado(id, deshabilitar = false, isByAbono = false) {
+
+            if (deshabilitar) return;
+
+
+            if (isByAbono && (pedidos[id].abono != pedidos[id].total)) return;
+
+
+
+
+
+            try {
+
+                const url = '/api/pedidos/pagado';
+
+                const datos = new FormData();
+                if (isByAbono) datos.append('pagado', 1);
+                else datos.append('pagado', 0);
+                datos.append('id', pedidos[id].id);
+
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    body: datos
+                });
+
+                const resultado = await respuesta.json();
+
+                if (resultado.tipo == 'exito') {
+
+                    if (isByAbono) {
+                        pedidos.forEach((pedido, index) => {
+                            if (pedido.id == pedidos[id].id) {
+                                pedidos[index].pagado = 1;
+                            }
+                        })
+
+                    } else {
+                        pedidos.forEach((pedido, index) => {
+                            if (pedido.id == pedidos[id].id) {
+                                pedidos[index].pagado = 0;
+                            }
+                        })
+
+
+                    }
 
 
 
@@ -423,6 +518,9 @@ import Swal from 'sweetalert2';
                 console.log();
                 Swal.fire('Ha ocurrido un error', 'Error!', 'error');
             }
+
+
+
 
 
         }
@@ -449,7 +547,7 @@ import Swal from 'sweetalert2';
                 });
 
                 const resultado = await respuesta.json();
-
+                console.log(resultado)
                 if (resultado.tipo == 'exito') {
 
                     if (resultado.mensaje) {

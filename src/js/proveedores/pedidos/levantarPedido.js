@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
             metodoPago: '',
             status: '',
             pagado: '',
+            abono: '',
             productos: [],
             productoskilos: [],
 
@@ -1418,7 +1419,7 @@ import Swal from "sweetalert2";
             const inputStatus = document.querySelectorAll('input[name="status"]');
 
             const metodoPago = document.querySelector('#metodo-pago');
-
+            const abono = document.querySelector('#abono');
 
 
 
@@ -1426,14 +1427,22 @@ import Swal from "sweetalert2";
                 pedido.pagado = e.target.value;
                 if (pedido.pagado == 1) {
 
+                    abono.classList.add('display-none');
                     metodoPago.classList.remove('display-none');
 
                     const inputMetodo = document.querySelectorAll('input[name="metodoPago"]');
                     inputMetodo.forEach(input => input.addEventListener('change', function (e) {
                         pedido.metodoPago = e.target.value;
                     }));
+
+                    pedido.abono = '';
                 } else {
+
+                    abono.classList.remove('display-none');
                     metodoPago.classList.add('display-none');
+
+                    const inputAbono = document.querySelector('input[name="abono"]');
+                    pedido.abono = inputAbono.value;
                     pedido.metodoPago = '';
 
                 }
@@ -1484,8 +1493,10 @@ import Swal from "sweetalert2";
             datos.append('metodoPago', pedido.metodoPago);
             datos.append('status', pedido.status);
             datos.append('total', pedido.total);
+            datos.append('abono', pedido.abono);
             datos.append('productos', productos);
             datos.append('productoskilos', productoskilos);
+
 
             try {
 

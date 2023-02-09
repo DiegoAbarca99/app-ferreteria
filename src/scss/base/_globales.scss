@@ -118,6 +118,7 @@ img {
     gap: 2rem;
 }
 
+
 .flex-centro-col {
     display: flex;
     flex-direction: column;
@@ -216,6 +217,14 @@ img {
     }
 }
 
+.btn-eliminar-disabled {
+    @extend .btn-eliminar;
+    background-color: darken($color: v.$rojo, $amount: 20%);
+
+    &:hover {
+        cursor: not-allowed;
+    }
+}
 
 .contenedor-sombra {
     @include m.shadow;
@@ -279,4 +288,13 @@ img {
 
 .deshabilitar {
     cursor: not-allowed;
+}
+
+
+.input-escondido {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    color: v.$blanco;
+    width: 7rem;
 }

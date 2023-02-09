@@ -153,6 +153,7 @@ $router->get('/api/pedidos/listar', [Apipedidos::class,'listar']);
 $router->post('/api/pedidos/estado', [Apipedidos::class,'cambiarEstado']);
 $router->post('/api/pedidos/pagado', [Apipedidos::class,'cambiarPagado']);
 $router->post('/api/pedidos/credito', [Apipedidos::class,'cambiarCredito']);
+$router->post('/api/pedidos/abono', [Apipedidos::class,'cambiarAbono']);
 $router->get('/api/pedidos/graficar', [Apipedidos::class,'graficar']);
 
 //-------Perfiles--------

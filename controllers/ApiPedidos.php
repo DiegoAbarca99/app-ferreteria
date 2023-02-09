@@ -19,6 +19,9 @@ class ApiPedidos
             isAuth();
             isProveedor();
 
+            if (empty($_POST['abono']))
+                $_POST['abono'] = '0';
+
             $pedido = new Pedidos($_POST);
 
 
@@ -214,7 +217,7 @@ class ApiPedidos
 
 
 
-        $consulta = "  SELECT pedidos.id,fecha, folio, pagado, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre as sucursal,";
+        $consulta = "  SELECT pedidos.id,fecha, folio, pagado, pedidos.status, abono, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre as sucursal,";
         $consulta .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $consulta .= " clientes.cuotaConsumo as cuota, clientes.telefono, productosproveedores.nombre as producto, ";
         $consulta .= " productospedidos.cantidad, productospedidos.precio, productospedidos.tipo";
@@ -253,7 +256,7 @@ class ApiPedidos
 
 
 
-        $query = "  SELECT pedidos.id, pagado,fecha, folio, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre as sucursal,";
+        $query = "  SELECT pedidos.id, pagado,fecha, folio, abono, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre as sucursal,";
         $query .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $query .= " clientes.cuotaConsumo as cuota, clientes.telefono, precioskilo.nombre as producto, ";
         $query .= " pedidoskilo.cantidad, pedidoskilo.precio, pedidoskilo.tipo";
@@ -414,6 +417,44 @@ class ApiPedidos
 
                 echo json_encode([
                     'tipo' => 'exito',
+                ]);
+            }
+        }
+    }
+    public static function cambiarAbono()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start();
+            isAuth();
+            isOficina();
+
+
+            $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
+            $abono = $_POST['abono'] ?? '';
+
+
+            if (is_null($id) || $abono == '') {
+                echo json_encode([]);
+                exit;
+            }
+
+            $pedido = Pedidos::find($id);
+
+            if ($abono == $pedido->total)
+                $pedido->abono = 0;
+            else
+                $pedido->abono = $abono;
+
+                
+            $resultado = $pedido->guardar();
+
+
+
+
+            if ($resultado) {
+                echo json_encode([
+                    'tipo' => 'exito',
+                    'mensaje' => 'El Pedido Se Ha Sido Actualizado'
                 ]);
             }
         }

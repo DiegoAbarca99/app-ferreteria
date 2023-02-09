@@ -91,6 +91,10 @@
                 }
             }
 
+            .input-escondido{
+                color:v.$negro;
+            }
+
             @include m.bg-gradient(v.$grisClaro);
 
 
