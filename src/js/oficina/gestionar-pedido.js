@@ -120,7 +120,7 @@ import Swal from 'sweetalert2';
             let pedidos = [...resultado[0], ...resultado[1]];
 
             pedidos.sort();
-            pedidos.sort(((a, b) => a.id - b.id));
+            pedidos.sort(((a, b) => b.id - a.id));
             return pedidos;
         }
 
@@ -234,20 +234,21 @@ import Swal from 'sweetalert2';
                 }
 
 
-                const metodoPago = document.createElement('P');
+                const metodoPago = document.createElement('BUTTON');
                 if (pedidos[i].pagado == 1) {
-                    metodoPago.innerHTML = `Método Pago: <span>${pedidos[i].metodoPago == 1 ? 'Efectivo' : 'Digital'}</span>`;
-                    metodoPago.classList.add('pedido__parrafo');
-                } else {
-                    metodoPago.innerHTML = `Método Pago:<span> No Disponible</span>`;
-                    metodoPago.classList.add('pedido__parrafo');
+                    metodoPago.dataset.idPago = i;
+                    metodoPago.textContent = `${pedidos[i].metodoPago == 1 ? 'Efectivo' : 'Digital'}`;
+                    metodoPago.classList.add(`${pedidos[i].metodoPago == 1 ? 'btn-verde' : 'btn-editar'}`);
+                    metodoPago.onclick = (e) => {
+                        cambiarMetodoPago(e.target.dataset.idPago);
+                    }
                 }
 
                 const abono = document.createElement('FORM');
                 abono.dataset.idAbono = i;
                 abono.classList.add('flex-centro');
                 if (pedidos[i].pagado == 0) {
-                    abono.innerHTML = `<p class="pedido__parrafo">Abono: </p><input type="number" step="any" class="input-escondido" value="${pedidos[i].abono}">`;
+                    abono.innerHTML = `<p class= "pedido__parrafo"> Abono: </p> <input type="number" step="any" class="input-escondido" value="${pedidos[i].abono}">`;
                     abono.onsubmit = (e) => {
                         e.preventDefault();
                         const nuevoAbono = e.target.querySelector('.input-escondido').value;
@@ -284,7 +285,8 @@ import Swal from 'sweetalert2';
 
 
                 const total = document.createElement('P');
-                total.innerHTML = `Total: <span>$${pedidos[i].total}</span>`;
+                if (pedidos[i].pagado == 0 && pedidos[i].abono > 0) total.innerHTML = `Total: <span>$${parseFloat(pedidos[i].total) - parseFloat(pedidos[i].abono)}</span>`;
+                else total.innerHTML = `Total: <span>$${pedidos[i].total}</span>`;
                 total.classList.add('pedido__parrafo--total');
 
 
@@ -323,7 +325,7 @@ import Swal from 'sweetalert2';
 
                 contenedorPeticiones.appendChild(headingPedido);
                 contenedorPeticiones.appendChild(hora);
-                contenedorPeticiones.appendChild(metodoPago);
+                if (pedidos[i].pagado == 1) contenedorPeticiones.appendChild(metodoPago);
                 if (pedidos[i].pagado == 0) contenedorPeticiones.appendChild(abono);
                 contenedorPeticiones.appendChild(pagado);
                 contenedorPeticiones.appendChild(status);
@@ -406,6 +408,44 @@ import Swal from 'sweetalert2';
 
         }
 
+        async function cambiarMetodoPago(id) {
+            try {
+                const url = '/api/pedidos/metodo-pago';
+
+                const datos = new FormData();
+                datos.append('metodoPago', pedidos[id].metodoPago);
+                datos.append('id', pedidos[id].id);
+
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    body: datos
+                });
+
+                const resultado = await respuesta.json();
+
+                if (resultado.tipo == 'exito') {
+
+
+                    pedidos = pedidos.map((pedido, index) => {
+                        if (pedido.id == pedidos[id].id) {
+                            pedidos[index].metodoPago = !pedidos[id].metodoPago;
+                        }
+                        return pedido;
+                    })
+
+                    mostrarPedidos();
+
+
+
+                } else {
+                    Swal.fire('Ha ocurrido un error', 'Error!', 'error');
+                }
+
+            } catch (error) {
+                console.log();
+                Swal.fire('Ha ocurrido un error', 'Error!', 'error');
+            }
+        }
 
         async function actualizarAbono(id, abono) {
 
@@ -433,11 +473,15 @@ import Swal from 'sweetalert2';
                 if (resultado.tipo == 'exito') {
 
 
-                    pedidos.forEach((pedido, index) => {
+                    pedidos = pedidos.map((pedido, index) => {
                         if (pedido.id == pedidos[id].id) {
                             pedidos[index].abono = abono;
                         }
+                        return pedido;
                     })
+
+                    mostrarPedidos();
+                    obtenerResumen();
 
                     cambiarPagado(id, false, true);
 
@@ -487,26 +531,33 @@ import Swal from 'sweetalert2';
                 if (resultado.tipo == 'exito') {
 
                     if (isByAbono) {
-                        pedidos.forEach((pedido, index) => {
+                        pedidos = pedidos.map((pedido, index) => {
                             if (pedido.id == pedidos[id].id) {
                                 pedidos[index].pagado = 1;
                             }
+                            return pedido;
                         })
 
                     } else {
-                        pedidos.forEach((pedido, index) => {
+                        pedidos = pedidos.map((pedido, index) => {
                             if (pedido.id == pedidos[id].id) {
                                 pedidos[index].pagado = 0;
                             }
+                            return pedido;
                         })
 
 
                     }
 
 
+                    const salida = comprobarCreditoCliente(pedidos[id].curp);
+
+                    if (salida) {
+                        await obtenerPedidos();
+                        obtenerResumen();
+                    }
 
 
-                    comprobarCreditoCliente(pedidos[id].curp);
 
 
 
@@ -551,22 +602,18 @@ import Swal from 'sweetalert2';
                 if (resultado.tipo == 'exito') {
 
                     if (resultado.mensaje) {
-                        pedidos = pedidos.map(pedido => {
-                            if (pedido.curp == curp) {
-                                pedido.credito = credito;
-                            }
-                            return pedido;
-                        });
 
                         Swal.fire(resultado.mensaje, '', 'warning');
 
+                        await obtenerPedidos();
+                        obtenerResumen();
+
+                        return false;
+
+
                     }
 
-
-
-                    mostrarPedidos();
-
-
+                    return true;
 
                 } else {
                     Swal.fire('Ha ocurrido un error', 'Error!', 'error');
@@ -641,7 +688,11 @@ import Swal from 'sweetalert2';
                 gananciaTotal += (parseFloat(pedido.precio) * parseInt(pedido.cantidad));
                 if (pedidos[index - 1] && (pedido.folio == pedidos[index - 1].folio)) cuotaValida = false;
                 else cuotaValida = true;
-                if (cuotaValida) gananciaTotal += parseFloat(pedido.cuota);
+                if (cuotaValida) {
+                    gananciaTotal += parseFloat(pedido.cuota);
+
+                    if (pedido.pagado == 0) gananciaTotal -= pedido.abono;
+                }
 
             });
 

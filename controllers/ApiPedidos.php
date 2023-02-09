@@ -445,7 +445,48 @@ class ApiPedidos
             else
                 $pedido->abono = $abono;
 
-                
+
+            $resultado = $pedido->guardar();
+
+
+
+
+            if ($resultado) {
+                echo json_encode([
+                    'tipo' => 'exito',
+                    'mensaje' => 'El Pedido Se Ha Sido Actualizado'
+                ]);
+            }
+        }
+    }
+    public static function cambiarMetodoPago()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            session_start();
+            isAuth();
+            isOficina();
+
+
+            $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
+            $metodoPago = $_POST['metodoPago'] ?? '';
+
+
+            if (is_null($id)) {
+                echo json_encode([]);
+                exit;
+            }
+
+            $pedido = Pedidos::find($id);
+
+            if (!$pedido) {
+                echo json_encode([]);
+                exit;
+            }
+
+            if ($metodoPago == '1') $pedido->metodoPago = 0;
+            else $pedido->metodoPago = 1;
+
+
             $resultado = $pedido->guardar();
 
 
@@ -477,7 +518,7 @@ class ApiPedidos
         }
 
 
-        $query = "  SELECT pedidos.id, fecha, total";
+        $query = "  SELECT pedidos.id, fecha, total, abono";
         $query .= " FROM pedidos WHERE pedidos.fecha  LIKE  '{$fecha}%' AND pedidos.pagado = '{$pagado}' ORDER BY pedidos.fecha ASC";
 
 
@@ -492,12 +533,20 @@ class ApiPedidos
         $arregloTotales = [0, 0, 0, 0];
 
 
+        if ($pagado == '0') {
+            foreach ($pedidos as $pedido) {
+                $pedido->total -= $pedido->abono;
+            }
+        } 
+
+
         foreach ($pedidos as  $pedido) {
             if (preg_match_all('/20..\-..\-0([1-7])/', $pedido->fecha)) $arregloClasificado[0][] = $pedido;
             if (preg_match_all('/20..\-..\-(0([8-9])|1([0-4]))/', $pedido->fecha)) $arregloClasificado[1][] = $pedido;
             if (preg_match_all('/20..\-..\-(1([5-9])|2([0-1]))/', $pedido->fecha)) $arregloClasificado[2][] = $pedido;
             if (preg_match_all('/20..\-..\-(2([2-9])|3([0-1]))/', $pedido->fecha)) $arregloClasificado[3][] = $pedido;
         }
+
 
 
         foreach ($arregloClasificado as $key => $arreglo) {
