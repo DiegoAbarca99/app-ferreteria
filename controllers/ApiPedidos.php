@@ -518,8 +518,8 @@ class ApiPedidos
         }
 
 
-        $query = "  SELECT pedidos.id, fecha, total, abono";
-        $query .= " FROM pedidos WHERE pedidos.fecha  LIKE  '{$fecha}%' AND pedidos.pagado = '{$pagado}' ORDER BY pedidos.fecha ASC";
+        $query = "  SELECT pedidos.id, fecha, total, abono, pagado";
+        $query .= " FROM pedidos WHERE pedidos.fecha  LIKE  '{$fecha}%' ORDER BY pedidos.fecha ASC";
 
 
         $pedidos = OficinaGrafico::SQL($query);
@@ -529,35 +529,43 @@ class ApiPedidos
             exit;
         }
 
-        $arregloClasificado = [];
-        $arregloTotales = [0, 0, 0, 0];
+        $arregloTotalesTodo = [];
+        $arregloTotalesPagados = [0, 0, 0, 0];
+        $arregloTotalesNoPagados = [0, 0, 0, 0];
 
 
-        if ($pagado == '0') {
-            foreach ($pedidos as $pedido) {
-                $pedido->total -= $pedido->abono;
-            }
-        } 
 
-
+        // /Todos los elementos
         foreach ($pedidos as  $pedido) {
-            if (preg_match_all('/20..\-..\-0([1-7])/', $pedido->fecha)) $arregloClasificado[0][] = $pedido;
-            if (preg_match_all('/20..\-..\-(0([8-9])|1([0-4]))/', $pedido->fecha)) $arregloClasificado[1][] = $pedido;
-            if (preg_match_all('/20..\-..\-(1([5-9])|2([0-1]))/', $pedido->fecha)) $arregloClasificado[2][] = $pedido;
-            if (preg_match_all('/20..\-..\-(2([2-9])|3([0-1]))/', $pedido->fecha)) $arregloClasificado[3][] = $pedido;
+            if (preg_match_all('/20..\-..\-0([1-7])/', $pedido->fecha)) $arregloTotalesTodo[0][] = $pedido;
+            if (preg_match_all('/20..\-..\-(0([8-9])|1([0-4]))/', $pedido->fecha)) $arregloTotalesTodo[1][] = $pedido;
+            if (preg_match_all('/20..\-..\-(1([5-9])|2([0-1]))/', $pedido->fecha)) $arregloTotalesTodo[2][] = $pedido;
+            if (preg_match_all('/20..\-..\-(2([2-9])|3([0-1]))/', $pedido->fecha)) $arregloTotalesTodo[3][] = $pedido;
         }
 
 
-
-        foreach ($arregloClasificado as $key => $arreglo) {
+        //Pagados
+        foreach ($arregloTotalesTodo as $key => $arreglo) {
             foreach ($arreglo as $elemento) {
-                $arregloTotales[$key] += $elemento->total;
+
+                if ($elemento->pagado == 1) $arregloTotalesPagados[$key] += $elemento->total;
+                else $arregloTotalesPagados[$key] += $elemento->abono;
+            }
+        }
+        //No Pagados
+        foreach ($arregloTotalesTodo as $key => $arreglo) {
+            foreach ($arreglo as $elemento) {
+
+                if ($elemento->pagado == 0) {
+
+                    $arregloTotalesNoPagados[$key] += $elemento->total;
+                    $arregloTotalesNoPagados[$key] -= $elemento->abono;
+                }
             }
         }
 
 
-
-
-        echo json_encode($arregloTotales);
+        if ($pagado == 1) echo json_encode($arregloTotalesPagados);
+        else if($pagado == 0) echo json_encode($arregloTotalesNoPagados);
     }
 }
