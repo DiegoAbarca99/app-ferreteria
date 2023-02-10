@@ -1,4 +1,4 @@
-export function mostrarFormulario(mensajeLabel, mensajeLegend, previousValue) {
+export function mostrarFormulario(mensajeLabel, mensajeLegend, previousValue, isNumber = false) {
 
     const inicio = document.querySelector('#cerrar-menu');
     if (inicio) {
@@ -21,7 +21,7 @@ export function mostrarFormulario(mensajeLabel, mensajeLegend, previousValue) {
         <legend>${mensajeLegend}</legend>
         <div class="formulario__campo"
             <label class="formulario__label" for="valor">${mensajeLabel}</label>
-            <input class="formulario__input" type="text" name="valor" id="valor" value="${previousValue}">
+            <input class="formulario__input"  type="${isNumber ? 'number' : 'text'}"   ${isNumber ? 'step="any"' : ''} ${isNumber ? 'min="0"' : ''} name="valor" id="valor" value="${previousValue}">
         </div>
          <div class="opciones">
             <input type="submit" class="submit-nuevo-valor" value="Agregar">
@@ -39,5 +39,5 @@ export function mostrarFormulario(mensajeLabel, mensajeLegend, previousValue) {
     }, 0);
 
     return modal;
-    
+
 }

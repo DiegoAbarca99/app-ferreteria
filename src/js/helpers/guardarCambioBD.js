@@ -19,9 +19,16 @@ export async function guardarCambioBD(datos, url, urlRedirrecionar = '') {
             });
 
         } else if (resultado.tipo === 'error') {
-            Swal.fire(resultado.mensaje, 'Error!', 'error');
-        }
 
+            Swal.fire(resultado.mensaje, 'Error!', 'error');
+
+        } else if (resultado.tipo === 'warning') {
+
+            Swal.fire(resultado.mensaje, '', 'warning').then(() => {
+                if (urlRedirrecionar !== '') window.location.href = urlRedirrecionar
+                else window.location.reload();
+            });
+        }
 
 
 

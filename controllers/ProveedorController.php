@@ -42,8 +42,9 @@ class ProveedorController
             $clienteNombre = s($_POST['cliente']);
 
 
-            if (empty($fecha)) {
-                Pedidos::setAlerta('error', 'La Fecha es Obligatoria');
+            if (empty($fecha) && empty($clienteNombre)) {
+
+                Pedidos::setAlerta('error', 'Los dos campos no pueden ir vacios');
             } else if (empty($clienteNombre)) {
 
                 $pedidos = Pedidos::filtrarArray([
@@ -55,6 +56,7 @@ class ProveedorController
                     $pedido->cliente = Clientes::find($pedido->clientes_id);
                 }
             } else {
+
 
                 $clientes = Clientes::filtrar('nombre', $clienteNombre);
 

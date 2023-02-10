@@ -28,6 +28,7 @@
                     <th class="table__th ">Fecha</th>
                     <th class="table__th ">Cliente</th>
                     <th class="table__th ">Total</th>
+                    <th class="table__th ">Abono</th>
                     <th class="table__th">Pagado</th>
 
                 </tr>
@@ -40,7 +41,8 @@
                         <td class="table__td "> <?php echo $pedido->fecha ?></td>
                         <td class="table__td "> <?php echo $pedido->cliente->nombre ?></td>
                         <td class="table__td"> <?php echo $pedido->total ?></td>
-                        <td class="table__td"> <?php echo $pedido->pagado == 1 ? 'Si' : 'No' ?></td>
+                        <td class="table__td <?php echo $pedido->pagado == 0 ? 'table__td--resaltar' : '' ?> <?php echo $pedido->pagado == 0 ? 'table--abono' : '' ?>" data-abono=" <?php echo $pedido->id ?>"> <?php echo $pedido->abono ?></td>
+                        <td class="table__td <?php echo $pedido->pagado == 1 ? 'table__td--si' : 'table__td--no' ?>"> <?php echo $pedido->pagado == 1 ? 'Si' : 'No' ?></td>
 
                     </tr>
 

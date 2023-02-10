@@ -47,6 +47,13 @@ function isOficina(): void
     }
 }
 
+function isOficinaOrProveedor(): void
+{
+    if ($_SESSION['status'] === 0) {
+        header('Location: /');
+    }
+}
+
 // Función que revisa que el usuario sea administrador o con status de oficina
 function isAllowed(): void
 {
@@ -92,7 +99,7 @@ function validarCURP($cadena)
     $lngDigito = 0.0;
     $curp17 = substr($curp, 0, 17);
     for ($i = 0; $i < 17; $i++) {
-    
+
         $lngSuma = $lngSuma + mb_strpos($diccionario, mb_substr($curp17, $i, 1)) * (18 - $i);
     }
     $lngDigito = 10 - ($lngSuma % 10);

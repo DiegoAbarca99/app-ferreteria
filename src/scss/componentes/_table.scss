@@ -54,7 +54,7 @@
 
 
         &:nth-child(even) {
-            background-color: darken(v.$grisClaro,5%);
+            background-color: darken(v.$grisClaro, 5%);
         }
 
     }
@@ -81,6 +81,17 @@
             }
         }
 
+        &--si {
+            color: v.$verde;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        &--no {
+            color: v.$rojo;
+            text-align: center;
+            text-transform: uppercase;
+        }
 
 
         &--prolamsa,

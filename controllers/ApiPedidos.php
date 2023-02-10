@@ -426,30 +426,77 @@ class ApiPedidos
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
             isAuth();
-            isOficina();
+            isOficinaOrProveedor();
 
 
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
             $abono = $_POST['abono'] ?? '';
+            $fromProveedor = $_POST['fromProveedor'] ?? '';
 
 
             if (is_null($id) || $abono == '') {
-                echo json_encode([]);
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
                 exit;
             }
 
             $pedido = Pedidos::find($id);
 
-            if ($abono == $pedido->total)
-                $pedido->abono = 0;
-            else
-                $pedido->abono = $abono;
+            if ($abono > $pedido->total) {
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'El Abono Es Mayor A La Deuda!'
+                ]);
+                exit;
+            }
 
+            if ($abono == $pedido->total) {
+                $pedido->abono = 0;
+
+                if ($fromProveedor) $pedido->pagado = 1;
+            } else $pedido->abono = $abono;
 
             $resultado = $pedido->guardar();
+            if (!$resultado) {
+                echo json_encode([
+                    'tipo' => 'error',
+                    'mensaje' => 'Ha Ocurrido Un Error!'
+                ]);
+                exit;
+            }
+
+            if ($fromProveedor) {
+                $cambiarCreditoPersona = true;
+                $pedidos = Pedidos::belongsTo('clientes_id', $pedido->clientes_id);
+
+                foreach ($pedidos as $pedido) {
+                    if ($pedido->pagado == 0) $cambiarCreditoPersona = false;
+                }
+
+                if ($cambiarCreditoPersona) {
 
 
+                    $cliente = Clientes::find($pedido->clientes_id);
+                    $cliente->credito = 0;
+                    $resultado = $cliente->guardar();
 
+                    if ($resultado) {
+                        echo json_encode([
+                            'tipo' => 'warning',
+                            'mensaje' => 'El Estado De Credito Del Cliente Ha Cambiado!'
+                        ]);
+                        exit;
+                    } else {
+                        echo json_encode([
+                            'tipo' => 'error',
+                            'mensaje' => 'Ha Ocurrido Un Error!'
+                        ]);
+                        exit;
+                    }
+                }
+            }
 
             if ($resultado) {
                 echo json_encode([
@@ -566,6 +613,6 @@ class ApiPedidos
 
 
         if ($pagado == 1) echo json_encode($arregloTotalesPagados);
-        else if($pagado == 0) echo json_encode($arregloTotalesNoPagados);
+        else if ($pagado == 0) echo json_encode($arregloTotalesNoPagados);
     }
 }

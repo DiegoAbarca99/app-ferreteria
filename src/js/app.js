@@ -28,6 +28,8 @@ import './proveedores/clientes/index';
 import './proveedores/productos/index';
 //Pedidos
 import './proveedores/pedidos/levantarPedido';
+//Historial
+import './proveedores/historial/historialPedidos';
 
 //-----------Oficina-----------------------
 import './oficina/index';
