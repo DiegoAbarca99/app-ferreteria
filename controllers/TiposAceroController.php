@@ -92,6 +92,8 @@ class TiposAceroController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+            $_POST['nombre'] = trim(strtoupper($_POST['nombre']));
+
             $acero->sincronizar($_POST);
             $alertas = $acero->validar();
 
@@ -153,6 +155,7 @@ class TiposAceroController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+            $_POST['nombre'] = trim(strtoupper($_POST['nombre']));
             $acero->sincronizar($_POST);
 
             $alertas = $acero->validar();

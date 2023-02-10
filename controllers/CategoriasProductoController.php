@@ -15,12 +15,12 @@ class CategoriasProductoController
         isAuth();
         isAdmin();
 
-        $categoriasProducto=CategoriaProducto::all();
+        $categoriasProducto = CategoriaProducto::all();
 
 
         $router->render('admin/categorias/index', [
             'titulo' => 'Categorias Productos',
-            'categorias'=>$categoriasProducto
+            'categorias' => $categoriasProducto
         ]);
     }
 
@@ -37,7 +37,7 @@ class CategoriasProductoController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-
+            $_POST['nombre'] = trim(strtoupper($_POST['nombre']));
             $categoria->sincronizar($_POST);
             $impuestos->sincronizar($_POST);
             $ganancias->sincronizar($_POST);
@@ -76,7 +76,7 @@ class CategoriasProductoController
 
 
 
-        $alertas=CategoriaProducto::getAlertas();
+        $alertas = CategoriaProducto::getAlertas();
         $router->render('admin/categorias/crear', [
             'titulo' => 'Crear Categoría',
             'alertas' => $alertas,

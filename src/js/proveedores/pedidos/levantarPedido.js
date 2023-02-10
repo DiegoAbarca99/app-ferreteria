@@ -729,6 +729,10 @@ import Swal from "sweetalert2";
                     if (e.target.classList.contains('seleccionar')) {
                         const cantidad = document.querySelector('#cantidad').value;
 
+                        if (cantidad <= 0) {
+                            Swal.fire('Debe Especificar Una Cantidad Validad', 'Error!', 'error');
+                            return;
+                        }
 
                         const obj = {
                             id: producto.id,
@@ -1146,7 +1150,10 @@ import Swal from "sweetalert2";
 
                     if (e.target.classList.contains('seleccionar')) {
                         const cantidad = document.querySelector('#cantidad').value;
-
+                        if (cantidad <= 0) {
+                            Swal.fire('Debe Especificar Una Cantidad Validad', 'Error!', 'error');
+                            return;
+                        }
 
                         const obj = {
                             id: producto.id,
@@ -1442,7 +1449,10 @@ import Swal from "sweetalert2";
                     metodoPago.classList.add('display-none');
 
                     const inputAbono = document.querySelector('input[name="abono"]');
-                    pedido.abono = inputAbono.value;
+                    inputAbono.addEventListener('input', (e) => {
+                        pedido.abono = e.target.value;
+                    });
+
                     pedido.metodoPago = '';
 
                 }
@@ -1471,6 +1481,8 @@ import Swal from "sweetalert2";
             } else {
                 if (pedido.pagado == '' || pedido.status == '')
                     Swal.fire('Debe llenar todos los campos', 'Error', 'error');
+                else if (pedido.total <= pedido.abono)
+                    Swal.fire('El Abono es mayor o igual a la deuda!', 'Error', 'error');
                 else
                     levantarPedido();
             }

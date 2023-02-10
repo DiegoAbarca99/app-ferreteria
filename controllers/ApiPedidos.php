@@ -217,7 +217,7 @@ class ApiPedidos
 
 
 
-        $consulta = "  SELECT pedidos.id,fecha, folio, pagado, pedidos.status, abono, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre as sucursal,";
+        $consulta = "  SELECT pedidos.id,fecha, folio, pagado, pedidos.status, abono, metodoPago, total, usuarios.usuario as usuario, usuarios.nombre as nombre, sucursales.nombre as sucursal,";
         $consulta .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $consulta .= " clientes.cuotaConsumo as cuota, clientes.telefono, productosproveedores.nombre as producto, ";
         $consulta .= " productospedidos.cantidad, productospedidos.precio, productospedidos.tipo";
@@ -256,7 +256,7 @@ class ApiPedidos
 
 
 
-        $query = "  SELECT pedidos.id, pagado,fecha, folio, abono, pedidos.status, metodoPago, total, usuarios.nombre as usuario, sucursales.nombre as sucursal,";
+        $query = "  SELECT pedidos.id, pagado,fecha, folio, abono, pedidos.status, metodoPago, total, usuarios.usuario as usuario, usuarios.nombre as nombre, sucursales.nombre as sucursal,";
         $query .= " clientes.nombre as cliente, clientes.curp, clientes.telefono as celular, clientes.credito, CONCAT( clientes.calle,' ', clientes.numeroExterno,' ',clientes.numeroInterno) as direccion, CONCAT(clientes.estado,' ',municipios.nombre) as ubicacion, ";
         $query .= " clientes.cuotaConsumo as cuota, clientes.telefono, precioskilo.nombre as producto, ";
         $query .= " pedidoskilo.cantidad, pedidoskilo.precio, pedidoskilo.tipo";

@@ -163,11 +163,7 @@ class ActiveRecord
                 $query .= " ${key} LIKE '%${value}%' AND";
             }
         }
-        echo '<pre>';
-        var_dump($query);
-        echo '</pre>';
-        exit;
-
+       
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
@@ -206,8 +202,9 @@ class ActiveRecord
                 $query .= " ${key} = '${value}' AND ";
             }
         }
+     
         $resultado = self::consultarSQL($query);
-        return array_shift($resultado);
+        return $resultado;
     }
 
 

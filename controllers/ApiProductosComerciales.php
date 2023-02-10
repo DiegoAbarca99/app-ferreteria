@@ -14,7 +14,7 @@ use Model\TiposAceros;
 class ApiProductosComerciales
 {
 
-    public static function crear(Router $router)
+    public static function crear()
     {
         session_start();
         isAuth();
@@ -48,6 +48,7 @@ class ApiProductosComerciales
                 exit;
             }
 
+            $_POST['nombre'] = trim(strtoupper($_POST['nombre']));
             $producto->sincronizar($_POST);
             $productoExistente = ProductosComerciales::where('nombre', $producto->nombre);
 
@@ -182,7 +183,8 @@ class ApiProductosComerciales
 
             if ($eliminarAcero) unset($_POST['eliminarAcero']);
             if ($eliminarCosto) unset($_POST['eliminarCosto']);
-
+            
+            $_POST['nombre'] = trim(strtoupper($_POST['nombre']));
             $productoActual->sincronizar($_POST);
 
 

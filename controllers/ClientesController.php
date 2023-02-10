@@ -139,7 +139,7 @@ class ClientesController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $municipio->nombre = $_POST['municipio'];
+            $municipio->nombre = trim(strtoupper($_POST['municipio']));
 
             $resultado = [];
 
@@ -153,15 +153,34 @@ class ClientesController
                 }
             }
 
-            $cliente->sincronizar($_POST);
+
+            $arregloNormalizado = [];
+            foreach ($_POST as $key => $value) {
+
+                if ($key === 'municipio')
+                    continue;
+
+                if ($key === 'estado' || $key === 'nombre' || $key === 'calle' || $key === 'colonia')
+                    $arregloNormalizado[$key] = trim(strtoupper($value));
+
+                else $arregloNormalizado[$key] = $value;
+            }
+
+            $cliente->sincronizar($arregloNormalizado);
             $cliente->municipios_id = $resultado['id'] ?? '';
             $alertas = $cliente->validar();
 
 
 
             if (empty($alertas)) {
-                $cliente->guardar();
-                header('Location:/proveedor/clientes');
+
+                $clienteExistente = Clientes::where('curp', $cliente->curp);
+                if ($clienteExistente) {
+                    Clientes::setAlerta('error', 'Ya se encuentra asignada esa curp a un cliente');
+                } else {
+                    $cliente->guardar();
+                    header('Location:/proveedor/clientes');
+                }
             }
         }
 
@@ -203,7 +222,7 @@ class ClientesController
         $alertas = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $municipio->nombre = $_POST['municipio'];
+            $municipio->nombre = trim(strtoupper($_POST['municipio']));
             $resultado = [];
 
             if (!empty($municipio->nombre)) {
@@ -217,41 +236,69 @@ class ClientesController
             }
 
             $cuotaAnterior = $cliente->cuotaConsumo;
+            $curpAnterior = $cliente->curp;
 
 
-            $cliente->sincronizar($_POST); 
-            if ($cuotaAnterior != $cliente->cuotaConsumo) {
-                $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
-             /*   $arg = [
-                    'usuario' => $usuario->usuario,
-                    'nombre' => 'Nombre cliente: ' . $cliente->nombre,
-                    'sucursal' => $usuario->surcursal, 'detalles' => 'Cuota anterior: ' . $cuotaAnterior . ' nueva: ' . $cliente->cuotaConsumo,
-                    'accion' => 'Se modificó la cuota de consumo'
-                ];*/
+            $arregloNormalizado = [];
+            foreach ($_POST as $key => $value) {
+
+                if ($key === 'municipio')
+                    continue;
+
+                if ($key === 'estado' || $key === 'nombre' || $key === 'calle' || $key === 'colonia')
+                    $arregloNormalizado[$key] = trim(strtoupper($value));
+
+                else $arregloNormalizado[$key] = $value;
             }
-            foreach ($pedidos as $pedido) {
-                if ($cuotaAnterior > $cliente->cuotaConsumo) {
-                    $pedido->total = floatval($pedido->total) - $diferencia;
-                } else {
-                    $pedido->total = floatval($pedido->total) + $diferencia;
-                }
-                $pedido->guardar();
-            }
-            // Historial
 
+            $cliente->sincronizar($arregloNormalizado);
 
-            $historico = new Historico($arg);
-
-            $cliente->id = $id;
             $cliente->municipios_id = $resultado['id'] ?? '';
+
             $alertas = $cliente->validar();
 
 
-
             if (empty($alertas)) {
-                $cliente->guardar();
-                if (!empty($arg)) $historico->guardar();
-                header('Location:/proveedor/clientes');
+
+                $clienteExistente = Clientes::where('curp', $cliente->curp);
+                if (!is_null($clienteExistente) && ($curpAnterior !== $cliente->curp)) {
+
+                    Clientes::setAlerta('error', 'Ya exite un cliente con esa Curp asignada');
+                } else {
+
+
+                    $resultado = $cliente->guardar();
+                    if ($resultado) {
+
+
+                        if ($cuotaAnterior != $cliente->cuotaConsumo) {
+                            $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
+                            /*   $arg = [
+                                    'usuario' => $usuario->usuario,
+                                    'nombre' => 'Nombre cliente: ' . $cliente->nombre,
+                                    'sucursal' => $usuario->surcursal, 'detalles' => 'Cuota anterior: ' . $cuotaAnterior . ' nueva: ' . $cliente->cuotaConsumo,
+                                    'accion' => 'Se modificó la cuota de consumo'
+                                ];*/
+                        }
+
+
+                        foreach ($pedidos as $pedido) {
+                            if ($cuotaAnterior > $cliente->cuotaConsumo) {
+                                $pedido->total = floatval($pedido->total) - $diferencia;
+                            } else {
+                                $pedido->total = floatval($pedido->total) + $diferencia;
+                            }
+                            $pedido->guardar();
+                        }
+
+
+                        // Historial
+                        //   $historico = new Historico($arg);
+
+                        //  if (!empty($arg)) $historico->guardar();
+                        header('Location:/proveedor/clientes');
+                    }
+                }
             }
         }
 

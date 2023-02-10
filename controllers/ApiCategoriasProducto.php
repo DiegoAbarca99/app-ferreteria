@@ -56,7 +56,7 @@ class ApiCategoriasProducto
         echo json_encode($categoria);
     }
 
-    public static function ganancias(Router $router)
+    public static function ganancias()
     {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -82,7 +82,7 @@ class ApiCategoriasProducto
         }
     }
 
-    public static function impuestos(Router $router)
+    public static function impuestos()
     {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -147,6 +147,8 @@ class ApiCategoriasProducto
 
             $nombrePrevio = $categoria->nombre;
 
+            $_POST['nombre'] = trim(strtoupper(($_POST['nombre'])));
+
             $categoria->sincronizar($_POST);
 
             $categoriaExistente = CategoriaProducto::where('nombre', $categoria->nombre);
@@ -171,7 +173,7 @@ class ApiCategoriasProducto
         }
     }
 
-    public static function eliminar(Router $router)
+    public static function eliminar()
     {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

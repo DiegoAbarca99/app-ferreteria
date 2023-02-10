@@ -156,6 +156,10 @@ import Swal from 'sweetalert2';
                 usuario.innerHTML = `Usuario: <span>${pedidos[i].usuario}</span>`;
                 usuario.classList.add('pedido__parrafo');
 
+                const nombre = document.createElement('P');
+                nombre.innerHTML = `Nombre Completo: <span>${pedidos[i].nombre}</span>`;
+                nombre.classList.add('pedido__parrafo');
+
                 const celular = document.createElement('P');
                 celular.innerHTML = `Teléfono: <span>${pedidos[i].celular}</span>`;
                 celular.classList.add('pedido__parrafo');
@@ -302,6 +306,7 @@ import Swal from 'sweetalert2';
                 contenedorUsuario.appendChild(headingPrincipal);
                 contenedorUsuario.appendChild(headingUsuario);
                 contenedorUsuario.appendChild(usuario);
+                contenedorUsuario.appendChild(nombre);
                 contenedorUsuario.appendChild(celular);
                 contenedorUsuario.appendChild(surcursal);
 

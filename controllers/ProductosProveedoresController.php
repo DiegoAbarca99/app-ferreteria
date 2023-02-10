@@ -30,9 +30,6 @@ class ProductosProveedoresController
         if ($nombre) {
 
             $productos = ProductosProveedores::filtrar('nombre', $nombre);
-            
-            
-
         } else {
 
             //Se define la categoria Filtrado enviada via GET
@@ -87,7 +84,7 @@ class ProductosProveedoresController
             'titulo' => 'Listado de Precios Proveedores',
             'categorias' => $categorias,
             'productos' => $productosFormateados,
-            'href'=>'/admin/producto-proveedor/crear',
+            'href' => '/admin/producto-proveedor/crear',
             'mensaje_boton' => ' Agregar Producto',
             'mensaje_select' => 'Seleccione una Categoria'
         ]);
@@ -108,6 +105,7 @@ class ProductosProveedoresController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+            $_POST['nombre'] = trim(strtoupper($_POST['nombre']));
             $productoProveedor->sincronizar($_POST);
             $pesos->sincronizar($_POST);
 
@@ -211,7 +209,7 @@ class ProductosProveedoresController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-
+            $_POST['nombre'] = trim(strtoupper($_POST['nombre']));
             $productoProveedor->sincronizar($_POST);
 
             $alertas = $productoProveedor->validar();

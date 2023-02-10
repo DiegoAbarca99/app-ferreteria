@@ -277,6 +277,10 @@ class ProductosComercialesController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    
+            $_POST['nombre']=trim(strtoupper($_POST['nombre']));
+            $_POST['codigo']=trim(strtoupper($_POST['codigo']));
+
             $productoKilo->sincronizar($_POST);
 
             $alertas = $productoKilo->validar();
@@ -337,6 +341,9 @@ class ProductosComercialesController
 
             $nombreAnterior = $productoKilo->nombre;
             $codigoAnterior = $productoKilo->codigo;
+
+            $_POST['nombre']=trim(strtoupper($_POST['nombre']));
+            $_POST['codigo']=trim(strtoupper($_POST['codigo']));
 
             $productoKilo->sincronizar($_POST);
 

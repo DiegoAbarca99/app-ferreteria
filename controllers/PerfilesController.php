@@ -63,9 +63,11 @@ class PerfilesController
 
         $categorias = Sucursales::all();
 
+     
         if (!empty($usuarios))
-            foreach ($usuarios as $usuario) $usuario->sucursal = Sucursales::find($usuario->sucursal_id);
+            foreach ($usuarios as $usuario)  $usuario->sucursal = Sucursales::find($usuario->sucursal_id);
 
+           
 
         $router->render('perfiles/index', [
             'titulo' => 'Perfiles',

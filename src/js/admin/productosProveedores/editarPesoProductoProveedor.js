@@ -9,9 +9,9 @@ import { guardarCambioBD, mostrarFormulario } from "../../helpers";
         botonesEditar.forEach(boton => {
             boton.addEventListener('click', function (e) {
                 id = e.target.parentElement.querySelector('.eliminar-productoProveedor').value;
-                const peso = e.target.textContent;
+                const peso = parseFloat(e.target.textContent);
 
-                const modal = mostrarFormulario('Nuevo Peso', 'Cambiar Peso', peso);
+                const modal = mostrarFormulario('Nuevo Peso', 'Cambiar Peso', peso, true);
                 const body = document.querySelector('body');
 
 

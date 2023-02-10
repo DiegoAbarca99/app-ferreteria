@@ -1,5 +1,5 @@
 
-import { mostrarAlerta, mostrarFormulario, guardarCambioBD} from '../../helpers/index';
+import { mostrarAlerta, mostrarFormulario, guardarCambioBD } from '../../helpers/index';
 
 (function () {
 
@@ -26,7 +26,7 @@ import { mostrarAlerta, mostrarFormulario, guardarCambioBD} from '../../helpers/
                     registroActualizar = e.target.parentElement.querySelector('.table__td--acciones').firstElementChild.nextElementSibling.firstElementChild;
                     const valor = parseFloat(e.target.textContent);
 
-                    const modal = mostrarFormulario('SLP', 'Editar SLP', valor);
+                    const modal = mostrarFormulario('SLP', 'Editar SLP', valor, true);
 
                     seleccionarOpcionesFormulario(modal, 'slp');
 
@@ -42,14 +42,14 @@ import { mostrarAlerta, mostrarFormulario, guardarCambioBD} from '../../helpers/
                     registroActualizar = e.target.parentElement.querySelector('.table__td--acciones').firstElementChild.nextElementSibling.firstElementChild;
                     const valor = parseFloat(e.target.textContent);
 
-                    const modal = mostrarFormulario('Prolamsa', 'Editar Prolamsa', valor);
+                    const modal = mostrarFormulario('Prolamsa', 'Editar Prolamsa', valor, true);
                     seleccionarOpcionesFormulario(modal, 'prolamsa');
                 });
 
                 registroArcoMetal.addEventListener('click', function (e) {
                     registroActualizar = e.target.parentElement.querySelector('.table__td--acciones').firstElementChild.nextElementSibling.firstElementChild;
                     const valor = parseFloat(e.target.textContent);
-                    const modal = mostrarFormulario('ArcoMetal', 'Editar ArcoMetal', valor);
+                    const modal = mostrarFormulario('ArcoMetal', 'Editar ArcoMetal', valor, true);
                     seleccionarOpcionesFormulario(modal, 'arcoMetal');
                 });
 
