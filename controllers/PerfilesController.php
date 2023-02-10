@@ -27,9 +27,9 @@ class PerfilesController
         if (!empty($nombreUsuarioSanitizado)) {
             //Status de Oficina
             if ($_SESSION['status'] === 2) {
-                $usuarios = Usuario::filtrarArrayNot([
+                $usuarios = Usuario::filtrarArray([
                     'usuario' => $nombreUsuarioSanitizado,
-                    'status' => 0
+                    'status' => 1
                 ]);
             } else {
                 $usuarios = Usuario::filtrar('usuario', $nombreUsuarioSanitizado);
@@ -43,9 +43,9 @@ class PerfilesController
             if (!empty($idSucursalSanitizada)) {
                 //Status de Oficina
                 if ($_SESSION['status'] === 2) {
-                    $usuarios = Usuario::whereArrayNot([
+                    $usuarios = Usuario::whereArray([
                         'sucursal_id' => $idSucursalSanitizada,
-                        'status' => 0
+                        'status' => 1
                     ]);
                 } else {
                     $usuarios = Usuario::filtrar('sucursal_id', $idSucursalSanitizada);
@@ -54,7 +54,7 @@ class PerfilesController
             } else {
                 //Status de Oficina
                 if ($_SESSION['status'] === 2) {
-                    $usuarios = Usuario::Notall('status', 0);
+                    $usuarios = Usuario::belongsTo('status', 1);
                 } else {
                     $usuarios = Usuario::all();
                 }
@@ -63,11 +63,11 @@ class PerfilesController
 
         $categorias = Sucursales::all();
 
-     
+
         if (!empty($usuarios))
             foreach ($usuarios as $usuario)  $usuario->sucursal = Sucursales::find($usuario->sucursal_id);
 
-           
+
 
         $router->render('perfiles/index', [
             'titulo' => 'Perfiles',
@@ -178,18 +178,17 @@ class PerfilesController
         $nivelAnterior = $usuario->nivel;
         $alertas = [];
         $arg = [];
-        
-        $usuario->sincronizar($_POST);
-        if($usuario->status === '1'){  
-            if($usuario->nivel =! $nivelAnterior){
-                $arg=['usuario'=>$usuario->usuario,
-                'nombre'=>$usuario->nombre ,
-                'sucursal'=>$usuario->sucursal_id
-                ,'detalles'=>'Anterior: '.($nivelAnterior === '0' ? 'Privilegiado' : 'Regular').' Actual: '. ($usuario->nivel === '0' ? 'privilegiado' : 'Regular'),
-                'accion'=>'Modificacion, nivel acceso de un proveedor'];
-            }
-            
 
+        $usuario->sincronizar($_POST);
+        if ($usuario->status === '1') {
+            if ($usuario->nivel = !$nivelAnterior) {
+                $arg = [
+                    'usuario' => $usuario->usuario,
+                    'nombre' => $usuario->nombre,
+                    'sucursal' => $usuario->sucursal_id, 'detalles' => 'Anterior: ' . ($nivelAnterior === '0' ? 'Privilegiado' : 'Regular') . ' Actual: ' . ($usuario->nivel === '0' ? 'privilegiado' : 'Regular'),
+                    'accion' => 'Modificacion, nivel acceso de un proveedor'
+                ];
+            }
         }
         $historico = new Historico($arg);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -217,7 +216,7 @@ class PerfilesController
                 } else {
                     $usuario->hashearPassword();
                     $usuario->guardar();
-                    if(!empty($arg)) $historico->guardar();
+                    if (!empty($arg)) $historico->guardar();
                     header('Location: /perfiles/index');
                 }
             }
@@ -247,7 +246,7 @@ class PerfilesController
                 exit;
             }
 
-            $usuario = Usuario::find($id);            
+            $usuario = Usuario::find($id);
             $resultado = $usuario->eliminar();
 
             if ($resultado) {
