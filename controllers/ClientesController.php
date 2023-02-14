@@ -208,7 +208,7 @@ class ClientesController
 
         $cliente = Clientes::find($id);
 
-        //$usuario = Usuario::find($id);
+        $usuario = Usuario::find($id);
 
         if (!$cliente) {
             header('Location:/proveedor/clientes');
@@ -257,6 +257,9 @@ class ClientesController
 
             $alertas = $cliente->validar();
 
+            //Obtiene el usuario en sesion activa
+            $_SESSION['id'];
+            $user = Usuario::find('id');
 
             if (empty($alertas)) {
 
@@ -273,12 +276,12 @@ class ClientesController
 
                         if ($cuotaAnterior != $cliente->cuotaConsumo) {
                             $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
-                            /*   $arg = [
-                                    'usuario' => $usuario->usuario,
+                               $arg = [
+                                    'usuario' => $user->usuario,
                                     'nombre' => 'Nombre cliente: ' . $cliente->nombre,
                                     'sucursal' => $usuario->surcursal, 'detalles' => 'Cuota anterior: ' . $cuotaAnterior . ' nueva: ' . $cliente->cuotaConsumo,
                                     'accion' => 'Se modificó la cuota de consumo'
-                                ];*/
+                                ];
                         }
 
 

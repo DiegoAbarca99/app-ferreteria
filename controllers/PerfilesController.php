@@ -166,7 +166,10 @@ class PerfilesController
 
         //Obtiene y valida Id pasado en la URL 
         $id = filter_Var($_GET['id'], FILTER_VALIDATE_INT);
-
+        
+        
+        
+        
         if (!$id)  header('Location:/');
 
         if ($_SESSION['status'] === 0) $usuario = Usuario::find($id); //Administrador
@@ -174,22 +177,25 @@ class PerfilesController
         if ($_SESSION['status'] === 2) $usuario = Usuario::whereNotArray(['status' => 0, 'id' => $id,]); //Oficina
 
         if (!$usuario)  header('Location:/');
+        $_SESSION['id'];
         $nombreUsuarioPrevio = $usuario->usuario;
         $nivelAnterior = $usuario->nivel;
         $alertas = [];
         $arg = [];
-
+        $user=Usuario::find('id');
         $usuario->sincronizar($_POST);
-        if ($usuario->status === '1') {
-            if ($usuario->nivel = !$nivelAnterior) {
-                $arg = [
-                    'usuario' => $usuario->usuario,
-                    'nombre' => $usuario->nombre,
-                    'sucursal' => $usuario->sucursal_id, 'detalles' => 'Anterior: ' . ($nivelAnterior === '0' ? 'Privilegiado' : 'Regular') . ' Actual: ' . ($usuario->nivel === '0' ? 'privilegiado' : 'Regular'),
-                    'accion' => 'Modificacion, nivel acceso de un proveedor'
-                ];
-            }
-        }
+        
+    
+            $arg = [
+                'usuario' => $user->usuario,
+                'nombre' => $usuario->nombre,
+                'sucursal' => $usuario->sucursal_id, 
+                'detalles' => 'Anterior: ' . ($nivelAnterior === '0' ? 'Privilegiado' : 'Regular') . ' Actual: ' . ($usuario->nivel === '0' ? 'privilegiado' : 'Regular'),
+                'accion' => 'Modificacion, nivel acceso de un proveedor',
+                
+            ];
+        
+
         $historico = new Historico($arg);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -224,6 +230,7 @@ class PerfilesController
 
         $sucursales = Sucursales::all();
         $alertas = Usuario::getAlertas();
+        
         $router->render('perfiles/editar-perfil', [
             'titulo' => 'Editar-Perfil',
             'usuario' => $usuario,

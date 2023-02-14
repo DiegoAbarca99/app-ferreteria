@@ -60,7 +60,7 @@ $router->get('/proveedor/productos/pdf', [ProductosController::class, 'pdf']);
 //Dashboard(Admin)
 $router->get('/admin/index', [AdminController::class, 'index']);
 $router->get('/historial', [AdminController::class, 'historial']);
-
+$router->post('/historial', [AdminController::class, 'historial']);
 //Gestión categorias del producto - impuestos y ganancias (Admin)
 $router->get('/admin/categoria', [CategoriasProductoController::class, 'index']);
 $router->get('/admin/categoria/crear', [CategoriasProductoController::class, 'crear']);
