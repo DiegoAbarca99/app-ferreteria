@@ -185,15 +185,20 @@ class PerfilesController
         $user=Usuario::find('id');
         $usuario->sincronizar($_POST);
         
+        
+        if($usuario->nivel ==='0' || $usuario->nivel === '1'){
+            if($usuario->nivel != $nivelAnterior){
+                $arg = [
+                    'usuario' => $user->usuario,
+                    'nombre' => $usuario->nombre,
+                    'sucursal' => $usuario->sucursal_id, 
+                    'detalles' => 'Anterior: ' . ($nivelAnterior === '1' ? 'Privilegiado' : 'Regular') . ' Actual: ' . ($usuario->nivel === '1' ? 'Privilegiado' : 'Regular'),
+                    'accion' => 'Modificacion, nivel acceso de un proveedor',             
+                ];
+            }
+        }
     
-            $arg = [
-                'usuario' => $user->usuario,
-                'nombre' => $usuario->nombre,
-                'sucursal' => $usuario->sucursal_id, 
-                'detalles' => 'Anterior: ' . ($nivelAnterior === '0' ? 'Privilegiado' : 'Regular') . ' Actual: ' . ($usuario->nivel === '0' ? 'privilegiado' : 'Regular'),
-                'accion' => 'Modificacion, nivel acceso de un proveedor',
-                
-            ];
+
         
 
         $historico = new Historico($arg);
