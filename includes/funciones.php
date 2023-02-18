@@ -26,6 +26,13 @@ function isAuth(): void
 // Función que revisa que el usuario sea administrador
 function isAdmin(): void
 {
+    if ($_SESSION['status'] !== 1 && $_SESSION['status'] !== 0) {
+        header('Location: /');
+    }
+}
+//Función que revisa que el usuario sea el usuario Raiz
+function isAdminRoot(): void
+{
     if ($_SESSION['status'] !== 0) {
         header('Location: /');
     }
@@ -34,7 +41,7 @@ function isAdmin(): void
 // Función que revisa que el usuario sea proveedor
 function isProveedor(): void
 {
-    if ($_SESSION['status'] !== 1) {
+    if ($_SESSION['status'] !== 2) {
         header('Location: /');
     }
 }
@@ -42,14 +49,14 @@ function isProveedor(): void
 // Función que revisa que el usuario tenga status de oficina
 function isOficina(): void
 {
-    if ($_SESSION['status'] !== 2) {
+    if ($_SESSION['status'] !== 3) {
         header('Location: /');
     }
 }
 
 function isOficinaOrProveedor(): void
 {
-    if ($_SESSION['status'] === 0) {
+    if ($_SESSION['status'] === 0 || $_SESSION['status'] === 1) {
         header('Location: /');
     }
 }
@@ -57,7 +64,7 @@ function isOficinaOrProveedor(): void
 // Función que revisa que el usuario sea administrador o con status de oficina
 function isAllowed(): void
 {
-    if ($_SESSION['status'] === 1) {
+    if ($_SESSION['status'] === 2) {
         header('Location: /');
     }
 }

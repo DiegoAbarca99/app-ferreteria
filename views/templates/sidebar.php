@@ -9,7 +9,7 @@
 
 
     <!--Navegación para administradores-->
-    <?php if ($_SESSION['status'] === 0) { ?>
+    <?php if ($_SESSION['status'] === 0 || $_SESSION['status'] === 1) { ?>
         <nav class="sidebar__nav">
             <a class=" sidebar__enlace <?php echo pagina_actual('/admin') ? 'sidebar__enlace--activo' : '' ?>" href="/admin/index">Administración Global</a>
             <a class=" sidebar__enlace <?php echo pagina_actual('/perfiles') ? 'sidebar__enlace--activo' : '' ?>" href="/perfiles/index">Perfiles</a>
@@ -18,7 +18,7 @@
     <?php } ?>
 
     <!--Navegación para proveedores-->
-    <?php if ($_SESSION['status'] === 1) { ?>
+    <?php if ($_SESSION['status'] === 2) { ?>
         <nav class="sidebar__nav">
             <a class=" sidebar__enlace  <?php echo pagina_actual('/index') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/index">Levantar Pedido</a>
             <a class=" sidebar__enlace  <?php echo pagina_actual('/clientes') ? 'sidebar__enlace--activo' : '' ?>" href="/proveedor/clientes">Clientes</a>
@@ -28,7 +28,7 @@
     <?php } ?>
 
     <!--Navegación para oficina-->
-    <?php if ($_SESSION['status'] === 2) { ?>
+    <?php if ($_SESSION['status'] === 3) { ?>
         <nav class="sidebar__nav">
             <a class=" sidebar__enlace  <?php echo pagina_actual('/oficina') ? 'sidebar__enlace--activo' : '' ?>" href="/oficina/index">Gestionar Pedidos</a>
             <a class=" sidebar__enlace  <?php echo pagina_actual('/graficar') ? 'sidebar__enlace--activo' : '' ?>" href="/pedidos/graficar">Estadísticas</a>

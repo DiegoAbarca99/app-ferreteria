@@ -41,22 +41,29 @@ class AuthController
 
                         //redireccionar
                         if ($usuario->status === '0') {
-                            //Es administrador
+                            //Es administrador root
                             $_SESSION['status'] = 0;
                             header('Location: /admin/index');
                         }
 
                         if ($usuario->status === '1') {
-                            //Es proveedor
+                            //Es administrado regular
                             $_SESSION['status'] = 1;
-                            header('Location: /proveedor/index');
+                            header('Location: /admin/index');
                         }
 
                         if ($usuario->status === '2') {
-                            //Es secretaria
+                            //Es Proveedor
                             $_SESSION['status'] = 2;
+                            header('Location: /proveedor/index');
+                        }
+
+                        if ($usuario->status === '3') {
+                            //Es Secretaria
+                            $_SESSION['status'] = 3;
                             header('Location: /oficina/index');
                         }
+
                     } else {
                         Usuario::setAlerta('error', 'El password ingresado es incorrecto');
                     }

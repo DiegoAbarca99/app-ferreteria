@@ -1,6 +1,6 @@
 <?php include_once __DIR__ . '/../templates/header-dashboard.php'; ?>
 <div class="contenedor">
-    
+
     <?php include_once __DIR__ . '/../templates/filtros-admin.php' ?>
 
 
@@ -25,7 +25,7 @@
                             <td class="table__td table__td--ocultar"> <?php echo $usuario->usuario ?></td>
                             <td class="table__td"> <?php echo $usuario->nombre ?></td>
                             <td class="table__td table__td--ocultar"> <?php echo $usuario->sucursal->nombre ?></td>
-                            <td class="table__td "> <?php echo $usuario->status === '1' ? 'Proveedor' : 'Oficina' ?></td>
+                            <td class="table__td "> <?php echo $usuario->status === '1' ? 'Administrador' : ($usuario->status === '2' ? 'Proveedor' : 'Oficina') ?></td>
                             <td class="table__td--acciones">
                                 <a class="table__accion table__accion--editar" href="/perfiles/perfil?id= <?php echo $usuario->id ?>">
                                     <i class="fa-solid fa-eye"></i>

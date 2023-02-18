@@ -8,7 +8,7 @@
         //En caso de que se actualize un perfil, se obtienen el status y nivel de acceso previamente definidos.
         let statusValue = '';
         statusValue = status.value;
-        if (status.value === '1') mostrarStatus();
+        if (status.value === '2') mostrarStatus();
 
         status.addEventListener('input', seleccionarStatus);
 
@@ -18,7 +18,7 @@
             if (contenedorPrevioNivelAcceso)  contenedorPrevioNivelAcceso.remove();
 
             statusValue = e.target.value;
-            if (statusValue === '1') mostrarStatus();
+            if (statusValue === '2') mostrarStatus();
 
 
 

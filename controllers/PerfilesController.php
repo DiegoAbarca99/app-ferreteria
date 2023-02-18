@@ -25,14 +25,23 @@ class PerfilesController
 
         //Filtrar por nombre de usuario
         if (!empty($nombreUsuarioSanitizado)) {
-            //Status de Oficina
-            if ($_SESSION['status'] === 2) {
+            //Status Admin regular
+            if ($_SESSION['status'] === 1) {
+
+                $query = "SELECT * FROM  usuarios  WHERE  usuario LIKE '%$nombreUsuarioSanitizado%' AND NOT status = '1' AND NOT status = '0'";
+                $usuarios = Usuario::SQL($query);
+            } else if ($_SESSION['status'] === 3) {  //Status de Oficina
+
                 $usuarios = Usuario::filtrarArray([
-                    'usuario' => $nombreUsuarioSanitizado,
-                    'status' => 1
+                    'status' => 2,
+                    'usuario' => $nombreUsuarioSanitizado
+
                 ]);
-            } else {
-                $usuarios = Usuario::filtrar('usuario', $nombreUsuarioSanitizado);
+            } else { //Status Admin Root
+                $usuarios = Usuario::filtrarArrayNot([
+                    'usuario' => $nombreUsuarioSanitizado,
+                    'status' => 0
+                ]);
             }
         } else {
 
@@ -41,22 +50,32 @@ class PerfilesController
 
             //Filtrar por sucursal_id
             if (!empty($idSucursalSanitizada)) {
-                //Status de Oficina
-                if ($_SESSION['status'] === 2) {
+
+                //Status de Admin regular
+                if ($_SESSION['status'] === 1) {
+                    $query = "SELECT * FROM usuarios WHERE NOT status = 0 AND NOT  status = 1 AND sucursal_id = '$idSucursalSanitizada'";
+                    $usuarios = Usuario::SQL($query);
+                } else if ($_SESSION['status'] === 0) { //Status de Admin Root
+                    $query = "SELECT * FROM usuarios WHERE NOT status = 0 AND sucursal_id = '$idSucursalSanitizada'";
+                    $usuarios = Usuario::SQL($query);
+                } else if ($_SESSION['status'] === 3) { //Status de Oficina
                     $usuarios = Usuario::whereArray([
                         'sucursal_id' => $idSucursalSanitizada,
-                        'status' => 1
+                        'status' => 2
                     ]);
-                } else {
-                    $usuarios = Usuario::filtrar('sucursal_id', $idSucursalSanitizada);
                 }
+
                 //Sin Filtrar
             } else {
-                //Status de Oficina
-                if ($_SESSION['status'] === 2) {
-                    $usuarios = Usuario::belongsTo('status', 1);
-                } else {
-                    $usuarios = Usuario::all();
+
+                //Status de Admin regular
+                if ($_SESSION['status'] === 1) {
+                    $query = "SELECT * FROM usuarios WHERE NOT status = 0 AND NOT  status = 1";
+                    $usuarios = Usuario::SQL($query);
+                } else if ($_SESSION['status'] === 0) { //Status de Admin Root
+                    $usuarios = Usuario::Notall('status', 0);
+                } else  if ($_SESSION['status'] === 3) { //Status de Ofcina
+                    $usuarios = Usuario::belongsTo('status', 2);
                 }
             }
         }
@@ -141,14 +160,30 @@ class PerfilesController
 
         if (!$id)  header('Location:/');
 
-        if ($_SESSION['status'] === 0) $usuario = Usuario::find($id); //Administrador
+        if ($_SESSION['status'] === 0) { //Admin Root
 
-        if ($_SESSION['status'] === 2) $usuario = Usuario::whereNotArray(['status' => 0, 'id' => $id,]); //Oficina
+            $query = "SELECT * FROM usuarios WHERE NOT status = 0  AND id = '$id'";
+            $usuario = Usuario::SQL($query);
+            $usuario = $usuario[0];
+        };
+
+        if ($_SESSION['status'] === 1) { //Admin Regular
+
+            $query = "SELECT * FROM usuarios WHERE NOT status = 0 AND NOT  status = 1 AND id = '$id'";
+            $usuario = Usuario::SQL($query);
+            $usuario = $usuario[0];
+        }
+
+        if ($_SESSION['status'] === 3) { //Oficina
+            $usuario = Usuario::whereArray(['status' => 2, 'id' => $id,]);
+            $usuario = $usuario[0];
+        }
+
 
         if (!$usuario)  header('Location:/');
 
-
         $sucursal = Sucursales::where('id', $usuario->sucursal_id);
+
         $router->render('perfiles/perfil', [
             'titulo' => 'Perfil',
             'usuario' => $usuario,
@@ -169,14 +204,27 @@ class PerfilesController
 
         if (!$id)  header('Location:/');
 
-        if ($_SESSION['status'] === 0) $usuario = Usuario::find($id); //Administrador
+        if ($_SESSION['status'] === 0) { //Admin Root
 
-        if ($_SESSION['status'] === 2) $usuario = Usuario::whereNotArray(['status' => 0, 'id' => $id,]); //Oficina
+            $query = "SELECT * FROM usuarios WHERE NOT status = 0  AND id = '$id'";
+            $usuario = Usuario::SQL($query);
+            $usuario = $usuario[0];
+        };
 
+        if ($_SESSION['status'] === 1) { //Admin Regular
+            $query = "SELECT * FROM usuarios WHERE NOT status = 0 AND NOT  status = 1 AND id = '$id'";
+            $usuario = Usuario::SQL($query);
+            $usuario = $usuario[0];
+        }
+
+        if ($_SESSION['status'] === 3) { //Oficina
+            $usuario = Usuario::whereArray(['status' => 2, 'id' => $id,]);
+            $usuario = $usuario[0];
+        }
         if (!$usuario)  header('Location:/');
 
         $nombreUsuarioPrevio = $usuario->usuario;
-        $passwordAnterior =$usuario->password;
+        $passwordAnterior = $usuario->password;
         $nivelAnterior = $usuario->nivel;
 
         $alertas = [];

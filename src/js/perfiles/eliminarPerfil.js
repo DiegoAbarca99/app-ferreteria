@@ -7,7 +7,7 @@ import { eliminarElemento } from "../helpers";
 
     const url = '/perfiles/eliminar';
     const urlRedireccionar = '/perfiles/index';
-    const mensajeError = 'Ha Ocurrido Un Error';
+    const mensajeError = 'Hay registros asociados en los historicos';
 
     //Botón ubicado en la página particular del perfil seleccionado
     if (botonEliminar) {

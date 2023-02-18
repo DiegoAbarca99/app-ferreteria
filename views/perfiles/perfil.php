@@ -29,16 +29,16 @@
 
                     <div class="formulario__campo">
                         <label for="status">Status</label>
-                        <p><?php echo $usuario->status === '1' ? 'Proveedor' : 'Oficina' ?></p>
+                        <p><?php echo $usuario->status === '1' ? 'Administrador' : ($usuario->status === '2' ? 'Proveedor' : 'Oficina') ?></p>
                     </div>
 
-                   <?php if ($usuario->status === '1') { ?>
+                    <?php if ($usuario->status === '2') { ?>
                         <div class="formulario__campo">
                             <label for="status">Nivel de Acesso</label>
-                            <p><?php echo $usuario->nivel === '0' ? 'Regular' : 'Privilegiado'?></p>
+                            <p><?php echo $usuario->nivel === '0' ? 'Regular' : 'Privilegiado' ?></p>
                         </div>
                     <?php } ?>
-                   
+
 
                 </div>
 

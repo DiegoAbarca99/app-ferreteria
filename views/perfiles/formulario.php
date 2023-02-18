@@ -9,7 +9,7 @@
 
         <div class="formulario__campo">
             <label class="formulario__label" for="password">Password</label>
-            <input class="formulario__input" type="password" name="password" id="password" placeholder="Ingrese Password" value="<?php echo s($usuario->password)?>">
+            <input class="formulario__input" type="password" name="password" id="password" placeholder="Ingrese Password" value="<?php echo s($usuario->password) ?>">
         </div>
 
         <div class="formulario__campo">
@@ -22,8 +22,9 @@
                 <label class="formulario__label" for="status">Status</label>
                 <select class="formulario__input formulario__input--select" name="status" id="status">
                     <option value="" disabled <?php echo $usuario->status ? '' : 'selected' ?>>--Seleccione una Opción--</option>
-                    <option value="1" <?php echo $usuario->status === '1' ? 'selected' : '' ?>>Proveedor</option>
-                    <option value="2" <?php echo $usuario->status === '2' ? 'selected' : '' ?>>Oficina</option>
+                    <option class="<?php echo $_SESSION['status'] === 3 || $_SESSION['status'] === 1 ? 'display-none' : '' ?>" value="1" <?php echo $usuario->status === '1' ? 'selected' : '' ?>>Administrador</option>
+                    <option value="2" <?php echo $usuario->status === '2' ? 'selected' : '' ?>>Proveedor</option>
+                    <option class="<?php echo $_SESSION['status'] === 3 ? 'display-none' : '' ?>" value="3" <?php echo $usuario->status === '3' ? 'selected' : '' ?>>Oficina</option>
                 </select>
             </div>
         </div>
