@@ -287,6 +287,10 @@ import Swal from 'sweetalert2';
                 hora.innerHTML = `Hora: <span>${pedidos[i].fecha.split(' ')[1]}</span>`;
                 hora.classList.add('pedido__parrafo');
 
+                const cuotaAplicada = document.createElement('P');
+                cuotaAplicada.innerHTML = `Cuota Aplicada: <span>${pedidos[i].cuotaAplicada}</span>`;
+                cuotaAplicada.classList.add('pedido__parrafo--total');
+
 
                 const total = document.createElement('P');
                 if (pedidos[i].pagado == 0 && pedidos[i].abono > 0) total.innerHTML = `Total: <span>$${parseFloat(pedidos[i].total) - parseFloat(pedidos[i].abono)}</span>`;
@@ -334,6 +338,7 @@ import Swal from 'sweetalert2';
                 if (pedidos[i].pagado == 0) contenedorPeticiones.appendChild(abono);
                 contenedorPeticiones.appendChild(pagado);
                 contenedorPeticiones.appendChild(status);
+                contenedorPeticiones.appendChild(cuotaAplicada);
                 contenedorPeticiones.appendChild(total);
 
 
@@ -694,7 +699,7 @@ import Swal from 'sweetalert2';
                 if (pedidos[index - 1] && (pedido.folio == pedidos[index - 1].folio)) cuotaValida = false;
                 else cuotaValida = true;
                 if (cuotaValida) {
-                    gananciaTotal += parseFloat(pedido.cuota);
+                    gananciaTotal += parseFloat(pedido.cuotaAplicada);
 
                     if (pedido.pagado == 0) gananciaTotal -= pedido.abono;
                 }

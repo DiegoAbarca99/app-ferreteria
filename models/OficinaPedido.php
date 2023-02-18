@@ -1,16 +1,19 @@
 <?php
+
 namespace Model;
 
-class OficinaPedido extends ActiveRecord{ 
-    protected static $tabla='productospedidos'; 
+class OficinaPedido extends ActiveRecord
+{
+    protected static $tabla = 'productospedidos';
 
-    protected static $columnasDB=['id','folio','fecha','celular','credito','abono','curp','pagado','status','metodoPago','total','cantidad','precio','tipo','cliente','direccion','ubicacion','telefono','cuota','producto','usuario','nombre','sucursal']; //Nombre de las columnas y alias dfinidos tras efectuar los JOINS
+    protected static $columnasDB = ['id', 'folio', 'fecha', 'celular', 'cuotaAplicada', 'credito', 'abono', 'curp', 'pagado', 'status', 'metodoPago', 'total', 'cantidad', 'precio', 'tipo', 'cliente', 'direccion', 'ubicacion', 'telefono', 'cuota', 'producto', 'usuario', 'nombre', 'sucursal']; //Nombre de las columnas y alias dfinidos tras efectuar los JOINS
 
     public $id;
     public $folio;
     public $pagado;
     public $fecha;
     public $credito;
+    public $cuotaAplicada;
     public $abono;
     public $celular;
     public $curp;
@@ -30,31 +33,31 @@ class OficinaPedido extends ActiveRecord{
     public $nombre;
     public $sucursal;
 
-    public function __construct($args=[])
+    public function __construct($args = [])
     {
-        $this->id=$args['id']??null;
-        $this->folio=$args['folio']??null;
-        $this->pagado=$args['pagado']??'';
-        $this->fecha=$args['fecha']??'';
-        $this->credito=$args['credito']??'';
-        $this->abono=$args['abono']??'';
-        $this->celular=$args['celular']??'';
-        $this->curp=$args['curp']??'';
-        $this->status=$args['status']??'';
-        $this->metodoPago=$args['metodoPago']??'';
-        $this->total=$args['total']??'';
-        $this->cantidad=$args['cantidad']??'';
-        $this->precio=$args['precio']??'';
-        $this->tipo=$args['tipo']??'';
-        $this->cliente=$args['cliente']??'';
-        $this->direccion=$args['direccion']??'';
-        $this->ubicacion=$args['ubicacion']??'';
-        $this->telefono=$args['telefono']??'';
-        $this->cuota=$args['cuota']??'';
-        $this->producto=$args['producto']??'';
-        $this->usuario=$args['usuario']??'';
-        $this->nombre=$args['nombre']??'';
-        $this->sucursal=$args['sucursal']??'';
-        
+        $this->id = $args['id'] ?? null;
+        $this->folio = $args['folio'] ?? null;
+        $this->pagado = $args['pagado'] ?? '';
+        $this->fecha = $args['fecha'] ?? '';
+        $this->credito = $args['credito'] ?? '';
+        $this->cuotaAplicada = $args['cuotaAplicada'] ?? '0.0';
+        $this->abono = $args['abono'] ?? '';
+        $this->celular = $args['celular'] ?? '';
+        $this->curp = $args['curp'] ?? '';
+        $this->status = $args['status'] ?? '';
+        $this->metodoPago = $args['metodoPago'] ?? '';
+        $this->total = $args['total'] ?? '';
+        $this->cantidad = $args['cantidad'] ?? '';
+        $this->precio = $args['precio'] ?? '';
+        $this->tipo = $args['tipo'] ?? '';
+        $this->cliente = $args['cliente'] ?? '';
+        $this->direccion = $args['direccion'] ?? '';
+        $this->ubicacion = $args['ubicacion'] ?? '';
+        $this->telefono = $args['telefono'] ?? '';
+        $this->cuota = $args['cuota'] ?? '';
+        $this->producto = $args['producto'] ?? '';
+        $this->usuario = $args['usuario'] ?? '';
+        $this->nombre = $args['nombre'] ?? '';
+        $this->sucursal = $args['sucursal'] ?? '';
     }
 }

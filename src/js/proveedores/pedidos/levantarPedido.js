@@ -225,7 +225,7 @@ import Swal from "sweetalert2";
 
                     const heading = document.createElement('H3');
                     heading.classList.add('bloque-producto__heading');
-                    heading.innerHTML = `<span class="bloque-producto__heading--resaltar" data-id="${cliente.id}" data-cuota="${cliente.cuotaConsumo}">Nombre:</span> ${cliente.nombre}`;
+                    heading.innerHTML = `<span class="bloque-producto__heading--resaltar" data-id="${cliente.id}" ">Nombre:</span> ${cliente.nombre}`;
 
                     bloqueCliente.appendChild(heading);
 
@@ -361,7 +361,7 @@ import Swal from "sweetalert2";
                         pedido.nombre = cliente.nombre;
                         pedido.ubicacion = `${cliente.estado}, ${cliente.municipio.nombre}`;
                         pedido.credito = cliente.credito == 0 ? 'Inactivo' : 'Activo';
-                        pedido.cuota = cliente.cuota ?? '0.00';
+                        pedido.cuota = cliente.cuotaConsumo ?? '0.00';
                         pedido.rfc = cliente.rfc;
                         pedido.telefono = cliente.telefono;
 
@@ -1384,6 +1384,9 @@ import Swal from "sweetalert2";
 
             }, 0);
 
+            pedido.total += parseFloat(pedido.cuota);
+
+            console.log(pedido.total)
             const total = document.createElement('P');
             total.classList.add('resumen__total');
             total.innerHTML = `Total: <span>$${pedido.total}</span>`;
@@ -1508,6 +1511,7 @@ import Swal from "sweetalert2";
             datos.append('abono', pedido.abono);
             datos.append('productos', productos);
             datos.append('productoskilos', productoskilos);
+            datos.append('cuotaAplicada', pedido.cuota);
 
 
             try {

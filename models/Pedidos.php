@@ -7,7 +7,7 @@ use Model\ActiveRecord;
 class Pedidos extends ActiveRecord
 {
     protected static $tabla = 'pedidos';
-    protected static $columnasDB = ['id', 'pagado','folio', 'status', 'metodoPago', 'total','abono', 'usuarios_id', 'clientes_id'];
+    protected static $columnasDB = ['id', 'pagado', 'folio', 'status', 'metodoPago', 'total', 'abono', 'cuotaAplicada', 'usuarios_id', 'clientes_id'];
 
     public $id;
     public $pagado;
@@ -17,6 +17,7 @@ class Pedidos extends ActiveRecord
     public $fecha;
     public $total;
     public $abono;
+    public $cuotaAplicada;
     public $usuarios_id;
     public $clientes_id;
 
@@ -30,6 +31,7 @@ class Pedidos extends ActiveRecord
         $this->fecha = $args['fecha'] ?? '';
         $this->total = $args['total'] ?? '';
         $this->abono = $args['abono'] ?? '';
+        $this->cuotaAplicada = $args['cuotaAplicada'] ?? '';
         $this->usuarios_id = $args['usuarios_id'] ?? '';
         $this->clientes_id = $args['clientes_id'] ?? '';
     }
