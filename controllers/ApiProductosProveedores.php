@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Model\CategoriaProductosProveedores;
+use Model\Historico;
 use Model\Pesos;
 use Model\PreciosProduccion;
 use Model\PreciosProveedores;
@@ -165,6 +166,7 @@ class ApiProductosProveedores
             $pesos->pesoNuevo = $_POST['peso'];
             $pesos->pesoPromedio = ($pesos->pesoAntiguo + $pesos->pesoNuevo) / 2;
 
+
             //Llenado de la tabla de preciosProveedores 
 
             $productoProduccion = ProductosComerciales::find($productoProveedor->productosComerciales_id);
@@ -194,6 +196,22 @@ class ApiProductosProveedores
 
 
             if ($resultado) {
+
+
+                // Historial cambio del valor de los pesos
+                $arg = [
+                    'usuarios_id' => $_SESSION['id'],
+                    'entidadModificada' => $productoProveedor->nombre,
+                    'valorAnterior' => $pesos->pesoAntiguo,
+                    'valorNuevo' => $pesos->pesoNuevo,
+                    'accion' => 'Se modificó el peso del producto'
+                ];
+
+                $historico = new Historico($arg);
+                $historico->guardar();
+
+
+
                 echo json_encode([
                     'tipo' => 'exito',
                     'mensaje' => 'Se Ha Actualizado Correctamente el Registro'

@@ -163,7 +163,23 @@ class ActiveRecord
                 $query .= " ${key} LIKE '%${value}%' AND";
             }
         }
-       
+
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
+    public static function filtrarArrayAll($array = [])
+    {
+        $query = "SELECT * FROM " . static::$tabla . ' WHERE';
+        foreach ($array as $key => $value) {
+            if ($key === array_key_last($array)) {
+                $query .= " ${key} LIKE  '%${value}%' ";
+            } else {
+                $query .= " ${key} LIKE '%${value}%' AND";
+            }
+        }
+
+        
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
@@ -202,7 +218,7 @@ class ActiveRecord
                 $query .= " ${key} = '${value}' AND ";
             }
         }
-     
+
         $resultado = self::consultarSQL($query);
         return $resultado;
     }

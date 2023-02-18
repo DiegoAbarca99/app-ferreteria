@@ -225,7 +225,7 @@ import Swal from "sweetalert2";
 
                     const heading = document.createElement('H3');
                     heading.classList.add('bloque-producto__heading');
-                    heading.innerHTML = `<span class="bloque-producto__heading--resaltar" data-id="${cliente.id}">Nombre:</span> ${cliente.nombre}`;
+                    heading.innerHTML = `<span class="bloque-producto__heading--resaltar" data-id="${cliente.id}" data-cuota="${cliente.cuotaConsumo}">Nombre:</span> ${cliente.nombre}`;
 
                     bloqueCliente.appendChild(heading);
 

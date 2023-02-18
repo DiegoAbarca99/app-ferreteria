@@ -9,6 +9,7 @@ use Model\Usuario;
 use MVC\Router;
 use Dompdf\Dompdf;
 use Model\Pedidos;
+use Model\Sucursales;
 
 class ClientesController
 {
@@ -208,7 +209,6 @@ class ClientesController
 
         $cliente = Clientes::find($id);
 
-        $usuario = Usuario::find($id);
 
         if (!$cliente) {
             header('Location:/proveedor/clientes');
@@ -257,9 +257,7 @@ class ClientesController
 
             $alertas = $cliente->validar();
 
-            //Obtiene el usuario en sesion activa
-            $_SESSION['id'];
-            $user = Usuario::find('id');
+
 
             if (empty($alertas)) {
 
@@ -275,30 +273,32 @@ class ClientesController
 
 
                         if ($cuotaAnterior != $cliente->cuotaConsumo) {
-                            $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
-                               $arg = [
-                                    'usuario' => $user->usuario,
-                                    'nombre' => 'Nombre cliente: ' . $cliente->nombre,
-                                    'sucursal' => $usuario->surcursal, 'detalles' => 'Cuota anterior: ' . $cuotaAnterior . ' nueva: ' . $cliente->cuotaConsumo,
-                                    'accion' => 'Se modificó la cuota de consumo'
-                                ];
-                        }
+                            //Todo: Preguntar si desea que el cambio de cuota afecte a todos los pedidos vinculados
+                            /*   $diferencia = abs(floatval($cuotaAnterior) - floatval($cliente->cuotaConsumo));
 
-
-                        foreach ($pedidos as $pedido) {
-                            if ($cuotaAnterior > $cliente->cuotaConsumo) {
-                                $pedido->total = floatval($pedido->total) - $diferencia;
-                            } else {
-                                $pedido->total = floatval($pedido->total) + $diferencia;
+                            foreach ($pedidos as $pedido) {
+                                if ($cuotaAnterior > $cliente->cuotaConsumo) {
+                                    $pedido->total = floatval($pedido->total) - $diferencia;
+                                } else {
+                                    $pedido->total = floatval($pedido->total) + $diferencia;
+                                }
+                                $pedido->guardar();
                             }
-                            $pedido->guardar();
+                         */
+                            // Historial cambio del valor de la cuota de consumo
+                            $arg = [
+                                'usuarios_id' => $_SESSION['id'],
+                                'entidadModificada' => $cliente->nombre,
+                                'valorAnterior' => $cuotaAnterior,
+                                'valorNuevo' => $cliente->cuotaConsumo,
+                                'accion' => 'Se modificó la cuota de consumo'
+                            ];
+
+                            $historico = new Historico($arg);
+                            $historico->guardar();
                         }
 
 
-                        // Historial
-                        //   $historico = new Historico($arg);
-
-                        //  if (!empty($arg)) $historico->guardar();
                         header('Location:/proveedor/clientes');
                     }
                 }

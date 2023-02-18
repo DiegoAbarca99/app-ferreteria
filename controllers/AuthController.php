@@ -17,7 +17,7 @@ class AuthController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $_POST['usuario']=trim(strtoupper($_POST['usuario']));
+            $_POST['usuario'] = trim(strtoupper($_POST['usuario']));
             $usuario = new Usuario($_POST);
 
             $alertas = $usuario->validarLogin();
@@ -31,7 +31,7 @@ class AuthController
                     Usuario::setAlerta('error', 'No existe el usuario ingresado');
                 } else {
 
-                    if (password_verify($_POST['password'], $usuario->password)) {
+                    if ($_POST['password'] === $usuario->password) {
 
                         //Se inicia sesión
                         session_start();

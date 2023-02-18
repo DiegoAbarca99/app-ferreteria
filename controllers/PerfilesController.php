@@ -113,7 +113,6 @@ class PerfilesController
                     Usuario::setAlerta('error', 'Ya existe un usuario con ese nombre de usuario');
                 } else {
 
-                    $usuario->hashearPassword();
                     $usuario->guardar();
                     header('Location: /perfiles/index');
                 }
@@ -166,10 +165,8 @@ class PerfilesController
 
         //Obtiene y valida Id pasado en la URL 
         $id = filter_Var($_GET['id'], FILTER_VALIDATE_INT);
-        
-        
-        
-        
+
+
         if (!$id)  header('Location:/');
 
         if ($_SESSION['status'] === 0) $usuario = Usuario::find($id); //Administrador
@@ -177,33 +174,14 @@ class PerfilesController
         if ($_SESSION['status'] === 2) $usuario = Usuario::whereNotArray(['status' => 0, 'id' => $id,]); //Oficina
 
         if (!$usuario)  header('Location:/');
-        $_SESSION['id'];
+
         $nombreUsuarioPrevio = $usuario->usuario;
+        $passwordAnterior =$usuario->password;
         $nivelAnterior = $usuario->nivel;
+
         $alertas = [];
-        $arg = [];
-        $user=Usuario::find('id');
-        $usuario->sincronizar($_POST);
-        
-        
-        if($usuario->nivel ==='0' || $usuario->nivel === '1'){
-            if($usuario->nivel != $nivelAnterior){
-                $arg = [
-                    'usuario' => $user->usuario,
-                    'nombre' => $usuario->nombre,
-                    'sucursal' => $usuario->sucursal_id, 
-                    'detalles' => 'Anterior: ' . ($nivelAnterior === '1' ? 'Privilegiado' : 'Regular') . ' Actual: ' . ($usuario->nivel === '1' ? 'Privilegiado' : 'Regular'),
-                    'accion' => 'Modificacion, nivel acceso de un proveedor',             
-                ];
-            }
-        }
-    
 
-        
-
-        $historico = new Historico($arg);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
 
 
             $arregloNormalizado = [];
@@ -217,6 +195,8 @@ class PerfilesController
             $usuario->sincronizar($arregloNormalizado);
             $alertas = $usuario->validarCuenta();
 
+
+
             if (empty($alertas)) {
 
                 $usuarioExistente = Usuario::where('usuario', $usuario->usuario);
@@ -225,9 +205,37 @@ class PerfilesController
                 if (!is_null($usuarioExistente) && ($usuarioExistente->usuario !== $nombreUsuarioPrevio)) {
                     Usuario::setAlerta('error', 'Ya existe un perfil con ese nombre de usuario');
                 } else {
-                    $usuario->hashearPassword();
-                    $usuario->guardar();
-                    if (!empty($arg)) $historico->guardar();
+
+                    $resultado =  $usuario->guardar();
+
+                    if ($resultado && ($usuario->nivel != $nivelAnterior)) {
+
+                        $arg = [
+                            'usuarios_id' => $_SESSION['id'],
+                            'entidadModificada' => $usuario->usuario,
+                            'valorAnterior' => $nivelAnterior === '1' ? 'Privilegiado' : 'Regular',
+                            'valorNuevo' => $usuario->nivel === '1' ? 'Privilegiado' : 'Regular',
+                            'accion' => 'Se modificó el nivel de acceso de un proveedor',
+                        ];
+
+                        $historico = new Historico($arg);
+                        $historico->guardar();
+                    }
+
+                    if ($resultado && ($usuario->password != $passwordAnterior)) {
+
+                        $arg = [
+                            'usuarios_id' => $_SESSION['id'],
+                            'entidadModificada' => $usuario->usuario,
+                            'accion' => 'Se modificó el password de acceso del usuario.',
+                        ];
+
+                        $historico = new Historico($arg);
+                        $historico->guardar();
+                    }
+
+
+
                     header('Location: /perfiles/index');
                 }
             }
@@ -235,7 +243,7 @@ class PerfilesController
 
         $sucursales = Sucursales::all();
         $alertas = Usuario::getAlertas();
-        
+
         $router->render('perfiles/editar-perfil', [
             'titulo' => 'Editar-Perfil',
             'usuario' => $usuario,

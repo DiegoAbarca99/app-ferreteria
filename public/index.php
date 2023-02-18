@@ -59,8 +59,15 @@ $router->get('/proveedor/productos/pdf', [ProductosController::class, 'pdf']);
 //------------------Admin------------------------
 //Dashboard(Admin)
 $router->get('/admin/index', [AdminController::class, 'index']);
+
+//Historial de cambios
+
 $router->get('/historial', [AdminController::class, 'historial']);
-$router->post('/historial', [AdminController::class, 'historial']);
+$router->get('/historial/usuarios', [AdminController::class, 'historialUsuarios']);
+$router->post('/historial/usuarios', [AdminController::class, 'historialUsuarios']);
+$router->get('/historial/productos', [AdminController::class, 'historialProductos']);
+$router->post('/historial/productos', [AdminController::class, 'historialProductos']);
+
 //Gestión categorias del producto - impuestos y ganancias (Admin)
 $router->get('/admin/categoria', [CategoriasProductoController::class, 'index']);
 $router->get('/admin/categoria/crear', [CategoriasProductoController::class, 'crear']);

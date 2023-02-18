@@ -9,12 +9,12 @@
 
         <div class="formulario__campo">
             <label class="formulario__label" for="password">Password</label>
-            <input class="formulario__input" type="password" name="password" id="password" placeholder="Ingrese Password">
+            <input class="formulario__input" type="password" name="password" id="password" placeholder="Ingrese Password" value="<?php echo s($usuario->password)?>">
         </div>
 
         <div class="formulario__campo">
             <label class="formulario__label" for="password2">Password</label>
-            <input class="formulario__input" type="password" name="password2" id="password2" placeholder="Confirme el Password">
+            <input class="formulario__input" type="password" name="password2" id="password2" placeholder="Confirme el Password" value="<?php echo s($usuario->password) ?>">
         </div>
 
         <div class="formulario__campos-grid" id="campos">
