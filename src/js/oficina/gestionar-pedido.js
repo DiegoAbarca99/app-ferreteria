@@ -76,8 +76,6 @@ import Swal from 'sweetalert2';
 
                 Swal.fire('Debe especificar el tipo de pago!', '', 'error');
 
-            } else if (!tipo) {
-                Swal.fire('Debe especificar el tipo de filtro!', '', 'error');
             } else {
                 await obtenerPedidos();
                 obtenerResumen();

@@ -205,7 +205,7 @@ class ApiPedidos
 
 
 
-        if (empty($_GET['tipo']) || is_null($_GET['pagado'])) {
+        if ( is_null($_GET['pagado'])) {
             echo json_encode([]);
             exit;
         }

@@ -32,7 +32,7 @@
     <form class="filtro filtro--no-margin">
 
 
-        <input class="formulario__input" type="date" name="fecha" id="fecha" value="<?php echo date('Y-m-d') ?>">
+        <input class="formulario__input" type="date" name="fecha" id="fecha" >
 
         <div class="filtro__buscador">
             <input type="text" class="filtro__input" placeholder="Ingrese Nombre" id="buscador-usuario">
