@@ -6,3 +6,4 @@
 3. JavaScript
 4. PHP
 5. GULP
+6. MySQL
