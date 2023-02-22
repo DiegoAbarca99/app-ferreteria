@@ -7,11 +7,12 @@ use Model\ActiveRecord;
 class Usuario extends ActiveRecord
 {
     protected static $tabla = 'usuarios';
-    protected static $columnasDB = ['id', 'nombre', 'usuario', 'sucursal_id', 'password', 'status', 'telefono', 'email', 'nivel'];
+    protected static $columnasDB = ['id', 'nombre', 'usuario','token', 'sucursal_id', 'password', 'status', 'telefono', 'email', 'nivel'];
 
     public $id;
     public $nombre;
     public $usuario;
+    public $token;
     public $password;
     public $password2;
     public $status;
@@ -25,6 +26,7 @@ class Usuario extends ActiveRecord
         $this->id = $args['id'] ?? null;
         $this->nombre = $args['nombre'] ?? '';
         $this->usuario = $args['usuario'] ?? '';
+        $this->token = $args['token'] ?? '';
         $this->password = $args['password'] ?? '';
         $this->password2 = $args['password2'] ?? '';
         $this->status = $args['status'] ?? '0';

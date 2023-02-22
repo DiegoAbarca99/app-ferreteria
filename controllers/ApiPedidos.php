@@ -87,6 +87,10 @@ class ApiPedidos
                         $tipoPrecio = 'Herrero3';
                     } else if ($producto->herrero4) {
                         $tipoPrecio = 'Herrero4';
+                    }else if ($producto->mayoreo1) {
+                        $tipoPrecio = 'Mayoreo1';
+                    }else if ($producto->mayoreo2) {
+                        $tipoPrecio = 'Mayoreo2';
                     }
 
 
@@ -145,6 +149,10 @@ class ApiPedidos
                         $tipoPrecio = 'Herrero3';
                     } else if ($producto->herrero4) {
                         $tipoPrecio = 'Herrero4';
+                    } else if ($producto->mayoreo1) {
+                        $tipoPrecio = 'Mayoreo1';
+                    } else if ($producto->mayoreo2) {
+                        $tipoPrecio = 'Mayoreo2';
                     }
 
 

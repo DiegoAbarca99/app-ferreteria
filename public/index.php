@@ -7,6 +7,7 @@ use Controllers\AuthController;
 use Controllers\AdminController;
 use Controllers\ApiCategoriasProducto;
 use Controllers\ApiClientes;
+use Controllers\ApiCorreos;
 use Controllers\ApiMunicipios;
 use Controllers\Apipedidos;
 use Controllers\ApiProductos;
@@ -167,5 +168,9 @@ $router->get('/api/pedidos/graficar', [Apipedidos::class,'graficar']);
 //-------Perfiles--------
 $router->post('/api/sucursales/crear',[ApiSucursales::class,'crearSucursal'] );
 $router->post('/api/sucursales/eliminar',[ApiSucursales::class,'eliminarSucursal'] );
+
+//--------Solicitud de subir de nivel Proveedores (Email)
+$router->post('/solicitarSubirNivel',[ApiCorreos::class,'enviarCorreos'] );
+$router->get('/subirNivel',[ApiCorreos::class,'subirNivel'] );
 
 $router->comprobarRutas();

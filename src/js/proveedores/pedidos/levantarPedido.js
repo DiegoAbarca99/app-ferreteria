@@ -3,7 +3,10 @@ import Swal from "sweetalert2";
 
 (function () {
     const pedido = document.querySelector('#pedido');
+
     if (pedido) {
+
+        const isPrivilegiado = document.querySelector('#isPrivilegiado').value;
 
         let paso = 1;
         const pasoInicial = 1;
@@ -316,7 +319,7 @@ import Swal from "sweetalert2";
 
 
 
-                modal.addEventListener('click', function (e) {
+                modal.addEventListener('click', async function (e) {
                     e.preventDefault();
 
 
@@ -551,8 +554,8 @@ import Swal from "sweetalert2";
                 const modal = document.createElement('DIV');
                 modal.classList.add('modal');
 
-
-                const formulario = `
+                let formulario = '';
+                formulario = `
                 <form class="formulario formulario--producto">
     
                     <legend>${producto.nombre}</legend>
@@ -573,17 +576,29 @@ import Swal from "sweetalert2";
                             <div class="formulario__campo"
                                 <label class="formulario__label" for="herrero4">Herrero4</label>
                                 <p class="formulario__descripcion ${isDeseleccionar ? 'deshabilitar' : ''} herrero4" id="herrero4">${producto.precio.herrero4}</p>
-                            </div>
+                            </div>`
+                if (isPrivilegiado == 1) {
+                    formulario +=
+                        `<div class="formulario__campo"
+                                        <label class="formulario__label" for="herrero4">Mayoreo1</label>
+                                        <p class="formulario__descripcion ${isDeseleccionar ? 'deshabilitar' : ''} mayoreo1" id="mayoreo1">${producto.precio.mayoreo1}</p>
+                                    </div>
+                                    <div class="formulario__campo"
+                                        <label class="formulario__label" for="herrero4">Mayoreo2</label>
+                                        <p class="formulario__descripcion ${isDeseleccionar ? 'deshabilitar' : ''} mayoreo2" id="mayoreo2">${producto.precio.mayoreo2}</p>
+                                    </div>`
+                }
 
-                            <div class="formulario__campo"
+
+                formulario += `<div class="formulario__campo"
                                 <label class="formulario__label" for="cantidad">Cantidad</label>
                                 <input ${isDeseleccionar ? 'disabled' : ''} class="formulario__input" type="number" min="0" name="cantidad" id="cantidad">
                             </div>
                     </div>
                             <div class="opciones">
-                                <button class="btn-verde seleccionar" type="button">${isDeseleccionar ? 'Deseleccionar' : 'Seleccionar'}</button>
-                                <button type="button" class="btn-editar">Subir de Nivel</button>
-                                <button class="cerrar-modal" type="button">Cancelar</button>
+                                <button class="btn-verde seleccionar" type="button">${isDeseleccionar ? 'Deseleccionar' : 'Seleccionar'}</button>`
+                if (isPrivilegiado == 0) formulario += `<button type="button" class="btn-editar subir-nivel">Subir de Nivel</button>`
+                formulario += `<button class="cerrar-modal" type="button">Cancelar</button>
                             </div> 
                 
                 </form>`;
@@ -623,6 +638,14 @@ import Swal from "sweetalert2";
                                 const herrero4 = document.querySelector('#herrero4');
                                 herrero4.classList.add('formulario__descripcion--resaltar')
                             }
+                            if (elemento.mayoreo1) {
+                                const mayoreo1 = document.querySelector('#mayoreo1');
+                                mayoreo1.classList.add('formulario__descripcion--resaltar')
+                            }
+                            if (elemento.mayoreo2) {
+                                const mayoreo2 = document.querySelector('#mayoreo2');
+                                mayoreo2.classList.add('formulario__descripcion--resaltar')
+                            }
                         }
 
 
@@ -636,7 +659,9 @@ import Swal from "sweetalert2";
                 let herrero2 = false;
                 let herrero3 = false;
                 let herrero4 = false;
-                modal.addEventListener('click', function (e) {
+                let mayoreo1 = false;
+                let mayoreo2 = false;
+                modal.addEventListener('click', async function (e) {
                     e.preventDefault();
 
 
@@ -665,6 +690,8 @@ import Swal from "sweetalert2";
                                 precio = '';
                             } else {
                                 precio = producto.precio.publico1;
+                                mayoreo1 = false;
+                                mayoreo2 = false;
                                 herrero4 = false;
                                 herrero3 = false;
                                 herrero2 = false;
@@ -681,6 +708,8 @@ import Swal from "sweetalert2";
                                 precio = '';
                             } else {
                                 precio = producto.precio.herrero2;
+                                mayoreo1 = false;
+                                mayoreo2 = false;
                                 herrero4 = false;
                                 herrero3 = false;
                                 herrero2 = true;
@@ -697,6 +726,8 @@ import Swal from "sweetalert2";
                                 precio = '';
                             } else {
                                 precio = producto.precio.herrero3;
+                                mayoreo1 = false;
+                                mayoreo2 = false;
                                 herrero4 = false;
                                 herrero3 = true;
                                 herrero2 = false;
@@ -713,6 +744,8 @@ import Swal from "sweetalert2";
                                 precio = '';
                             } else {
                                 precio = producto.precio.herrero4;
+                                mayoreo1 = false;
+                                mayoreo2 = false;
                                 herrero4 = true;
                                 herrero3 = false;
                                 herrero2 = false;
@@ -721,8 +754,59 @@ import Swal from "sweetalert2";
                             }
 
                         }
+                        if (e.target.classList.contains('mayoreo1')) {
+
+                            if (precioPrevio) {
+                                precioPrevio.classList.remove('formulario__descripcion--resaltar');
+                                precio = '';
+                            } else {
+                                precio = producto.precio.mayoreo1;
+                                mayoreo1 = true;
+                                mayoreo2 = false;
+                                herrero4 = false;
+                                herrero3 = false;
+                                herrero2 = false;
+                                publico1 = false;
+                                document.querySelector('.mayoreo1').classList.add('formulario__descripcion--resaltar');
+                            }
+
+                        }
+                        if (e.target.classList.contains('mayoreo2')) {
+
+                            if (precioPrevio) {
+                                precioPrevio.classList.remove('formulario__descripcion--resaltar');
+                                precio = '';
+                            } else {
+                                precio = producto.precio.mayoreo2;
+                                mayoreo1 = false;
+                                mayoreo2 = true;
+                                herrero4 = false;
+                                herrero3 = false;
+                                herrero2 = false;
+                                publico1 = false;
+                                document.querySelector('.mayoreo2').classList.add('formulario__descripcion--resaltar');
+                            }
+
+                        }
                     }
 
+                    if (e.target.classList.contains('subir-nivel')) {
+
+                        const respuesta = await fetch('/solicitarSubirNivel',{method:'POST'});
+                        const resultado = await respuesta.json();
+
+                        if (resultado.tipo === 'exito') {
+                            Swal.fire(resultado.mensaje, '', 'success').then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire(resultado.mensaje, '', 'error'); 
+
+                        }
+
+
+
+                    }
 
 
 
@@ -743,6 +827,8 @@ import Swal from "sweetalert2";
                             herrero2: herrero2,
                             herrero3: herrero3,
                             herrero4: herrero4,
+                            mayoreo1: mayoreo1,
+                            mayoreo2: mayoreo2,
                             tipo: 'convencional'
 
                         };
@@ -756,6 +842,8 @@ import Swal from "sweetalert2";
                                 elemento.herrero2 = herrero2;
                                 elemento.herrero3 = herrero3;
                                 elemento.herrero4 = herrero4;
+                                elemento.mayoreo1 = mayoreo1;
+                                elemento.mayoreo2 = mayoreo2;
                                 esIgualProducto = true;
                             }
 
@@ -965,8 +1053,8 @@ import Swal from "sweetalert2";
                 const modal = document.createElement('DIV');
                 modal.classList.add('modal');
 
-
-                const formulario = `
+                let formulario = '';
+                formulario = `
                 <form class="formulario formulario--producto">
     
                     <legend>${producto.nombre}</legend>
@@ -987,20 +1075,32 @@ import Swal from "sweetalert2";
                             <div class="formulario__campo"
                                 <label class="formulario__label" for="herrero4">Herrero4</label>
                                 <p class="formulario__descripcion ${isDeseleccionar ? 'deshabilitar' : ''} herrero4" id="herrero4">${producto.precio.herrero4}</p>
-                            </div>
+                            </div>`
+                if (isPrivilegiado == 1) {
+                    formulario +=
+                        `<div class="formulario__campo"
+                                        <label class="formulario__label" for= "herrero4" > Mayoreo1</label >
+                                        <p class="formulario__descripcion ${isDeseleccionar ? 'deshabilitar' : ''} mayoreo1" id="mayoreo1">${producto.precio.mayoreo1}</p>
+                                    </div >
+                                    <div class="formulario__campo"
+                                        <label class="formulario__label" for="herrero4">Mayoreo2</label>
+                                        <p class="formulario__descripcion ${isDeseleccionar ? 'deshabilitar' : ''} mayoreo2" id="mayoreo2">${producto.precio.mayoreo2}</p>
+                                    </div > `
+                }
 
-                            <div class="formulario__campo"
-                                <label class="formulario__label" for="cantidad">Cantidad</label>
-                                <input ${isDeseleccionar ? 'disabled' : ''} class="formulario__input" type="number" min="0" name="cantidad" id="cantidad">
-                            </div>
-                    </div>
-                            <div class="opciones">
-                                <button class="btn-verde seleccionar" type="button">${isDeseleccionar ? 'Deseleccionar' : 'Seleccionar'}</button>
-                                <button type="button" class="btn-editar">Subir de Nivel</button>
-                                <button class="cerrar-modal" type="button">Cancelar</button>
-                            </div> 
-                
-                </form>`;
+                formulario +=
+                    `          <div class="formulario__campo"
+                                    <label class="formulario__label" for= "cantidad" > Cantidad</label >
+                                    <input ${isDeseleccionar ? 'disabled' : ''} class="formulario__input" type="number" min="0" name="cantidad" id="cantidad">
+                                </div>
+                     </div>
+                    <div class="opciones">
+                        <button class="btn-verde seleccionar" type="button">${isDeseleccionar ? 'Deseleccionar' : 'Seleccionar'}</button>`
+                if (isPrivilegiado == 0) formulario += `<button type="button" class="btn-editar subir-nivel">Subir de Nivel</button>`
+                formulario += `<button class="cerrar-modal" type="button">Cancelar</button>
+                    </div> 
+                            
+                </form > `;
 
                 modal.innerHTML = formulario
 
@@ -1033,6 +1133,18 @@ import Swal from "sweetalert2";
                                 const herrero4 = document.querySelector('#herrero4');
                                 herrero4.classList.add('formulario__descripcion--resaltar')
                             }
+
+                            if (elemento.mayoreo1) {
+                                const mayoreo1 = document.querySelector('#mayoreo1');
+                                mayoreo1.classList.add('formulario__descripcion--resaltar')
+                            }
+
+                            if (elemento.mayoreo2) {
+                                const mayoreo2 = document.querySelector('#mayoreo2');
+                                mayoreo2.classList.add('formulario__descripcion--resaltar')
+                            }
+
+
                         }
 
 
@@ -1046,7 +1158,9 @@ import Swal from "sweetalert2";
                 let herrero2 = false;
                 let herrero3 = false;
                 let herrero4 = false;
-                modal.addEventListener('click', function (e) {
+                let mayoreo1 = false;
+                let mayoreo2 = false;
+                modal.addEventListener('click', async function (e) {
                     e.preventDefault();
 
 
@@ -1065,16 +1179,19 @@ import Swal from "sweetalert2";
 
                     const precioPrevio = document.querySelector('.formulario__descripcion--resaltar');
                     const deshabilitar = document.querySelector('.deshabilitar');
-                    console.log(deshabilitar)
+
 
                     if (deshabilitar == null) {
                         if (e.target.classList.contains('publico1')) {
+
 
                             if (precioPrevio) {
                                 precioPrevio.classList.remove('formulario__descripcion--resaltar');
                                 precio = '';
                             } else {
                                 precio = producto.precio.publico1;
+                                mayoreo1 = false;
+                                mayoreo2 = false;
                                 herrero4 = false;
                                 herrero3 = false;
                                 herrero2 = false;
@@ -1082,18 +1199,17 @@ import Swal from "sweetalert2";
                                 document.querySelector('.publico1').classList.add('formulario__descripcion--resaltar');
                             }
 
-
-
                         }
 
                         if (e.target.classList.contains('herrero2')) {
-
 
                             if (precioPrevio) {
                                 precioPrevio.classList.remove('formulario__descripcion--resaltar');
                                 precio = '';
                             } else {
                                 precio = producto.precio.herrero2;
+                                mayoreo1 = false;
+                                mayoreo2 = false;
                                 herrero4 = false;
                                 herrero3 = false;
                                 herrero2 = true;
@@ -1101,11 +1217,7 @@ import Swal from "sweetalert2";
                                 document.querySelector('.herrero2').classList.add('formulario__descripcion--resaltar');
                             }
 
-
-
-
                         }
-
 
                         if (e.target.classList.contains('herrero3')) {
 
@@ -1114,15 +1226,14 @@ import Swal from "sweetalert2";
                                 precio = '';
                             } else {
                                 precio = producto.precio.herrero3;
+                                mayoreo1 = false;
+                                mayoreo2 = false;
                                 herrero4 = false;
                                 herrero3 = true;
                                 herrero2 = false;
                                 publico1 = false;
                                 document.querySelector('.herrero3').classList.add('formulario__descripcion--resaltar');
                             }
-
-
-
 
                         }
 
@@ -1133,6 +1244,8 @@ import Swal from "sweetalert2";
                                 precio = '';
                             } else {
                                 precio = producto.precio.herrero4;
+                                mayoreo1 = false;
+                                mayoreo2 = false;
                                 herrero4 = true;
                                 herrero3 = false;
                                 herrero2 = false;
@@ -1140,13 +1253,60 @@ import Swal from "sweetalert2";
                                 document.querySelector('.herrero4').classList.add('formulario__descripcion--resaltar');
                             }
 
+                        }
+                        if (e.target.classList.contains('mayoreo1')) {
 
+                            if (precioPrevio) {
+                                precioPrevio.classList.remove('formulario__descripcion--resaltar');
+                                precio = '';
+                            } else {
+                                precio = producto.precio.mayoreo1;
+                                mayoreo1 = true;
+                                mayoreo2 = false;
+                                herrero4 = false;
+                                herrero3 = false;
+                                herrero2 = false;
+                                publico1 = false;
+                                document.querySelector('.mayoreo1').classList.add('formulario__descripcion--resaltar');
+                            }
 
+                        }
+                        if (e.target.classList.contains('mayoreo2')) {
 
+                            if (precioPrevio) {
+                                precioPrevio.classList.remove('formulario__descripcion--resaltar');
+                                precio = '';
+                            } else {
+                                precio = producto.precio.mayoreo2;
+                                mayoreo1 = false;
+                                mayoreo2 = true;
+                                herrero4 = false;
+                                herrero3 = false;
+                                herrero2 = false;
+                                publico1 = false;
+                                document.querySelector('.mayoreo2').classList.add('formulario__descripcion--resaltar');
+                            }
                         }
                     }
 
+                    if (e.target.classList.contains('subir-nivel')) {
 
+
+
+                        const respuesta = await fetch('/solicitarSubirNivel', { method: 'POST' });
+                        const resultado = await respuesta.json();
+
+                        if (resultado.tipo === 'exito') {
+                            Swal.fire(resultado.mensaje, '', 'success').then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire(resultado.mensaje, '', 'error');
+
+                        }
+
+
+                    }
 
                     if (e.target.classList.contains('seleccionar')) {
                         const cantidad = document.querySelector('#cantidad').value;
@@ -1164,7 +1324,9 @@ import Swal from "sweetalert2";
                             herrero2: herrero2,
                             herrero3: herrero3,
                             tipo: 'En kg',
-                            herrero4: herrero4
+                            herrero4: herrero4,
+                            mayoreo1: mayoreo1,
+                            mayoreo2: mayoreo2
 
                         };
 
@@ -1177,6 +1339,8 @@ import Swal from "sweetalert2";
                                 elemento.herrero2 = herrero2;
                                 elemento.herrero3 = herrero3;
                                 elemento.herrero4 = herrero4;
+                                elemento.mayoreo1 = mayoreo1;
+                                elemento.mayoreo2 = mayoreo2;
                                 esIgualProducto = true;
                             }
 
@@ -1195,7 +1359,7 @@ import Swal from "sweetalert2";
                                 if (result.isConfirmed) {
                                     pedido.productoskilos = pedido.productoskilos.filter(elemento => elemento.id != producto.id);
 
-                                    const productoSeleccionado = document.querySelector(`[data-id-productokilo='${producto.id}']`);
+                                    const productoSeleccionado = document.querySelector(`[data - id - productokilo='${producto.id}']`);
                                     productoSeleccionado.classList.remove('bloque-producto--seleccionado');
 
 
@@ -1219,7 +1383,7 @@ import Swal from "sweetalert2";
 
                             pedido.productoskilos = [...pedido.productoskilos, obj];
 
-                            const productoSeleccionado = document.querySelector(`[data-id-productokilo='${producto.id}']`);
+                            const productoSeleccionado = document.querySelector(`[data - id - productokilo= '${producto.id}']`);
                             productoSeleccionado.classList.add('bloque-producto--seleccionado');
 
 
@@ -1352,6 +1516,12 @@ import Swal from "sweetalert2";
 
                 } else if (elemento.herrero4) {
                     tipoPrecio.innerHTML = `Tipo de precio: <span>${elemento.herrero4 ? 'Herrero4' : ''}</span>`;
+
+                } else if (elemento.mayoreo1) {
+                    tipoPrecio.innerHTML = `Tipo de precio: <span>${elemento.mayoreo1 ? 'Mayoreo1' : ''}</span>`;
+
+                } else if (elemento.mayoreo2) {
+                    tipoPrecio.innerHTML = `Tipo de precio: <span>${elemento.mayoreo2 ? 'Mayoreo2' : ''}</span>`;
 
                 }
 

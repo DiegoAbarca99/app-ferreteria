@@ -2,6 +2,9 @@
 <div class="contenedor">
 
     <div id="pedido">
+
+        <input type="hidden" value="<?php echo $isPrivilegiado ?>" id='isPrivilegiado'>
+
         <div class="seccion" id="paso-1">
 
             <h3 class="resaltar-texto descripcion-pagina no-margin">Eliga a un Cliente</h2>
@@ -22,7 +25,6 @@
                     <form class="filtro__buscador" id="buscador-cliente">
                         <input id="buscar-cliente" type="text" class="filtro__input" placeholder="Buscar por Nombre">
                         <input type="submit" class="filtro__submit" value="Buscar">
-
                     </form>
 
 

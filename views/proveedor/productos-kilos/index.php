@@ -12,6 +12,8 @@
 
     </div>
 
+    <input type="hidden" value="<?php echo $isPrivilegiado?>" id='isPrivilegiado'>
+
     <div id="productos-kilos"  class="bloques-proveedores">
 
     </div>

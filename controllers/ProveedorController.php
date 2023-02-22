@@ -6,6 +6,7 @@ use Model\CategoriaProductosProveedores;
 use Model\Clientes;
 use Model\Municipios;
 use Model\Pedidos;
+use Model\Usuario;
 use MVC\Router;
 
 class ProveedorController
@@ -20,11 +21,15 @@ class ProveedorController
         $municipios = Municipios::all();
         $categorias = CategoriaProductosProveedores::all();
 
+        $proveedor=Usuario::find($_SESSION['id']);
+
+
 
         $router->render('proveedor/index', [
             'titulo' => 'Levantar Pedido',
             'municipios' => $municipios,
-            'categorias' => $categorias
+            'categorias' => $categorias,
+            'isPrivilegiado'=>$proveedor->nivel
         ]);
     }
 

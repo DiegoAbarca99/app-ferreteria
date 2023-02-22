@@ -11,6 +11,7 @@ use MVC\Router;
 use Dompdf\Dompdf;
 use Model\PreciosProveedores;
 use Model\ProductosProveedores;
+use Model\Usuario;
 
 class ProductosController
 {
@@ -24,9 +25,12 @@ class ProductosController
 
         $categorias = CategoriaProductosProveedores::all();
 
+        $proveedor = Usuario::find($_SESSION['id']);
+
         $router->render('proveedor/productos/index', [
             'titulo' => 'Listado de Productos',
-            'categorias' => $categorias
+            'categorias' => $categorias,
+            'isPrivilegiado' => $proveedor->nivel
         ]);
     }
     public static function indexKilos(Router $router)
@@ -36,9 +40,12 @@ class ProductosController
         isAuth();
         isProveedor();
 
+        $proveedor = Usuario::find($_SESSION['id']);
+
 
         $router->render('proveedor/productos-kilos/index', [
             'titulo' => 'Listado de Productos en kilos',
+            'isPrivilegiado' => $proveedor->nivel
 
         ]);
     }
@@ -51,6 +58,7 @@ class ProductosController
         isProveedor();
 
         $productos = PreciosKilo::all();
+        $proveedor = Usuario::find($_SESSION['id']);
 
         foreach ($productos as $producto) {
             $producto->productoProduccion = ProductosComerciales::find($producto->productosComerciales_id);
@@ -101,6 +109,10 @@ class ProductosController
                                 <th style="padding: 10px 3px;">Herrero2</th>
                                 <th style="padding: 10px 3px;">Herrero3</th>
                                 <th style="padding: 10px 3px;">Herrero4</th>
+                                <?php if ($proveedor->nivel == 1) { ?>
+                                    <th style="padding: 10px 3px;">Mayoreo1</th>
+                                    <th style="padding: 10px 3px;">Mayoreo2</th>
+                                <?php } ?>
 
                             </tr>
                         </thead>
@@ -115,6 +127,10 @@ class ProductosController
                                     <td> <?php echo $producto->precio->herrero2; ?></td>
                                     <td> <?php echo $producto->precio->herrero3; ?></td>
                                     <td> <?php echo $producto->precio->herrero4; ?></td>
+                                    <?php if ($proveedor->nivel == 1) { ?>
+                                        <td> <?php echo $producto->precio->mayoreo1; ?></td>
+                                        <td> <?php echo $producto->precio->mayoreo2; ?></td>
+                                    <?php } ?>
                                 </tr>
 
                             <?php } ?>
@@ -154,6 +170,8 @@ class ProductosController
         isProveedor();
 
         $productos = ProductosProveedores::ordenar('categoriaProductosProveedores_id', 'ASC');
+        $proveedor = Usuario::find($_SESSION['id']);
+        
         foreach ($productos as $producto) {
             $producto->precio = PreciosProveedores::find($producto->preciosProveedores_id);
             $producto->categoria = CategoriaProductosProveedores::find($producto->categoriaProductosProveedores_id);
@@ -183,7 +201,7 @@ class ProductosController
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Open+Sans&display=swap" rel="stylesheet">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-            
+
         </head>
 
         <body>
@@ -193,7 +211,7 @@ class ProductosController
                 <?php } else { ?>
                     <h1 class="text-center mb-4">Listado de precios de los productos</h1>
                     <table class="table table-bordered">
-                        <thead style="background-color:#2f405d; color:white; font-weight:900;" >
+                        <thead style="background-color:#2f405d; color:white; font-weight:900;">
                             <tr>
                                 <th style="padding: 10px 3px;">Categoria</th>
                                 <th style="padding: 10px 3px;">Nombre</th>
@@ -201,6 +219,10 @@ class ProductosController
                                 <th style="padding: 10px 3px;">Herrero2</th>
                                 <th style="padding: 10px 3px;">Herrero3</th>
                                 <th style="padding: 10px 3px;">Herrero4</th>
+                                <?php if ($proveedor->nivel == 1) { ?>
+                                    <th style="padding: 10px 3px;">Mayoreo1</th>
+                                    <th style="padding: 10px 3px;">Mayoreo2</th>
+                                <?php } ?>
 
                             </tr>
                         </thead>
@@ -214,6 +236,10 @@ class ProductosController
                                     <td> <?php echo $producto->precio->herrero2; ?></td>
                                     <td> <?php echo $producto->precio->herrero3; ?></td>
                                     <td> <?php echo $producto->precio->herrero4; ?></td>
+                                    <?php if ($proveedor->nivel == 1) { ?>
+                                        <td> <?php echo $producto->precio->mayoreo1; ?></td>
+                                        <td> <?php echo $producto->precio->mayoreo2; ?></td>
+                                    <?php } ?>
                                 </tr>
 
                             <?php } ?>
