@@ -2,7 +2,6 @@
 
 namespace Classes;
 
-use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Email
@@ -26,15 +25,15 @@ class Email
         // create a new object
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = $_ENV['EMAIL_HOST'];
         $mail->SMTPAuth = true;
-        $mail->Port = 465;
+        $mail->Port = $_ENV['EMAIL_PORT'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->SMTPAuth = true;
-        $mail->Username = 'ferretinoco@gmail.com';
-        $mail->Password = 'hzirfnsrdnlpirtg';
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
 
-        $mail->setFrom('ferretinoco@gmail.com', $this->proveedor->usuario);
+        $mail->setFrom($_ENV['EMAIL_USER'], $this->proveedor->usuario);
 
         for ($i = 0; $i < count($this->email); $i++) {
             $mail->addAddress($this->email[$i], $this->nombre[$i]);
@@ -48,7 +47,7 @@ class Email
 
             $contenido = '<html>';
             $contenido .= "<p><strong>Hola " . $this->nombre[$i] .  "</strong> soy el usuario: <strong>" . $this->proveedor->usuario . "</strong> necesito subir mi nivel de acceso.</p>";
-            $contenido .= "<p>Presiona aquí:  <a href='http://localhost:3000/subirNivel?token=".$this->proveedor->token."'> Subir Nivel </a> </p>";
+            $contenido .= "<p>Presiona aquí:  <a href='". $_ENV['HOST']."/subirNivel?token=".$this->proveedor->token."'> Subir Nivel </a> </p>";
             $contenido .= '</html>';
             $mail->Body = $contenido;
 
