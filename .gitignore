@@ -1,5 +1,8 @@
+src/
 node_modules/
 vendor/
-database.php/
+package.json
+package-lock.json
 crear-usuario.php
+gulpfile.js
 .env
