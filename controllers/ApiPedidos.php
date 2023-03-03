@@ -87,9 +87,9 @@ class ApiPedidos
                         $tipoPrecio = 'Herrero3';
                     } else if ($producto->herrero4) {
                         $tipoPrecio = 'Herrero4';
-                    }else if ($producto->mayoreo1) {
+                    } else if ($producto->mayoreo1) {
                         $tipoPrecio = 'Mayoreo1';
-                    }else if ($producto->mayoreo2) {
+                    } else if ($producto->mayoreo2) {
                         $tipoPrecio = 'Mayoreo2';
                     }
 
@@ -213,7 +213,7 @@ class ApiPedidos
 
 
 
-        if ( is_null($_GET['pagado'])) {
+        if (is_null($_GET['pagado'])) {
             echo json_encode([]);
             exit;
         }
@@ -414,7 +414,7 @@ class ApiPedidos
                 if ($resultado) {
                     echo json_encode([
                         'tipo' => 'exito',
-                        'mensaje' => 'El estado de crédito del cliente ha cambiado'
+                        'mensaje' => 'El Cliente Ahora Tiene Deudas Pendientes!'
                     ]);
                 } else {
                     echo json_encode([]);
@@ -492,7 +492,7 @@ class ApiPedidos
                     if ($resultado) {
                         echo json_encode([
                             'tipo' => 'warning',
-                            'mensaje' => 'El Estado De Credito Del Cliente Ha Cambiado!'
+                            'mensaje' => 'Todos Las Deudas Han Sido Pagadas!'
                         ]);
                         exit;
                     } else {
@@ -508,7 +508,7 @@ class ApiPedidos
             if ($resultado) {
                 echo json_encode([
                     'tipo' => 'exito',
-                    'mensaje' => 'El Pedido Se Ha Sido Actualizado'
+                    'mensaje' => 'El Pedido Ha Sido Actualizado'
                 ]);
             }
         }

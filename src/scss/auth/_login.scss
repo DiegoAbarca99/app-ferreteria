@@ -4,64 +4,82 @@
 
 body {
     background-color: v.$grisClaro;
-    
+
 }
 
+
 .login {
-    $modificador: &;
 
-   @include m.desktop{
-    background-color: v.$blanco ;
-    width: 80%;
-    height: 70%;
-    margin-top: 3rem;
-    border-radius: 0 0 3rem 3rem;
-    border: 1px solid v.$grisClaro;
-    @include m.shadow;
-    padding: 25px;
-    
-   }
-   
-   
 
-    &__tagline{
-        font-family: v.$fuente_headings;
-        font-weight: 900;
-        color:v.$negro;
-        font-size: 3rem;
-        text-align: center;
+    @include m.tablet {
+        display: grid;
+        place-items: center;
     }
+
+    width: 100vw;
+    height: 120vh;
+    background: #bdc3c7;
+    background-image: -webkit-linear-gradient(to bottom right, rgba(44, 62, 80, 0.209), #000000),
+    url('../img/login.jpg');
+    background-image: linear-gradient(to bottom right, rgba(44, 62, 80, 0.209), #000000),
+    url('../img/login.jpg');
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
     
 
     &__contenedor {
+        padding: 10rem 0 5rem 0;
+        backdrop-filter: blur(.5rem);
+        width: 100vw;
+        height: 120vh;
 
-        width: min(100%, 50rem);
-        
-        margin: 0 auto;
-        background-color: rgba(0, 0, 0, 0.3);
-        padding: 3rem 5rem;
-        border-radius: 2rem;
-        margin-bottom: 2rem;
-        @include m.shadow;
+    }
 
+    @include m.tablet {
+        padding: 0;
+    }
+
+    &__titulo {
+        margin: 0;
+        padding-bottom: 5rem;
+        @include m.textoDegradado(rgba(12, 35, 209));
+        font-size: 5rem;
 
 
     }
 
-    &__titulo {
-        @include m.textoDegradado(v.$cyan);
-        margin-top: 2rem;
-        font-size: 4.5rem !important;
+    &__icono {
+        color: v.$blanco;
+        font-size: 5rem;
+        border-radius: 50%;
 
+    }
+
+    &__boton {
+        @include m.boton(rgba(12, 35, 209, 0.8), v.$blanco);
+
+        @include m.tablet {
+            width: 100%;
+
+        }
+
+        border-radius: 1rem;
+        margin: 2rem 0;
+        font-weight: bold;
+        text-transform: uppercase;
 
     }
 
 
     &__descripcion {
-        color:v.$cyan;
+        color: v.$blanco;
         font-weight: bold;
-        font-size: 2rem;
-        margin-bottom: 3rem;
+        font-size: 3rem;
+        font-weight: bold;
+
+        margin-bottom: 0rem;
 
         @include m.tablet {
             font-size: 2rem;
@@ -72,12 +90,45 @@ body {
     }
 
 
+    &__contenedor-formulario {
+
+        width: min(100%, 40rem);
+        margin: 0 auto;
+        background-color: rgba(0, 0, 0, 0.45);
+        padding: 2rem 3rem;
+        border-radius: 2rem;
+        margin-bottom: 2rem;
+        -webkit-box-shadow: -4px 10px 11px 0px rgba(12, 35, 209, 0.8);
+        -moz-box-shadow: -4px 10px 11px 0px rgba(12, 35, 209, 0.8);
+        box-shadow: -4px 10px 11px 0px rgba(12, 35, 209, 0.8);
+
+
+        .formulario__input {
+            border-bottom-right-radius: 1rem;
+            border-top-right-radius: 1rem;
+        }
+
+        .formulario__input:focus {
+            -webkit-box-shadow: 0px 5px 18px 10px rgba(12, 35, 209, 0.8);
+            -moz-box-shadow: 0px 5px 18px 10px rgba(12, 35, 209, 0.8);
+            box-shadow: 0px 5px 18px 10px rgba(12, 35, 209, 0.8);
+        }
+
+    }
+
 }
 
-.footer{
+.footer {
+    color: v.$blanco;
     margin: 0;
-    font-size:2.2rem;
-    &--regular{
-        font-size:1.5rem;
+    font-weight: bold;
+    padding-top: 1rem;
+    font-size: 2.7rem;
+   text-align: center;
+    line-height: 1;
+
+    &--regular {
+        font-weight: normal;
+        font-size: 2rem;
     }
 }

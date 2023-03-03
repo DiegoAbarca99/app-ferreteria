@@ -1,4 +1,5 @@
 node_modules/
 vendor/
 database.php/
+crear-usuario.php
 .env
