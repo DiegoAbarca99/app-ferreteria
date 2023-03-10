@@ -71,8 +71,8 @@ function isAllowed(): void
 
 //Verifica que exista cierto string en la ruta actual
 function pagina_actual($path): bool
-{
-    return str_contains($_SERVER['PATH_INFO'] ?? '/', $path) ? true : false;
+{   
+    return str_contains($_SERVER['REQUEST_URI'] ?? '/', $path) ? true : false;
 }
 
 
