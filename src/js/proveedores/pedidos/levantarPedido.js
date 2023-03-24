@@ -1694,8 +1694,8 @@ import Swal from "sweetalert2";
                 console.log([...datos])
                 console.log(respuesta)
 
-                const resultado = await respuesta.json();
-
+                const resultado = await respuesta.text();
+                console.log({resultado})
                 
             
                 if (resultado.tipo == 'exito') {

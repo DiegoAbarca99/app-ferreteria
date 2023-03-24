@@ -24,10 +24,7 @@ class ApiPedidos
 
             $pedido = new Pedidos($_POST);
 
-            echo json_encode([
-                'tipo' => 'error',
-                'mensaje' => 'Ha Ocurrido Un Error!'
-            ]);
+
 
 
             if ($_SESSION['id'] != $_POST['usuarios_id']) {
