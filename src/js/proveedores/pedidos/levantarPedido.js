@@ -1663,7 +1663,7 @@ import Swal from "sweetalert2";
         }
 
         async function levantarPedido() {
-            const url = '/api/pedidos/levantar';
+            const url = 'https://jovial-montalcini.54-156-51-138.plesk.page/api/pedidos/levantar';
 
 
             const productos = pedido.productos.length > 0 ? JSON.stringify(pedido.productos) : '';
