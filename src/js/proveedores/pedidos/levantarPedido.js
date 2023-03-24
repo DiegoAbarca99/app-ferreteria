@@ -1693,6 +1693,8 @@ import Swal from "sweetalert2";
 
                 const resultado = await respuesta.json();
 
+                if(!resultado) Swal.fire('Ha Ocurrido Un Error via PHP!', 'Error!', 'error');
+
                 if (resultado.tipo == 'exito') {
                     Swal.fire(resultado.mensaje, 'Levantado!', 'success').then(() => {
                         window.location.reload();
@@ -1714,7 +1716,7 @@ import Swal from "sweetalert2";
 
             } catch (error) {
                 console.log(error);
-                Swal.fire('Ha Ocurrido Un Error!', 'Error!', 'error');
+                Swal.fire('Ha Ocurrido Un Error via Javascript!', 'Error!', 'error');
             }
 
 
