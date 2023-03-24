@@ -1693,8 +1693,8 @@ import Swal from "sweetalert2";
 
                 const resultado = await respuesta.json();
 
-                if(!resultado) Swal.fire('Ha Ocurrido Un Error via PHP!', 'Error!', 'error');
-
+                console.log(resultado)
+            
                 if (resultado.tipo == 'exito') {
                     Swal.fire(resultado.mensaje, 'Levantado!', 'success').then(() => {
                         window.location.reload();
