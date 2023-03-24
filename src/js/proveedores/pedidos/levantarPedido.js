@@ -1012,7 +1012,7 @@ import Swal from "sweetalert2";
 
                         const bloqueProducto = document.createElement('DIV');
                         bloqueProducto.classList.add('bloque-producto');
-                        bloqueProducto.dataset.idProductokilo = producto.id
+                        bloqueProducto.dataset.idKilo = producto.id
 
                         const heading = document.createElement('H3');
                         heading.classList.add('bloque-producto__heading');
@@ -1359,7 +1359,7 @@ import Swal from "sweetalert2";
                                 if (result.isConfirmed) {
                                     pedido.productoskilos = pedido.productoskilos.filter(elemento => elemento.id != producto.id);
 
-                                    const productoSeleccionado = document.querySelector(`[data - id - productokilo='${producto.id}']`);
+                                    const productoSeleccionado = document.querySelector(`[data-id-kilo='${producto.id}']`);
                                     productoSeleccionado.classList.remove('bloque-producto--seleccionado');
 
 
@@ -1383,7 +1383,7 @@ import Swal from "sweetalert2";
 
                             pedido.productoskilos = [...pedido.productoskilos, obj];
 
-                            const productoSeleccionado = document.querySelector(`[data - id - productokilo= '${producto.id}']`);
+                            const productoSeleccionado = document.querySelector(`[data-id-kilo='${producto.id}']`);
                             productoSeleccionado.classList.add('bloque-producto--seleccionado');
 
 

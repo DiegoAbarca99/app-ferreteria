@@ -6,7 +6,7 @@ use Model\ActiveRecord;
 
 class CategoriaProductosProveedores extends ActiveRecord
 {
-    protected static $tabla = 'categoriaproductosProveedores';
+    protected static $tabla = 'categoriaproductosproveedores';
     protected static $columnasDB = ['id', 'nombre'];
 
     public $id;

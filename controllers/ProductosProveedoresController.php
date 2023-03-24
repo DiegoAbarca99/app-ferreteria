@@ -43,7 +43,7 @@ class ProductosProveedoresController
             }
 
 
-            $productos = ProductosProveedores::belongsToAndOrden('categoriaProductosProveedores_id', $categoriaFiltrada, 'id', 'ASC');
+            $productos = ProductosProveedores::belongsToAndOrden('categoriaProductosProveedores_id', $categoriaFiltrada, 'categoriaProductosProveedores_id', 'ASC');
         }
 
 
