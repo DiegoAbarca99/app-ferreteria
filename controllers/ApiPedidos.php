@@ -14,8 +14,7 @@ class ApiPedidos
 {
     public static function index()
     {
-        header('Access-Control-Allow-Origin: *');
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
             isAuth();

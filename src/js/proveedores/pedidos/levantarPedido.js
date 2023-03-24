@@ -792,7 +792,7 @@ import Swal from "sweetalert2";
 
                     if (e.target.classList.contains('subir-nivel')) {
 
-                        const respuesta = await fetch('/solicitarSubirNivel',{method:'POST'});
+                        const respuesta = await fetch('/solicitarSubirNivel', { method: 'POST' });
                         const resultado = await respuesta.json();
 
                         if (resultado.tipo === 'exito') {
@@ -800,7 +800,7 @@ import Swal from "sweetalert2";
                                 window.location.reload();
                             });
                         } else {
-                            Swal.fire(resultado.mensaje, '', 'error'); 
+                            Swal.fire(resultado.mensaje, '', 'error');
 
                         }
 
@@ -1687,7 +1687,6 @@ import Swal from "sweetalert2";
             try {
 
                 const respuesta = await fetch(url, {
-                    mode:'no-cors',
                     method: 'POST',
                     body: datos
                 });
@@ -1695,10 +1694,12 @@ import Swal from "sweetalert2";
                 console.log([...datos])
                 console.log(respuesta)
 
-                const resultado = await respuesta.json();
+                const string = await respuesta.text();
+                const resultado = string === "" ? {} : JSON.parse(string);
+                //const resultado = await respuesta.json();
 
-                
-            
+
+
                 if (resultado.tipo == 'exito') {
                     Swal.fire(resultado.mensaje, 'Levantado!', 'success').then(() => {
                         window.location.reload();
