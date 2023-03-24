@@ -14,6 +14,8 @@ class ApiPedidos
 {
     public static function index()
     {
+        header('Access-Control-Allow-Origin: *');
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
             isAuth();
@@ -24,10 +26,7 @@ class ApiPedidos
 
             $pedido = new Pedidos($_POST);
 
-echo '<pre>';
-var_dump('Hola mundo prueba 1 2 3...');
-echo '</pre>';
-exit;
+
 
 
             if ($_SESSION['id'] != $_POST['usuarios_id']) {
