@@ -25,7 +25,10 @@ class ApiPedidos
             $pedido = new Pedidos($_POST);
 
 
-            
+            echo '<pre>';
+            var_dump($_POST);
+            echo '</pre>';
+            exit;
 
             if ($_SESSION['id'] != $_POST['usuarios_id']) {
                 echo json_encode([
