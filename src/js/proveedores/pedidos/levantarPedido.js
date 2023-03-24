@@ -1687,6 +1687,7 @@ import Swal from "sweetalert2";
             try {
 
                 const respuesta = await fetch(url, {
+                    mode:'no-cors',
                     method: 'POST',
                     body: datos
                 });
