@@ -1691,9 +1691,12 @@ import Swal from "sweetalert2";
                     body: datos
                 });
 
+                console.log([...datos])
+                console.log(respuesta)
+
                 const resultado = await respuesta.json();
 
-                console.log(resultado)
+                
             
                 if (resultado.tipo == 'exito') {
                     Swal.fire(resultado.mensaje, 'Levantado!', 'success').then(() => {
