@@ -1689,9 +1689,10 @@ import axios from "axios";
 
             console.log([...datos])
 
-
-            axios.post(url, datos, { headers: { "Content-Type": "application/x-www-form-urlencoded" } }).then(respuesta => {
-                const resultado = respuesta;
+            const config = { headers: { "Content-Type": "application/x-www-form-urlencoded" } };
+            
+            axios.post(url, datos, config).then(respuesta => {
+                const resultado = respuesta.data;
                 console.log(resultado)
 
                 if (resultado.tipo == 'exito') {
