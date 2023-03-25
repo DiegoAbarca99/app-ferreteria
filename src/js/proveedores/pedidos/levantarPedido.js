@@ -1689,8 +1689,8 @@ import axios from "axios";
 
             console.log([...datos])
 
-            const config = { "Content-Type": "application/json" } ;
-            
+            const config = { header: { "Content-Type": "application/json" } };
+
             axios.post(url, datos, config).then(respuesta => {
                 const resultado = respuesta;
                 console.log(resultado)
