@@ -1689,9 +1689,18 @@ import axios from "axios";
 
             console.log([...datos])
 
+            try {
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    body: datos,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
 
-            axios.post(url, datos, { "Content-Type": "application/json" }).then(respuesta => {
-                const resultado = respuesta;
+                });
+
+                const resultado = await (respuesta).json();
+
                 console.log(resultado)
 
                 if (resultado.tipo == 'exito') {
@@ -1710,11 +1719,36 @@ import axios from "axios";
                     Swal.fire(resultado.mensaje, 'Error!', 'error');
                 }
 
-
-            }).catch((error) => {
+            } catch (error) {
                 console.log(error);
                 Swal.fire('Ha Ocurrido Un Error via Javascript!', 'Error!', 'error');
-            });
+            }
+            /*  axios.post(url, datos, { "Content-Type": "application/json" }).then(respuesta => {
+                  const resultado = respuesta;
+                  console.log(resultado)
+  
+                  if (resultado.tipo == 'exito') {
+                      Swal.fire(resultado.mensaje, 'Levantado!', 'success').then(() => {
+                          window.location.reload();
+                      });
+                  }
+  
+                  if (resultado.tipo == 'warning') {
+                      Swal.fire(resultado.mensaje, 'Advertecia!!', 'warning').then(() => {
+                          window.location.reload();
+                      });
+                  }
+  
+                  if (resultado.tipo === 'error') {
+                      Swal.fire(resultado.mensaje, 'Error!', 'error');
+                  }
+  
+  
+              }).catch((error) => {
+                  console.log(error);
+                  Swal.fire('Ha Ocurrido Un Error via Javascript!', 'Error!', 'error');
+              });
+              */
 
 
         }
