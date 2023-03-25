@@ -22,6 +22,10 @@ class ApiPedidos
 
     
             $_POST = json_decode(file_get_contents("php://input") , true);
+            echo '<pre>';
+            var_dump($_POST);
+            echo '</pre>';
+            exit;
 
             if (empty($_POST['abono']))
                 $_POST['abono'] = '0';
