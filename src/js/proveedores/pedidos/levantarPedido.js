@@ -1673,16 +1673,16 @@ import axios from "axios";
 
 
             const datos = new FormData();
-            datos.set('usuarios_id', pedido.usuarios_id);
-            datos.set('cliente', pedido.cliente);
-            datos.set('pagado', pedido.pagado);
-            datos.set('metodoPago', pedido.metodoPago);
-            datos.set('status', pedido.status);
-            datos.set('total', pedido.total);
-            datos.set('abono', pedido.abono);
-            datos.set('productos', productos);
-            datos.set('productoskilos', productoskilos);
-            datos.set('cuotaAplicada', pedido.cuota);
+            datos.append('usuarios_id', pedido.usuarios_id);
+            datos.append('cliente', pedido.cliente);
+            datos.append('pagado', pedido.pagado);
+            datos.append('metodoPago', pedido.metodoPago);
+            datos.append('status', pedido.status);
+            datos.append('total', pedido.total);
+            datos.append('abono', pedido.abono);
+            datos.append('productos', productos);
+            datos.append('productoskilos', productoskilos);
+            datos.append('cuotaAplicada', pedido.cuota);
 
 
 
@@ -1690,7 +1690,7 @@ import axios from "axios";
             console.log([...datos])
 
 
-            axios.post(url, datos,{ "Content-Type": "multipart/form-data" }).then(respuesta => {
+            axios.post(url, datos, { headers: { "Content-Type": "application/x-www-form-urlencoded" } }).then(respuesta => {
                 const resultado = respuesta;
                 console.log(resultado)
 
