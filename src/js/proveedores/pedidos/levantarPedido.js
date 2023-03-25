@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import axios from "axios";
 
 
 (function () {
@@ -1663,7 +1664,7 @@ import Swal from "sweetalert2";
         }
 
         async function levantarPedido() {
-            const url = 'https://jovial-montalcini.54-156-51-138.plesk.page/api/pedidos/levantar';
+            const url = '/api/pedidos/levantar';
 
 
             const productos = pedido.productos.length > 0 ? JSON.stringify(pedido.productos) : '';
@@ -1686,16 +1687,16 @@ import Swal from "sweetalert2";
 
             try {
 
-                const respuesta = await fetch(url, {
-                    method: 'POST',
-                    body: datos
-                });
 
                 console.log([...datos])
-                console.log(respuesta)
+               
 
-                const string = await respuesta.text();
-                const resultado = string === "" ? {} : JSON.parse(string);
+                const resultado =axios.create({
+                    baseURL: 'https://jovial-montalcini.54-156-51-138.plesk.page'
+                }).post(url, datos);
+
+                console.log(resultado)
+               // const resultado = string === "" ? {} : JSON.parse(string);
                 //const resultado = await respuesta.json();
 
 
