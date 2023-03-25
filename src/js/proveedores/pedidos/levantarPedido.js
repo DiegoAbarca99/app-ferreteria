@@ -1689,8 +1689,8 @@ import axios from "axios";
 
             console.log([...datos])
 
-            const config = { headers: { Accept: { "Content-Type": "application/x-www-form-urlencoded" } } };
-
+            const config = { "Content-Type": "multipart/form-data" } ;
+            
             axios.post(url, datos, config).then(respuesta => {
                 const resultado = respuesta;
                 console.log(resultado)
