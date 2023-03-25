@@ -1692,7 +1692,7 @@ import axios from "axios";
 
             axios.create({
                 baseURL: 'https://jovial-montalcini.54-156-51-138.plesk.page'
-            }).post(url, datos).then(respuesta => {
+            }).post(url, datos,{ "Content-Type": "multipart/form-data" }).then(respuesta => {
                 const resultado = respuesta.data;
                 console.log(resultado)
 
