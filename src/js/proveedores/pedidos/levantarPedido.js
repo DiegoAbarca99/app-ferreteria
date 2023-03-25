@@ -1699,7 +1699,7 @@ import axios from "axios";
 
                 });
 
-                const resultado = await (respuesta).json();
+                const resultado = await respuesta.json();
 
                 console.log(resultado)
 
