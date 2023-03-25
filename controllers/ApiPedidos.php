@@ -26,7 +26,10 @@ class ApiPedidos
             header('content-type: application/json; charset=utf-8');
             $JSONData = file_get_contents("php://input");
 
-            $_POST = get_object_vars(json_decode($JSONData));
+        echo '<pre>';
+        var_dump(get_object_vars(json_decode($JSONData)));
+        echo '</pre>';
+        exit; 
 
 
 
