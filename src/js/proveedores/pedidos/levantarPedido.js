@@ -1692,8 +1692,9 @@ import axios from "axios";
 
             axios.create({
                 baseURL: 'https://jovial-montalcini.54-156-51-138.plesk.page'
-            }).post(url, datos).then(resultado => {
-                console.log(resultado);
+            }).post(url, datos).then(respuesta => {
+                const resultado = respuesta.data;
+                console.log(resultado)
 
                 if (resultado.tipo == 'exito') {
                     Swal.fire(resultado.mensaje, 'Levantado!', 'success').then(() => {
@@ -1716,13 +1717,6 @@ import axios from "axios";
                 console.log(error);
                 Swal.fire('Ha Ocurrido Un Error via Javascript!', 'Error!', 'error');
             });
-
-
-            // const resultado = string === "" ? {} : JSON.parse(string);
-            //const resultado = await respuesta.json();
-
-
-
 
 
         }

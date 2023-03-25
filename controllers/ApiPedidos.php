@@ -20,6 +20,9 @@ class ApiPedidos
             isAuth();
             isProveedor();
 
+            $JSONData = file_get_contents("php://input");
+            $_POST = json_decode($JSONData);
+
             if (empty($_POST['abono']))
                 $_POST['abono'] = '0';
 
