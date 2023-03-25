@@ -1690,9 +1690,7 @@ import axios from "axios";
             console.log([...datos])
 
 
-            axios.create({
-                baseURL: 'https://jovial-montalcini.54-156-51-138.plesk.page'
-            }).post(url, datos,{ "Content-Type": "multipart/form-data" }).then(respuesta => {
+            axios.post(url, datos,{ "Content-Type": "multipart/form-data" }).then(respuesta => {
                 const resultado = respuesta;
                 console.log(resultado)
 
