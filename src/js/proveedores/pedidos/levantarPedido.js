@@ -1664,7 +1664,7 @@ import axios from "axios";
         }
 
         async function levantarPedido() {
-            const url = 'https://jovial-montalcini.54-156-51-138.plesk.page/api/pedidos/levantar';
+            const url = '/api/pedidos/levantar';
 
 
             const productos = pedido.productos.length > 0 ? JSON.stringify(pedido.productos) : '';
