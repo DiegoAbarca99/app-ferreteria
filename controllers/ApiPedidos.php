@@ -25,7 +25,7 @@ class ApiPedidos
             header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
             header('content-type: application/json; charset=utf-8');
 
-            echo('hola mundo')
+            echo('hola mundo');
 
            
 
