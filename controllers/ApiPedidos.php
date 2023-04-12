@@ -15,13 +15,11 @@ class ApiPedidos
     public static function index()
     {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 
-            header('Access-Control-Allow-Origin: *');
-            header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-            header('content-type: x-www-form-urlencoded');
-            
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
             isAuth();
             isProveedor();
