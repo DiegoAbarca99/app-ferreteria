@@ -1699,6 +1699,9 @@ import axios from "axios";
                         console.log(conexion.responseText);
                         console.log(conexion.response);
                     }
+
+                    console.log(conexion.responseText);
+                    console.log(conexion.response);
                 
                 }
 
