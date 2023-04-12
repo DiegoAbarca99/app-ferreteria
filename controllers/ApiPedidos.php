@@ -17,11 +17,18 @@ class ApiPedidos
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            echo 'hola mundo';
-
+            header('Access-Control-Allow-Origin: *');
+            header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+            header('content-type: x-www-form-urlencoded');
+            
             session_start();
             isAuth();
             isProveedor();
+
+
+
+
 
 
 
