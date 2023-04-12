@@ -16,6 +16,9 @@ class ApiPedidos
     {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            echo 'hola mundo';
+
             session_start();
             isAuth();
             isProveedor();

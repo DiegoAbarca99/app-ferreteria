@@ -1693,9 +1693,6 @@ import axios from "axios";
                 const respuesta = await fetch(url, {
                     method: 'POST',
                     body: datos,
-                    headers:{
-                        'content-type':'application/x-www-form-urlencoded'
-                    }
 
                 });
 
