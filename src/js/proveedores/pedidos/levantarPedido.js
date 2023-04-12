@@ -1690,30 +1690,16 @@ import axios from "axios";
             console.log([...datos])
 
             try {
-                const respuesta = await fetch(url, {
-                    method: 'POST',
-                    body: datos,
-
-                });
-
-                const resultado = await respuesta.json();
-
-                console.log(resultado)
-
-                if (resultado.tipo == 'exito') {
-                    Swal.fire(resultado.mensaje, 'Levantado!', 'success').then(() => {
-                        window.location.reload();
-                    });
-                }
-
-                if (resultado.tipo == 'warning') {
-                    Swal.fire(resultado.mensaje, 'Advertecia!!', 'warning').then(() => {
-                        window.location.reload();
-                    });
-                }
-
-                if (resultado.tipo === 'error') {
-                    Swal.fire(resultado.mensaje, 'Error!', 'error');
+                const conexion = new XMLHttpRequest();
+                conexion.open('POST', url);
+                conexion.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                conexion.send(datos);
+                conexion.onreadystatechange = () => {
+                    if (conexion.readyState == 4){
+                        console.log(conexion.responseText);
+                        console.log(conexion.response);
+                    }
+                
                 }
 
             } catch (error) {
