@@ -9,10 +9,11 @@ use Model\OficinaPedidoKilos;
 use Model\Pedidos;
 use Model\PedidosKilo;
 use Model\ProductosPedidos;
+use MVC\Router;
 
 class ApiPedidos
 {
-    public static function index()
+    public static function index(Router $router)
     {
 
 
