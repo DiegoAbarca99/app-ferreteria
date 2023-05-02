@@ -154,16 +154,16 @@ $router->get('/api/productos/kilos', [ApiProductos::class,'kilos']);
 
 $router->get('/api/clientes', [ApiClientes::class,'index']);
 $router->post('/api/municipios/eliminar', [ApiMunicipios::class,'eliminar']);
-$router->post('/api/pedidos/levantar', [Apipedidos::class,'index']);
+$router->post('/api/pedidos/levantar', [ApiPedidos::class,'index']);
 
 //-------Oficina---------
-$router->get('/api/pedidos/listar', [Apipedidos::class,'listar']);
-$router->post('/api/pedidos/estado', [Apipedidos::class,'cambiarEstado']);
-$router->post('/api/pedidos/pagado', [Apipedidos::class,'cambiarPagado']);
-$router->post('/api/pedidos/credito', [Apipedidos::class,'cambiarCredito']);
-$router->post('/api/pedidos/abono', [Apipedidos::class,'cambiarAbono']);
-$router->post('/api/pedidos/metodo-pago', [Apipedidos::class,'cambiarMetodoPago']);
-$router->get('/api/pedidos/graficar', [Apipedidos::class,'graficar']);
+$router->get('/api/pedidos/listar', [ApiPedidos::class,'listar']);
+$router->post('/api/pedidos/estado', [ApiPedidos::class,'cambiarEstado']);
+$router->post('/api/pedidos/pagado', [ApiPedidos::class,'cambiarPagado']);
+$router->post('/api/pedidos/credito', [ApiPedidos::class,'cambiarCredito']);
+$router->post('/api/pedidos/abono', [ApiPedidos::class,'cambiarAbono']);
+$router->post('/api/pedidos/metodo-pago', [ApiPedidos::class,'cambiarMetodoPago']);
+$router->get('/api/pedidos/graficar', [ApiPedidos::class,'graficar']);
 
 //-------Perfiles--------
 $router->post('/api/sucursales/crear',[ApiSucursales::class,'crearSucursal'] );
