@@ -1670,7 +1670,7 @@ import axios from "axios";
             const productos = pedido.productos.length > 0 ? JSON.stringify(pedido.productos) : '';
             const productoskilos = pedido.productoskilos.length > 0 ? JSON.stringify(pedido.productoskilos) : '';
 
-
+            console.log(productos)
 
             const datos = new FormData();
             datos.append('usuarios_id', pedido.usuarios_id);
