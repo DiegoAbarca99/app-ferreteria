@@ -9,7 +9,7 @@ use Controllers\ApiCategoriasProducto;
 use Controllers\ApiClientes;
 use Controllers\ApiCorreos;
 use Controllers\ApiMunicipios;
-use Controllers\Apipedidos;
+use Controllers\ApiPedidos;
 use Controllers\ApiProductos;
 use Controllers\ApiProductosComerciales;
 use Controllers\ApiProductosProveedores;
