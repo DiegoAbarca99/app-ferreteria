@@ -183,7 +183,7 @@ class ApiProductosComerciales
 
             if ($eliminarAcero) unset($_POST['eliminarAcero']);
             if ($eliminarCosto) unset($_POST['eliminarCosto']);
-            
+
             $_POST['nombre'] = trim(strtoupper($_POST['nombre']));
             $productoActual->sincronizar($_POST);
 
@@ -246,9 +246,9 @@ class ApiProductosComerciales
             $porcentajeGanancias->gananciamayoreo1 = obtenerNominal($porcentajeGanancias->gananciamayoreo1);
             $porcentajeGanancias->gananciamayoreo2 = obtenerNominal($porcentajeGanancias->gananciamayoreo2);
 
-            //Se asgina el costo Base si está como NULL
 
-            if (is_null($productoActual->costo)) {
+            //Se asgina el costo Base si hay un tipoAcero asociado
+            if (!is_null($productoActual->tiposaceros_id)) {
                 $productoActual->costo = $tipoAcero->slp;
             }
 
