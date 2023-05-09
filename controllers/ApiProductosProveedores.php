@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use DateTime;
 use Model\CategoriaProductosProveedores;
 use Model\Historico;
 use Model\Pesos;
@@ -198,13 +199,18 @@ class ApiProductosProveedores
             if ($resultado) {
 
 
+                $fecha = new DateTime('now');
+
+
+
                 // Historial cambio del valor de los pesos
                 $arg = [
                     'usuarios_id' => $_SESSION['id'],
                     'entidadModificada' => $productoProveedor->nombre,
                     'valorAnterior' => $pesos->pesoAntiguo,
                     'valorNuevo' => $pesos->pesoNuevo,
-                    'accion' => 'Se modificó el peso del producto'
+                    'accion' => 'Se modificó el peso del producto',
+                    'fecha' => $fecha->format('Y-m-d H:i:s')
                 ];
 
                 $historico = new Historico($arg);

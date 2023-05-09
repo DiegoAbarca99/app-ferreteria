@@ -1560,7 +1560,7 @@ import axios from "axios";
             console.log(pedido.total)
             const total = document.createElement('P');
             total.classList.add('resumen__total');
-            total.innerHTML = `Total: <span>$${pedido.total}</span>`;
+            total.innerHTML = `Total: <span>$${pedido.total.toFixed(2)}</span>`;
 
 
             contenedorProductos.appendChild(total);

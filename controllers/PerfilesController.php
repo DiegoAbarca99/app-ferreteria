@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use DateTime;
 use Model\Sucursales;
 use MVC\Router;
 use Model\Historico;
@@ -258,12 +259,15 @@ class PerfilesController
 
                     if ($resultado && ($usuario->nivel != $nivelAnterior)) {
 
+                        $fecha = new DateTime('now');
+
                         $arg = [
                             'usuarios_id' => $_SESSION['id'],
                             'entidadModificada' => $usuario->usuario,
                             'valorAnterior' => $nivelAnterior === '1' ? 'Privilegiado' : 'Regular',
                             'valorNuevo' => $usuario->nivel === '1' ? 'Privilegiado' : 'Regular',
                             'accion' => 'Se modificó el nivel de acceso de un proveedor',
+                            'fecha' => $fecha->format('Y-m-d H:i:s')
                         ];
 
                         $historico = new Historico($arg);
@@ -272,10 +276,14 @@ class PerfilesController
 
                     if ($resultado && ($usuario->password != $passwordAnterior)) {
 
+                        $fecha = new DateTime('now');
+
+
                         $arg = [
                             'usuarios_id' => $_SESSION['id'],
                             'entidadModificada' => $usuario->usuario,
                             'accion' => 'Se modificó el password de acceso del usuario.',
+                            'fecha' => $fecha->format('Y-m-d H:i:s')
                         ];
 
                         $historico = new Historico($arg);
