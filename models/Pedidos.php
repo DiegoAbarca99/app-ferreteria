@@ -7,7 +7,7 @@ use Model\ActiveRecord;
 class Pedidos extends ActiveRecord
 {
     protected static $tabla = 'pedidos';
-    protected static $columnasDB = ['id', 'pagado', 'folio', 'status', 'metodoPago', 'total', 'abono', 'cuotaAplicada', 'usuarios_id', 'clientes_id'];
+    protected static $columnasDB = ['id', 'pagado', 'folio', 'status', 'metodoPago', 'total', 'abono', 'cuotaAplicada', 'usuarios_id', 'clientes_id', 'fecha'];
 
     public $id;
     public $pagado;

@@ -28,12 +28,9 @@ class ApiPedidos
             if (empty($_POST['abono']))
                 $_POST['abono'] = '0';
 
-            $pedido = new Pedidos($_POST);
+            $_POST['fecha'] = new DateTime('now');
 
-            echo '<pre>';
-            var_dump( new DateTime('now'));
-            echo '</pre>';
-            exit;
+            $pedido = new Pedidos($_POST);
 
 
             if ($_SESSION['id'] != $_POST['usuarios_id']) {
