@@ -28,7 +28,8 @@ class ApiPedidos
             if (empty($_POST['abono']))
                 $_POST['abono'] = '0';
 
-            $_POST['fecha'] = new DateTime('now');
+            $fecha = new DateTime('now');
+            $_POST['fecha'] = $fecha->format('Y-m-d H:i:s');
 
             $pedido = new Pedidos($_POST);
 
