@@ -99,8 +99,8 @@ class ApiProductosComerciales
             $porcentajeGanancias->gananciamayoreo1 = obtenerNominal($porcentajeGanancias->gananciamayoreo1);
             $porcentajeGanancias->gananciamayoreo2 = obtenerNominal($porcentajeGanancias->gananciamayoreo2);
 
-            //Se asgina el costo Base si está como NULL
-            if (is_null($producto->costo)) {
+            //Se asgina el costo Base si hay un tipoAcero asociado
+            if (!is_null($producto->tiposaceros_id)) {
                 $producto->costo = $tipoAcero->slp;
             }
 
