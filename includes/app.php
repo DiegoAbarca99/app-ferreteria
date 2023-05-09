@@ -6,6 +6,8 @@ use Model\ActiveRecord;
 require __DIR__ . '/../vendor/autoload.php';
 
 
+date_default_timezone_set('America/Mexico_City');
+
 // Añadir Dotenv
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();

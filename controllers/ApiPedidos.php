@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use DateTime;
 use Model\Clientes;
 use Model\OficinaGrafico;
 use Model\OficinaPedido;
@@ -29,7 +30,10 @@ class ApiPedidos
 
             $pedido = new Pedidos($_POST);
 
-
+            echo '<pre>';
+            var_dump( new DateTime('now'));
+            echo '</pre>';
+            exit;
 
 
             if ($_SESSION['id'] != $_POST['usuarios_id']) {
