@@ -7,7 +7,7 @@ use Model\ActiveRecord;
 class Historico extends ActiveRecord
 {
     protected static $tabla = 'historicousuarios';
-    protected static $columnasDB = ['id', 'entidadModificada', 'accion', 'usuarios_id', 'valorNuevo', 'valorAnterior'];
+    protected static $columnasDB = ['id', 'entidadModificada', 'accion', 'usuarios_id', 'valorNuevo', 'valorAnterior','fecha'];
 
     public $id;
     public $entidadModificada;

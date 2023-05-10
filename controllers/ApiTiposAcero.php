@@ -3,7 +3,15 @@
 namespace Controllers;
 
 use Model\CategoriaAcero;
+use Model\CategoriaProducto;
 use Model\DescripcionAcero;
+use Model\Impuestos;
+use Model\Pesos;
+use Model\PorcentajeGanancias;
+use Model\PreciosProduccion;
+use Model\PreciosProveedores;
+use Model\ProductosComerciales;
+use Model\ProductosProveedores;
 use Model\TiposAceros;
 use MVC\Router;
 
@@ -213,6 +221,61 @@ class ApiTiposAcero
                         }
 
                         $acero->guardar();
+
+
+                        $productosComerciales = ProductosComerciales::belongsTo('tiposaceros_id', $acero->id);
+
+                        foreach ($productosComerciales as $producto) {
+
+                            $categoria = CategoriaProducto::find($producto->categoriaProducto_id);
+
+                            //Se obtiene valores que operan entre sí para obtener los precios de producción del producto
+                            $impuestos = Impuestos::find($categoria->impuestos_id);
+                            $porcentajeGanancias = PorcentajeGanancias::find($categoria->porcentajeGanancias_id);
+
+                            //Se convierten las ganancias como nominal
+                            $porcentajeGanancias->gananciapublico1 = obtenerNominal($porcentajeGanancias->gananciapublico1);
+                            $porcentajeGanancias->gananciaherrero2 = obtenerNominal($porcentajeGanancias->gananciaherrero2);
+                            $porcentajeGanancias->gananciaherrero3 = obtenerNominal($porcentajeGanancias->gananciaherrero3);
+                            $porcentajeGanancias->gananciaherrero4 = obtenerNominal($porcentajeGanancias->gananciaherrero4);
+                            $porcentajeGanancias->gananciamayoreo1 = obtenerNominal($porcentajeGanancias->gananciamayoreo1);
+                            $porcentajeGanancias->gananciamayoreo2 = obtenerNominal($porcentajeGanancias->gananciamayoreo2);
+
+                            $producto->costo = $acero->slp;
+
+                            //Se calcula el costo neto
+                            $producto->costoneto = ($producto->costo + $impuestos->flete + $impuestos->descarga + $impuestos->seguro) * $impuestos->iva;
+
+                            //Se obtienen lo costos de producción a actualizar
+                            $preciosProduccion = PreciosProduccion::find($producto->preciosProduccion_id);
+
+                            //Se calculan los costros de Producción
+                            $preciosProduccion->publico1 = $producto->costoneto * $porcentajeGanancias->gananciapublico1;
+                            $preciosProduccion->herrero2 = $producto->costoneto * $porcentajeGanancias->gananciaherrero2;
+                            $preciosProduccion->herrero3 = $producto->costoneto * $porcentajeGanancias->gananciaherrero3;
+                            $preciosProduccion->herrero4 = $producto->costoneto * $porcentajeGanancias->gananciaherrero4;
+                            $preciosProduccion->mayoreo1 = $producto->costoneto * $porcentajeGanancias->gananciamayoreo1;
+                            $preciosProduccion->mayoreo2 = $producto->costoneto * $porcentajeGanancias->gananciamayoreo2;
+
+                            $preciosProduccion->guardar();
+                            $producto->guardar();
+
+                            $productoProveedor = ProductosProveedores::where('productosComerciales_id', $producto->id);
+                            $pesos = Pesos::find($productoProveedor->pesos_id);
+
+                            $precios = PreciosProveedores::find($productoProveedor->preciosProveedores_id);
+
+
+                            $precios->publico1 = ceil($pesos->pesoPromedio * $preciosProduccion->publico1);
+                            $precios->herrero2 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero2);
+                            $precios->herrero3 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero3);
+                            $precios->herrero4 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero4);
+                            $precios->mayoreo1 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo1);
+                            $precios->mayoreo2 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo2);
+
+
+                            $resultado = $precios->guardar();
+                        }
                     }
 
                     echo json_encode([
