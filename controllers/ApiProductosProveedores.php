@@ -165,7 +165,7 @@ class ApiProductosProveedores
 
             $pesos->pesoAntiguo = $pesos->pesoNuevo;
             $pesos->pesoNuevo = $_POST['peso'];
-            $pesos->pesoPromedio =round(($pesos->pesoAntiguo + $pesos->pesoNuevo) / 2);
+            $pesos->pesoPromedio =($pesos->pesoAntiguo + $pesos->pesoNuevo) / 2;
 
 
             //Llenado de la tabla de preciosProveedores 
