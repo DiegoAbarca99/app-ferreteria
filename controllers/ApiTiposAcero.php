@@ -260,21 +260,23 @@ class ApiTiposAcero
                             $preciosProduccion->guardar();
                             $producto->guardar();
 
-                            $productoProveedor = ProductosProveedores::where('productosComerciales_id', $producto->id);
-                            $pesos = Pesos::find($productoProveedor->pesos_id);
+                            $productosProveedores = ProductosProveedores::belongsTo('productosComerciales_id', $producto->id);
+                            foreach ($productosProveedores as $productoProveedor) {
+                                $pesos = Pesos::find($productoProveedor->pesos_id);
 
-                            $precios = PreciosProveedores::find($productoProveedor->preciosProveedores_id);
-
-
-                            $precios->publico1 = ceil($pesos->pesoPromedio * $preciosProduccion->publico1);
-                            $precios->herrero2 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero2);
-                            $precios->herrero3 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero3);
-                            $precios->herrero4 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero4);
-                            $precios->mayoreo1 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo1);
-                            $precios->mayoreo2 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo2);
+                                $precios = PreciosProveedores::find($productoProveedor->preciosProveedores_id);
 
 
-                            $resultado = $precios->guardar();
+                                $precios->publico1 = ceil($pesos->pesoPromedio * $preciosProduccion->publico1);
+                                $precios->herrero2 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero2);
+                                $precios->herrero3 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero3);
+                                $precios->herrero4 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero4);
+                                $precios->mayoreo1 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo1);
+                                $precios->mayoreo2 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo2);
+
+
+                                $resultado = $precios->guardar();
+                            }
                         }
                     }
 
@@ -333,21 +335,23 @@ class ApiTiposAcero
                         $preciosProduccion->guardar();
                         $producto->guardar();
 
-                        $productoProveedor = ProductosProveedores::where('productosComerciales_id', $producto->id);
-                        $pesos = Pesos::find($productoProveedor->pesos_id);
+                        $productosProveedores = ProductosProveedores::belongsTo('productosComerciales_id', $producto->id);
+                        foreach ($productosProveedores as $productoProveedor) {
+                            $pesos = Pesos::find($productoProveedor->pesos_id);
 
-                        $precios = PreciosProveedores::find($productoProveedor->preciosProveedores_id);
-
-
-                        $precios->publico1 = ceil($pesos->pesoPromedio * $preciosProduccion->publico1);
-                        $precios->herrero2 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero2);
-                        $precios->herrero3 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero3);
-                        $precios->herrero4 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero4);
-                        $precios->mayoreo1 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo1);
-                        $precios->mayoreo2 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo2);
+                            $precios = PreciosProveedores::find($productoProveedor->preciosProveedores_id);
 
 
-                        $resultado = $precios->guardar();
+                            $precios->publico1 = ceil($pesos->pesoPromedio * $preciosProduccion->publico1);
+                            $precios->herrero2 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero2);
+                            $precios->herrero3 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero3);
+                            $precios->herrero4 = ceil($pesos->pesoPromedio * $preciosProduccion->herrero4);
+                            $precios->mayoreo1 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo1);
+                            $precios->mayoreo2 = ceil($pesos->pesoPromedio * $preciosProduccion->mayoreo2);
+
+
+                            $resultado = $precios->guardar();
+                        }
                     }
 
                     if ($resultado) {
